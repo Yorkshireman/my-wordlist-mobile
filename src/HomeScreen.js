@@ -1,6 +1,6 @@
 import { Loading } from './Loading';
+import { Text } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
-import { Text, View } from 'react-native';
 
 const MY_WORDLIST_QUERY = gql`
   query MyWordlist {
@@ -26,11 +26,11 @@ export const HomeScreen = () => {
   return (
     <>
       <Text>
-        Wordlist id: {data.myWordlist.id}
+        MyWordlist
       </Text>
-      {data.myWordlist.entries.map(({ word }) => {
-        <Text id={word.id}>{word.text}</Text>;
-      })}
+      {data.myWordlist.entries.map(({ word }) => (
+        <Text key={word.id}>{word.text}</Text>
+      ))}
     </>
   );
 };
