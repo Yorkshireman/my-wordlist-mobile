@@ -1,4 +1,5 @@
 import { HomeScreen } from './src/HomeScreen';
+import { MY_WORDLIST_GRAPHQL_URL } from '@env';
 import NetworkLogger from 'react-native-network-logger';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
@@ -11,7 +12,7 @@ const client = new ApolloClient({
     // this is the user_id from the rails app's seed data
     authorization: 'b0f9ad83-9148-4a6e-98bc-ac9216e645e7'
   },
-  uri: 'http://localhost:3000/graphql'
+  uri: MY_WORDLIST_GRAPHQL_URL
 });
 
 export default function App() {
