@@ -1,16 +1,16 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { HomeScreen } from './src/HomeScreen';
 import NetworkLogger from 'react-native-network-logger';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
   headers: {
     authorization: 'b0f9ad83-9148-4a6e-98bc-ac9216e645e7'
-  }
+  },
+  uri: 'http://localhost:3000/graphql'
 });
 
 export default function App() {
@@ -28,9 +28,9 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center'
+  }
 });
