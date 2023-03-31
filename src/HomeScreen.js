@@ -24,13 +24,13 @@ export const HomeScreen = () => {
   }
 
   return (
-    <View>
+    <>
       <Text>
         Wordlist id: {data.myWordlist.id}
       </Text>
       {data.myWordlist.entries.map(({ word }) => {
         <Text id={word.id}>{word.text}</Text>;
       })}
-    </View>
+    </>
   );
 };

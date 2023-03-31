@@ -19,9 +19,9 @@ export default function App() {
     <ApolloProvider client={client}>
       <View style={styles.container}>
         <HomeScreen />
-        <NetworkLogger />
         <StatusBar style="auto" />
       </View>
+      <NetworkLogger />
     </ApolloProvider>
   );
 }
