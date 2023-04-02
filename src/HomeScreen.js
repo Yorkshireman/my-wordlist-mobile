@@ -1,36 +1,34 @@
-import { Loading } from './Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native';
-import { gql, useQuery } from '@apollo/client';
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-const MY_WORDLIST_QUERY = gql`
-  query MyWordlist {
-    myWordlist {
-      id
-      entries {
-        word {
-          id
-          text
-        }
-      }
+export const HomeScreen = ({ navigation }) => {
+  useEffect(() => {
+    const getAuthToken = async () => await AsyncStorage.getItem('@storage_Key');
+    const authToken = getAuthToken();
+    if (authToken !== null) {
+      // AsyncStorage returns null when no data is found for a given key
+      // navigate to Signin screen
+      console.log('authToken is null');
+      navigation.navigate('SignIn');
     }
-  }
-`;
-
-export const HomeScreen = () => {
-  const { data, loading } = useQuery(MY_WORDLIST_QUERY);
-
-  if (loading) {
-    return <Loading />;
-  }
+  }, []);
 
   return (
-    <>
+    <View style={styles.container}>
       <Text>
         MyWordlist
       </Text>
-      {data.myWordlist.entries.map(({ word }) => (
-        <Text key={word.id}>{word.text}</Text>
-      ))}
-    </>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'center'
+  }
+});
