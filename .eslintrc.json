@@ -32,6 +32,7 @@
             "error",
             "single"
         ],
+        "react/prop-types": "warn",
         "react/react-in-jsx-scope": "off",
         "semi": [
             "error",

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -8,9 +9,6 @@ export const HomeScreen = ({ navigation }) => {
     const getAuthToken = async () => await AsyncStorage.getItem('@storage_Key');
     const authToken = getAuthToken();
     if (authToken !== null) {
-      // AsyncStorage returns null when no data is found for a given key
-      // navigate to Signin screen
-      console.log('authToken is null');
       navigation.navigate('SignIn');
     }
   }, []);
@@ -22,6 +20,10 @@ export const HomeScreen = ({ navigation }) => {
       </Text>
     </View>
   );
+};
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
