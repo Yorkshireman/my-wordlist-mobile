@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
   useEffect(() => {
-    const getAuthToken = async () => await AsyncStorage.getItem('@storage_Key');
+    const getAuthToken = async () => await AsyncStorage.getItem('myWordlistAuthToken');
     const authToken = getAuthToken();
     if (authToken !== null) {
       navigation.navigate('SignIn');
