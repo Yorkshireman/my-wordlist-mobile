@@ -4,6 +4,6 @@ import { ActivityIndicator, View } from 'react-native';
 
 export const Loading = () => (
   <View style={styles.centered}>
-    <ActivityIndicator size="large" color='red' />
+    <ActivityIndicator color='red' size="large" />
   </View>
 );

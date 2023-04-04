@@ -1,24 +1,34 @@
+import { TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export const SignInScreen = () => {
-  const [text, onChangeText] = useState('');
-  const [password, onChangePassword] = useState('');
+  const [text, setText] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const EyeIcon = (
+    <TextInput.Icon 
+      icon={passwordVisible ? 'eye' : 'eye-off'}
+      onPress={() => setPasswordVisible(!passwordVisible)}
+    />
+  );
 
   return (
     <View>
       <TextInput
         autoComplete='email'
-        onChangeText={onChangeText}
+        onChangeText={setText}
         placeholder='email'
         style={styles.input}
         value={text}
       />
       <TextInput
         autoComplete='current-password'
-        onChangeText={onChangePassword}
+        onChangeText={setPassword}
         placeholder='password'
-        secureTextEntry
+        right={EyeIcon}
+        secureTextEntry={!passwordVisible}
         style={styles.input}
         value={password}
       />
@@ -28,9 +38,6 @@ export const SignInScreen = () => {
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 1,
-    height: 40,
-    margin: 12,
-    padding: 10
+    margin: 12
   }
 });

@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
+import sharedStyles from './styles';
 import { Text } from 'react-native';
 import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
   useEffect(() => {
@@ -14,7 +15,7 @@ export const HomeScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={sharedStyles.container}>
       <Text>
         MyWordlist
       </Text>
@@ -25,12 +26,3 @@ export const HomeScreen = ({ navigation }) => {
 HomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center'
-  }
-});
