@@ -1,21 +1,36 @@
-import { Text } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 export const SignInScreen = () => {
+  const [text, onChangeText] = useState('');
+  const [password, onChangePassword] = useState('');
+
   return (
-    <View style={styles.container}>
-      <Text>
-        Sign In
-      </Text>
+    <View>
+      <TextInput
+        autoComplete='email'
+        onChangeText={onChangeText}
+        placeholder='email'
+        style={styles.input}
+        value={text}
+      />
+      <TextInput
+        autoComplete='current-password'
+        onChangeText={onChangePassword}
+        placeholder='password'
+        secureTextEntry
+        style={styles.input}
+        value={password}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center'
+  input: {
+    borderWidth: 1,
+    height: 40,
+    margin: 12,
+    padding: 10
   }
 });
