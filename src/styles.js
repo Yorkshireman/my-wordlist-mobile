@@ -7,9 +7,8 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 'auto'
   }
 });
