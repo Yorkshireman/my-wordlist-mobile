@@ -1,8 +1,9 @@
+import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_IN_URL } from '@env';
 import { useState } from 'react';
-import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { Button, Text, TextInput, useTheme } from 'react-native-paper';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 const signIn = (email, password) => {
   return fetch(SIGN_IN_URL, {
@@ -24,10 +25,12 @@ const signIn = (email, password) => {
     .catch(e => console.error(e));
 };
 
-export const SignInScreen = () => {
+export const SignInScreen = ({ navigation }) => {
+  const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
   const EyeIcon = (
     <TextInput.Icon 
@@ -56,9 +59,22 @@ export const SignInScreen = () => {
         style={styles.input}
         value={password}
       />
-      <Button mode='contained' onPress={onSubmit}>Login</Button>
+      <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Login</Button>
+      <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
+        New user?{'\u0020'}
+        <Pressable onPress={() => {
+          setPressed(true);
+          navigation.navigate('SignUp');
+        }}>
+          <Text style={{ color: pressed ? colors.secondary : colors.primary }}>Sign up</Text>
+        </Pressable>
+      </Text>
     </View>
   );
+};
+
+SignInScreen.propTypes = {
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

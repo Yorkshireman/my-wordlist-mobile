@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SignInScreen } from './src/SignInScreen';
+import { SignUpScreen } from './src/SignUpScreen';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
@@ -31,6 +32,7 @@ export default function App() {
           <Stack.Navigator>
             <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'Home' }} />
             <Stack.Screen component={SignInScreen} name="SignIn" options={{ title: 'Sign In'}} />
+            <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'Sign Up' }} />
           </Stack.Navigator>
           <StatusBar style="auto" />
           {networkLoggerIsEnabled && <NetworkLogger />}
