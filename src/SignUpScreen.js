@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
@@ -13,25 +14,12 @@ const ErrorText = ({ text }) => {
   );
 };
 
-const signUp = (email, name, password) => {
-  return fetch(SIGN_UP_URL, {
-    body: JSON.stringify({
-      user: {
-        email,
-        name,
-        password
-      }
-    }),
-    headers: {
-      'Content-Type': 'application/vnd.api+json'
-    },
-    method: 'POST'
-  })
-    .then(response => response.json())
-    .then(json => {
-      return json;
-    })
-    .catch(e => console.error(e));
+const storeAuthToken = async token => {
+  try {
+    await AsyncStorage.setItem('myWordlistAuthToken', token);
+  } catch (e) {
+    console.error('error storing auth token', e);
+  }
 };
 
 export const SignUpScreen = ({ navigation }) => {
@@ -39,6 +27,7 @@ export const SignUpScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -58,7 +47,39 @@ export const SignUpScreen = ({ navigation }) => {
     }
 
     setErrorMessage('');
-    signUp(email, name, password);
+    signUp(email, name, navigation, password);
+  };
+
+  const signUp = () => {
+    setLoading(true);
+    return fetch(SIGN_UP_URL, {
+      body: JSON.stringify({
+        user: {
+          email,
+          name,
+          password
+        }
+      }),
+      headers: {
+        'Content-Type': 'application/vnd.api+json'
+      },
+      method: 'POST'
+    })
+      .then(response => {
+        if (!response.ok) {
+          const status = response.status;
+          return response.json().then(resBody => {
+            const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
+            throw new Error(`Signup request HTTP error! Status: ${status}, errors: ${errors}`);
+          });
+        }
+
+        return response.json();
+      })
+      .then(({ data: { token }}) => storeAuthToken(token))
+      .then(() => navigation.navigate('Home'))
+      .catch(e => console.error(e))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -102,7 +123,7 @@ export const SignUpScreen = ({ navigation }) => {
       <>
         {errorMessage && <ErrorText text={errorMessage} />}
       </>
-      <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Sign up</Button>
+      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Sign up</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         Have an account?{'\u0020'}
         <Pressable onPress={() => {

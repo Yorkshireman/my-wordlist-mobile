@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
 
 export const useAuthToken = navigation => {
+  const [authToken, setAuthToken] = useState(null);
+  
   useFocusEffect(
     useCallback(() => {
       const getAuthToken = async () => {
@@ -19,11 +21,13 @@ export const useAuthToken = navigation => {
           console.log('no auth token');
           return navigation.navigate('LogIn');
         }
-  
-        console.log('authToken: ', authToken);
+
+        setAuthToken(authToken);
       };
 
       checkAuthToken();
     }, [navigation])
   );
+
+  return authToken;
 };

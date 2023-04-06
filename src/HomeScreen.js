@@ -5,7 +5,9 @@ import { useAuthToken } from './hooks';
 import { View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
-  useAuthToken(navigation);
+  const authToken = useAuthToken(navigation);
+  
+  console.log('authToken: ', authToken);
 
   return (
     <View style={sharedStyles.container}>
