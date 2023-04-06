@@ -45,10 +45,10 @@ export const SignUpScreen = ({ navigation }) => {
   const [pressed, setPressed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const EyeIcon = confirm => {
+  const EyeIcon = isConfirmPasswordField => {
     return <TextInput.Icon 
       icon={passwordVisible ? 'eye' : 'eye-off'}
-      onPress={() => confirm ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible)}
+      onPress={() => isConfirmPasswordField ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible)}
     />;
   };
 
