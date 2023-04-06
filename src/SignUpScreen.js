@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
+import { storeAuthToken } from './utils';
 import { useState } from 'react';
 import { Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -12,14 +12,6 @@ const ErrorText = ({ text }) => {
       {text}
     </HelperText>
   );
-};
-
-const storeAuthToken = async token => {
-  try {
-    await AsyncStorage.setItem('myWordlistAuthToken', token);
-  } catch (e) {
-    console.error('error storing auth token', e);
-  }
 };
 
 export const SignUpScreen = ({ navigation }) => {
