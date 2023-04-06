@@ -25,7 +25,7 @@ const signIn = (email, password) => {
     .catch(e => console.error(e));
 };
 
-export const SignInScreen = ({ navigation }) => {
+export const LogInScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,7 +59,7 @@ export const SignInScreen = ({ navigation }) => {
         style={styles.input}
         value={password}
       />
-      <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Login</Button>
+      <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Log in</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         New user?{'\u0020'}
         <Pressable onPress={() => {
@@ -73,7 +73,7 @@ export const SignInScreen = ({ navigation }) => {
   );
 };
 
-SignInScreen.propTypes = {
+LogInScreen.propTypes = {
   navigation: PropTypes.object.isRequired
 };
 

@@ -10,7 +10,7 @@ export const HomeScreen = ({ navigation }) => {
     const getAuthToken = async () => await AsyncStorage.getItem('myWordlistAuthToken');
     const authToken = getAuthToken();
     if (authToken !== null) {
-      navigation.navigate('SignIn');
+      navigation.navigate('LogIn');
     }
   }, []);
 

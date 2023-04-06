@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/HomeScreen';
+import { LogInScreen } from './src/LogInScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { SignInScreen } from './src/SignInScreen';
 import { SignUpScreen } from './src/SignUpScreen';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
@@ -31,7 +31,7 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'Home' }} />
-            <Stack.Screen component={SignInScreen} name="SignIn" options={{ title: 'Sign In'}} />
+            <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'Log In'}} />
             <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'Sign Up' }} />
           </Stack.Navigator>
           <StatusBar style="auto" />
