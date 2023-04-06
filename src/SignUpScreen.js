@@ -13,11 +13,12 @@ const ErrorText = ({ text }) => {
   );
 };
 
-const signUp = (email, password) => {
+const signUp = (email, name, password) => {
   return fetch(SIGN_UP_URL, {
     body: JSON.stringify({
       user: {
         email,
+        name,
         password
       }
     }),
@@ -38,6 +39,7 @@ export const SignUpScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -56,19 +58,30 @@ export const SignUpScreen = ({ navigation }) => {
     }
 
     setErrorMessage('');
-    signUp(email, password);
+    signUp(email, name, password);
   };
 
   return (
     <View style={sharedStyles.container}>
       <TextInput
-        autoComplete='email'
+        label='username'
+        mode='outlined'
+        onChangeText={setName}
+        placeholder='username'
+        style={styles.input}
+        value={name}
+      />
+      <TextInput
+        label='email'
+        mode='outlined'
         onChangeText={setEmail}
         placeholder='email'
         style={styles.input}
         value={email}
       />
       <TextInput
+        label='password'
+        mode='outlined'
         onChangeText={setPassword}
         placeholder='password'
         right={EyeIcon()}
@@ -77,6 +90,8 @@ export const SignUpScreen = ({ navigation }) => {
         value={password}
       />
       <TextInput
+        label='confirm password'
+        mode='outlined'
         onChangeText={setConfirmPassword}
         placeholder='confirm password'
         right={EyeIcon(true)}
@@ -84,7 +99,9 @@ export const SignUpScreen = ({ navigation }) => {
         style={styles.input}
         value={confirmPassword}
       />
-      {errorMessage && <ErrorText text={errorMessage} />}
+      <>
+        {errorMessage && <ErrorText text={errorMessage} />}
+      </>
       <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Sign up</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         Have an account?{'\u0020'}
