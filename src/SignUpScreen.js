@@ -2,8 +2,16 @@ import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
 import { useState } from 'react';
-import { Button, Text, TextInput, useTheme } from 'react-native-paper';
+import { Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
 import { Pressable, StyleSheet, View } from 'react-native';
+
+const ErrorText = ({ text }) => {
+  return (
+    <HelperText style={{ marginBottom: '1em' }} type='error'>
+      {text}
+    </HelperText>
+  );
+};
 
 const signUp = (email, password) => {
   return fetch(SIGN_UP_URL, {
@@ -33,6 +41,7 @@ export const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const EyeIcon = confirm => {
     return <TextInput.Icon 
@@ -41,7 +50,14 @@ export const SignUpScreen = ({ navigation }) => {
     />;
   };
 
-  const onSubmit = () => signUp(email, password);
+  const onSubmit = () => {
+    if (password !== confirmPassword) {
+      return setErrorMessage('passwords do not match');
+    }
+
+    setErrorMessage('');
+    signUp(email, password);
+  };
 
   return (
     <View style={sharedStyles.container}>
@@ -68,6 +84,7 @@ export const SignUpScreen = ({ navigation }) => {
         style={styles.input}
         value={confirmPassword}
       />
+      {errorMessage && <ErrorText text={errorMessage} />}
       <Button mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Sign up</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         Have an account?{'\u0020'}
@@ -80,6 +97,10 @@ export const SignUpScreen = ({ navigation }) => {
       </Text>
     </View>
   );
+};
+
+ErrorText.propTypes = {
+  text: PropTypes.string.isRequired
 };
 
 SignUpScreen.propTypes = {
