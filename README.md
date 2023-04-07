@@ -27,7 +27,7 @@ sequenceDiagram
     Client -->> User: render loading spinner
     Client ->> GraphQLServer: JWT in headers, query myWordlist
     GraphQLServer -->> GraphQLServer: decode JWT
-    
+
     alt JWT expired
       GraphQLServer ->> Client: 401
       Client -->> User: go to Signin screen
@@ -54,7 +54,7 @@ sequenceDiagram
     Client -->> LocalStorage: storeAuthToken(JWT)
     Client -->> User: render user's wordlist
   end
-  
+
   alt localStorage has no auth token
     LocalStorage -->> Client: null
     Client -->> User: go to Signin screen

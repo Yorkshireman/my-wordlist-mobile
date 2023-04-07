@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 
 export const useAuthToken = navigation => {
   const [authToken, setAuthToken] = useState(null);
-  
+
   useFocusEffect(
     useCallback(() => {
       const getAuthToken = async () => {
