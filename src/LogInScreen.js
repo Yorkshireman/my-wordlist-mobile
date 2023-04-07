@@ -48,7 +48,7 @@ export const LogInScreen = ({ navigation }) => {
   const onSubmit = () => signIn(email, password);
 
   return (
-    <View style={sharedStyles.container}>
+    <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
         autoComplete='email'
         label='email'
@@ -67,7 +67,7 @@ export const LogInScreen = ({ navigation }) => {
         style={styles.input}
         value={password}
       />
-      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Log in</Button>
+      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: 16 }}>Log in</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         New user?{'\u0020'}
         <Pressable onPress={() => {

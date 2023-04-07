@@ -9,7 +9,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 const ErrorText = ({ text }) => {
   return (
-    <HelperText style={{ marginBottom: '1em' }} type='error'>
+    <HelperText style={{ marginBottom: 16 }} type='error'>
       {text}
     </HelperText>
   );
@@ -74,7 +74,7 @@ export const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={sharedStyles.container}>
+    <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
         label='username'
         mode='outlined'
@@ -114,7 +114,7 @@ export const SignUpScreen = ({ navigation }) => {
       <>
         {errorMessage && <ErrorText text={errorMessage} />}
       </>
-      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: '1em' }}>Sign up</Button>
+      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: 16 }}>Sign up</Button>
       <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
         Have an account?{'\u0020'}
         <Pressable onPress={() => {
