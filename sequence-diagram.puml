@@ -16,7 +16,7 @@
     Client --> User: render loading spinner
     Client -> GraphQLServer: JWT in headers, query myWordlist
     GraphQLServer --> GraphQLServer: decode JWT
-    
+
     group JWT expired
       GraphQLServer -> Client: 401
       Client --> User: go to Signin screen
@@ -43,7 +43,7 @@
     Client --> LocalStorage: storeAuthToken(JWT)
     Client --> User: render user's wordlist
   end
-  
+
   group localStorage has no auth token
     LocalStorage --> Client: null
     Client --> User: go to Signin screen

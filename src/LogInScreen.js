@@ -36,7 +36,7 @@ export const LogInScreen = ({ navigation }) => {
             throw new Error(`Signin request HTTP error! Status: ${status}, errors: ${errors}`);
           });
         }
-  
+
         return response.json();
       })
       .then(({ data: { token }}) => storeAuthToken(token))

@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
   const authToken = useAuthToken(navigation);
-  
+
   console.log('authToken: ', authToken);
 
   return (

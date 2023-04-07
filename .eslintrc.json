@@ -42,8 +42,8 @@
             "always"
         ],
         "sort-imports": [
-            "error", 
-            { 
+            "error",
+            {
                 "ignoreCase": true,
                 "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
             }
