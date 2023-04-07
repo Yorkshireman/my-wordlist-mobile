@@ -6,7 +6,8 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     "overrides": [
     ],
@@ -24,6 +25,7 @@
             "error",
             2
         ],
+        "react/jsx-sort-props": "error",
         "linebreak-style": [
             "error",
             "unix"
@@ -32,6 +34,8 @@
             "error",
             "single"
         ],
+        "react-hooks/exhaustive-deps": "error",
+        "react/prop-types": "warn",
         "react/react-in-jsx-scope": "off",
         "semi": [
             "error",

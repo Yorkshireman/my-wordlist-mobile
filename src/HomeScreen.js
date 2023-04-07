@@ -1,36 +1,23 @@
-import { Loading } from './Loading';
+import PropTypes from 'prop-types';
+import sharedStyles from './styles';
 import { Text } from 'react-native';
-import { gql, useQuery } from '@apollo/client';
+import { useAuthToken } from './hooks';
+import { View } from 'react-native';
 
-const MY_WORDLIST_QUERY = gql`
-  query MyWordlist {
-    myWordlist {
-      id
-      entries {
-        word {
-          id
-          text
-        }
-      }
-    }
-  }
-`;
-
-export const HomeScreen = () => {
-  const { data, loading } = useQuery(MY_WORDLIST_QUERY);
-
-  if (loading) {
-    return <Loading />;
-  }
+export const HomeScreen = ({ navigation }) => {
+  const authToken = useAuthToken(navigation);
+  
+  console.log('authToken: ', authToken);
 
   return (
-    <>
+    <View style={sharedStyles.container}>
       <Text>
         MyWordlist
       </Text>
-      {data.myWordlist.entries.map(({ word }) => (
-        <Text key={word.id}>{word.text}</Text>
-      ))}
-    </>
+    </View>
   );
+};
+
+HomeScreen.propTypes = {
+  navigation: PropTypes.object.isRequired
 };
