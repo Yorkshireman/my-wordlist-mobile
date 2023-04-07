@@ -87,6 +87,6 @@ LogInScreen.propTypes = {
 
 const styles = StyleSheet.create({
   input: {
-    marginBottom: '1em'
+    marginBottom: 16
   }
 });
