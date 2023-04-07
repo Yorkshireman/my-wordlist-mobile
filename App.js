@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/HomeScreen';
 import { LogInScreen } from './src/LogInScreen';
+import { NavigationBar } from './src/NavigationBar';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -29,7 +30,11 @@ export default function App() {
     <ApolloProvider client={client}>
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              header: props => <NavigationBar {...props} />
+            }}
+          >
             <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'Home' }} />
             <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'Log In'}} />
             <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'Sign Up' }} />
