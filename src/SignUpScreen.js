@@ -4,8 +4,8 @@ import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
 import { storeAuthToken } from './utils';
 import { useState } from 'react';
-import { Button, HelperText, Text, TextInput, useTheme } from 'react-native-paper';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Button, HelperText, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 
 const ErrorText = ({ text }) => {
   return (
@@ -16,7 +16,6 @@ const ErrorText = ({ text }) => {
 };
 
 export const SignUpScreen = ({ navigation }) => {
-  const { colors } = useTheme();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
@@ -24,7 +23,6 @@ export const SignUpScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [pressed, setPressed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const eyeIcon = isConfirmPasswordField => {
@@ -114,16 +112,24 @@ export const SignUpScreen = ({ navigation }) => {
       <>
         {errorMessage && <ErrorText text={errorMessage} />}
       </>
-      <Button loading={loading} mode='contained' onPress={onSubmit} style={{ marginBottom: 16 }}>Sign up</Button>
-      <Text style={{ textAlign: 'center' }} variant='bodyMedium'>
-        Have an account?{'\u0020'}
-        <Pressable onPress={() => {
-          setPressed(true);
-          navigation.navigate('LogIn');
-        }}>
-          <Text style={{ color: pressed ? colors.secondary : colors.primary }}>Log in</Text>
-        </Pressable>
-      </Text>
+      <Button
+        contentStyle={{ flexDirection: 'row-reverse' }}
+        icon='send'
+        loading={loading}
+        mode='contained'
+        onPress={onSubmit}
+        style={{ marginBottom: 16 }}
+      >
+        Sign up
+      </Button>
+      <Button
+        contentStyle={{ flexDirection: 'row-reverse' }}
+        icon='chevron-right'
+        mode='outlined'
+        onPress={() => navigation.navigate('LogIn')}
+      >
+        Have an account? Log in
+      </Button>
     </View>
   );
 };

@@ -42,7 +42,7 @@ export const NavigationBar = ({ back, navigation, options, route }) => {
         >
           <Menu.Item
             accessibilityLabel='sign out'
-            leadingIcon='exit-run'
+            leadingIcon='logout'
             onPress={() => {
               signOut(navigation);
               closeMenu();
