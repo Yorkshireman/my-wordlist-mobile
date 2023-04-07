@@ -1,3 +1,4 @@
+import { EyeIcon } from './EyeIcon';
 import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
@@ -26,11 +27,9 @@ export const SignUpScreen = ({ navigation }) => {
   const [pressed, setPressed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const EyeIcon = isConfirmPasswordField => {
-    return <TextInput.Icon 
-      icon={passwordVisible ? 'eye' : 'eye-off'}
-      onPress={() => isConfirmPasswordField ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible)}
-    />;
+  const eyeIcon = isConfirmPasswordField => {
+    const onPress = () => isConfirmPasswordField ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible);
+    return EyeIcon(onPress, isConfirmPasswordField ? confirmPasswordVisible : passwordVisible);
   };
 
   const onSubmit = () => {
@@ -97,7 +96,7 @@ export const SignUpScreen = ({ navigation }) => {
         mode='outlined'
         onChangeText={setPassword}
         placeholder='password'
-        right={EyeIcon()}
+        right={eyeIcon()}
         secureTextEntry={!passwordVisible}
         style={styles.input}
         value={password}
@@ -107,7 +106,7 @@ export const SignUpScreen = ({ navigation }) => {
         mode='outlined'
         onChangeText={setConfirmPassword}
         placeholder='confirm password'
-        right={EyeIcon(true)}
+        right={eyeIcon(true)}
         secureTextEntry={!confirmPasswordVisible}
         style={styles.input}
         value={confirmPassword}

@@ -1,3 +1,4 @@
+import { EyeIcon } from './EyeIcon';
 import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_IN_URL } from '@env';
@@ -13,13 +14,6 @@ export const LogInScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
-
-  const EyeIcon = (
-    <TextInput.Icon 
-      icon={passwordVisible ? 'eye' : 'eye-off'}
-      onPress={() => setPasswordVisible(!passwordVisible)}
-    />
-  );
 
   const signIn = () => {
     return fetch(SIGN_IN_URL, {
@@ -68,7 +62,7 @@ export const LogInScreen = ({ navigation }) => {
         label='password'
         mode='outlined'
         onChangeText={setPassword}
-        right={EyeIcon}
+        right={EyeIcon(() => setPasswordVisible(!passwordVisible), passwordVisible)}
         secureTextEntry={!passwordVisible}
         style={styles.input}
         value={password}
