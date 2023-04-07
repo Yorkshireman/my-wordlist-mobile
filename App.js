@@ -1,14 +1,15 @@
+import { customColours as colors } from './utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/HomeScreen';
 import { LogInScreen } from './src/LogInScreen';
 import { NavigationBar } from './src/NavigationBar';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
-import { Provider as PaperProvider } from 'react-native-paper';
 import { SignUpScreen } from './src/SignUpScreen';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 const client = new ApolloClient({
@@ -24,11 +25,16 @@ const networkLoggerIsEnabled = NETWORK_LOGGER === 'true';
 
 const Stack = createNativeStackNavigator();
 
+const theme = {
+  ...DefaultTheme,
+  colors
+};
+
 export default function App() {
   networkLoggerIsEnabled && startNetworkLogging();
   return (
     <ApolloProvider client={client}>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
