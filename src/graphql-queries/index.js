@@ -1,3 +1,6 @@
-import { MY_WORDLIST } from './myWordlist';
+import { MY_WORDLIST, MY_WORDLIST_CREATE } from './myWordlist';
 
-export { MY_WORDLIST };
+export {
+  MY_WORDLIST,
+  MY_WORDLIST_CREATE
+};
