@@ -103,6 +103,6 @@ sequenceDiagram
     GraphQLServer -->> GraphQLServer: create JWT containing user_id
     GraphQLServer ->> Client: myWordlist data + JWT
     Client -->> LocalStorage: storeAuthToken(JWT)
-    Client -->> User: render user's wordlist
+    Client -->> User: render user's Wordlist
   end
 ```
