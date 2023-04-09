@@ -18,7 +18,6 @@ export const useAuthToken = navigation => {
       const checkAuthToken = async () => {
         const authToken = await getAuthToken();
         if (authToken === null) {
-          console.log('no auth token');
           return navigation.navigate('LogIn');
         }
 

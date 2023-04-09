@@ -1,19 +1,22 @@
-import { EyeIcon } from './EyeIcon';
+import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
-import sharedStyles from './styles';
+import sharedStyles from '../styles';
 import { SIGN_IN_URL } from '@env';
-import { storeAuthToken } from './utils';
+import { storeAuthToken } from '../utils';
+import { useApolloClient } from '@apollo/client';
 import { useState } from 'react';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 export const LogInScreen = ({ navigation }) => {
+  const client = useApolloClient();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const signIn = () => {
+    setLoading(true);
     return fetch(SIGN_IN_URL, {
       body: JSON.stringify({
         user: {
@@ -38,6 +41,8 @@ export const LogInScreen = ({ navigation }) => {
         return response.json();
       })
       .then(({ data: { token }}) => storeAuthToken(token))
+      // couldn't get client.clearStore() to work on sign-out in NavigationBar.js
+      .then(() => client.resetStore())
       .then(() => navigation.navigate('Home'))
       .catch(e => console.error(e))
       .finally(() => setLoading(false));

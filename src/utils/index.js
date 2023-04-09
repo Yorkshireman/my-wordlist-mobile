@@ -1,3 +1,4 @@
+import { customColours } from './customColours';
 import { storeAuthToken } from './storeAuthToken.js';
 
-export { storeAuthToken };
+export { customColours, storeAuthToken };
