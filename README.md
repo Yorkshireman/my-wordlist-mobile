@@ -70,6 +70,14 @@ sequenceDiagram
       AuthServer -->> AuthServer: create JWT containing user_id
       AuthServer ->> Client: JWT
       Client -->> LocalStorage: storeAuthToken(JWT)
+      Client ->> GraphQLServer: myWordlistCreate mutation
+      GraphQLServer -->> GraphQLServer: decode JWT
+      GraphQLServer -->> GQLServerDB: user_id
+      GQLServerDB -->> GQLServerDB: create Wordlist with user_id
+      GQLServerDB -->> GraphQLServer: data
+      GraphQLServer -->> GraphQLServer: create JWT containing user_id
+      GraphQLServer ->> Client: myWordlist data + JWT
+      Note right of Client: store is reset is client.resetStore(), so active queries are refetched with new auth token
     end
 
     alt existing user on new device
@@ -87,6 +95,7 @@ sequenceDiagram
     Client -->> LocalStorage: getAuthToken()
     LocalStorage -->> Client: JWT
     Client -->> User: render loading spinner
+    Note right of Client: this query may be resolved from apollo cache instead
     Client ->> GraphQLServer: JWT in headers, query myWordlist
     GraphQLServer -->> GraphQLServer: decode JWT
     GraphQLServer -->> GQLServerDB: user_id
