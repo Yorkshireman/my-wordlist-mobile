@@ -1,4 +1,5 @@
 import { EyeIcon } from './EyeIcon';
+import { MY_WORDLIST_CREATE } from './graphql-queries/myWordlistCreate';
 import { PropTypes } from 'prop-types';
 import sharedStyles from './styles';
 import { SIGN_UP_URL } from '@env';
@@ -6,6 +7,7 @@ import { storeAuthToken } from './utils';
 import { useState } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
+import { useApolloClient, useMutation } from '@apollo/client';
 
 const ErrorText = ({ text }) => {
   return (
@@ -16,6 +18,7 @@ const ErrorText = ({ text }) => {
 };
 
 export const SignUpScreen = ({ navigation }) => {
+  const client = useApolloClient();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
@@ -24,6 +27,11 @@ export const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [myWordlistCreate] = useMutation(MY_WORDLIST_CREATE, { onCompleted: () => {
+    client.resetStore();
+    setLoading(false);
+    navigation.navigate('Home');
+  }});
 
   const eyeIcon = isConfirmPasswordField => {
     const onPress = () => isConfirmPasswordField ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible);
@@ -66,9 +74,8 @@ export const SignUpScreen = ({ navigation }) => {
         return response.json();
       })
       .then(({ data: { token }}) => storeAuthToken(token))
-      .then(() => navigation.navigate('Home'))
-      .catch(e => console.error(e))
-      .finally(() => setLoading(false));
+      .then(() => myWordlistCreate())
+      .catch(e => console.error(e));
   };
 
   return (
