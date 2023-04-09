@@ -11,17 +11,19 @@ export const HomeScreen = ({ navigation }) => {
   const authToken = useAuthToken(navigation);
   const [getWordlist, { data, error, loading }] = useLazyQuery(MY_WORDLIST);
 
-  console.log('authToken: ', authToken);
-
   useEffect(() => {
     if (!authToken) {
       return;
     }
-    console.log('getWordlist');
+
     getWordlist();
   }, [getWordlist, authToken]);
 
-  console.log(JSON.stringify(data, null, 2));
+  useEffect(() => {
+    if (error?.networkError?.statusCode === 401) {
+      return navigation.navigate('LogIn');
+    }
+  }, [error?.networkError?.statusCode, navigation]);
 
   return (
     <View style={{ ...sharedStyles.container, alignItems: 'center' }}>
