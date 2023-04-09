@@ -77,7 +77,7 @@ sequenceDiagram
       GQLServerDB -->> GraphQLServer: data
       GraphQLServer -->> GraphQLServer: create JWT containing user_id
       GraphQLServer ->> Client: myWordlist data + JWT
-      Note right of Client: store is reset is client.resetStore(), so active queries are refetched with new auth token
+      Note right of Client: store is reset with client.resetStore(), so active queries are refetched with new auth token
     end
 
     alt existing user on new device
