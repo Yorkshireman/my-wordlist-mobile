@@ -1,9 +1,9 @@
-import { Loading } from './Loading';
-import { MY_WORDLIST } from './graphql-queries';
+import { Loading } from '../components';
+import { MY_WORDLIST } from '../graphql-queries';
 import PropTypes from 'prop-types';
-import sharedStyles from './styles';
+import sharedStyles from '../styles';
 import { Text } from 'react-native';
-import { useAuthToken } from './hooks';
+import { useAuthToken } from '../hooks';
 import { useEffect } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { View } from 'react-native';

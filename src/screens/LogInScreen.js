@@ -1,8 +1,8 @@
-import { EyeIcon } from './EyeIcon';
+import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
-import sharedStyles from './styles';
+import sharedStyles from '../styles';
 import { SIGN_IN_URL } from '@env';
-import { storeAuthToken } from './utils';
+import { storeAuthToken } from '../utils';
 import { useApolloClient } from '@apollo/client';
 import { useState } from 'react';
 import { Button, TextInput } from 'react-native-paper';

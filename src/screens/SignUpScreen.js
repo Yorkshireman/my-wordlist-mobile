@@ -1,9 +1,9 @@
-import { EyeIcon } from './EyeIcon';
-import { MY_WORDLIST_CREATE } from './graphql-queries/myWordlistCreate';
+import { EyeIcon } from '../components';
+import { MY_WORDLIST_CREATE } from '../graphql-queries/myWordlistCreate';
 import { PropTypes } from 'prop-types';
-import sharedStyles from './styles';
+import sharedStyles from '../styles';
 import { SIGN_UP_URL } from '@env';
-import { storeAuthToken } from './utils';
+import { storeAuthToken } from '../utils';
 import { useState } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
