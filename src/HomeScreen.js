@@ -1,3 +1,4 @@
+import { Loading } from './Loading';
 import { MY_WORDLIST } from './graphql-queries';
 import PropTypes from 'prop-types';
 import sharedStyles from './styles';
@@ -27,9 +28,12 @@ export const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ ...sharedStyles.container, alignItems: 'center' }}>
-      <Text>
-        MyWordlist
-      </Text>
+      {loading && <Loading />}
+      {data &&
+      <>
+        <Text>MyWordlist</Text>
+        <Text>{data.myWordlist?.id}</Text>
+      </>}
     </View>
   );
 };
