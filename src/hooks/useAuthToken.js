@@ -1,9 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MY_WORDLIST } from '../graphql-queries';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useAuthToken = navigation => {
   const [authToken, setAuthToken] = useState(null);
+  const [getWordlist, { data, error, loading }] = useLazyQuery(MY_WORDLIST);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,5 +31,19 @@ export const useAuthToken = navigation => {
     }, [navigation])
   );
 
-  return authToken;
+  useEffect(() => {
+    if (!authToken) {
+      return;
+    }
+
+    getWordlist();
+  }, [getWordlist, authToken]);
+
+  useEffect(() => {
+    if (error?.networkError?.statusCode === 401) {
+      return navigation.navigate('LogIn');
+    }
+  }, [error?.networkError?.statusCode, navigation]);
+
+  return { data, loading };
 };
