@@ -1,13 +1,18 @@
 import { useMutation } from '@apollo/client';
-import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
+import { MY_WORDLIST, WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
 export const CreateWordlistEntryForm = () => {
   const [disabled, setDisabled] = useState(true);
   const [wordText, setWordText] = useState('');
-  const [wordlistEntryCreate, { data, loading }] = useMutation(WORDLIST_ENTRY_CREATE);
+  const [wordlistEntryCreate, { data, loading }] = useMutation(WORDLIST_ENTRY_CREATE, {
+    refetchQueries: [
+      {query: MY_WORDLIST},
+      'MyWordlist'
+    ]
+  });
 
   useEffect(() => {
     if (wordText.length) {
