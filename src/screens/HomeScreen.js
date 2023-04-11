@@ -15,7 +15,7 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, alignItems: 'center' }}>
       {loading && <Loading />}
-      {data &&
+      {data?.myWordlist &&
       <>
         <Portal>
           <Modal contentContainerStyle={containerStyle} onDismiss={() => setModalVisible(false)} visible={modalVisible}>
