@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
 import { Button, TextInput } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
-export const CreateWordlistEntryForm = () => {
+export const CreateWordlistEntryForm = ({ setModalVisible }) => {
   const [disabled, setDisabled] = useState(true);
   const [wordText, setWordText] = useState('');
   const [wordlistEntryCreate, { data, loading }] = useMutation(WORDLIST_ENTRY_CREATE, {
@@ -25,9 +26,10 @@ export const CreateWordlistEntryForm = () => {
   useEffect(() => {
     if (data) {
       setWordText('');
+      setModalVisible(false);
       console.log('data: ', JSON.stringify(data, null, 2));
     }
-  }, [data]);
+  }, [data, setModalVisible]);
 
   const onSubmit = () => {
     wordlistEntryCreate({ variables: { word: wordText }});
@@ -55,6 +57,10 @@ export const CreateWordlistEntryForm = () => {
       </Button>
     </View>
   );
+};
+
+CreateWordlistEntryForm.propTypes = {
+  setModalVisible: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

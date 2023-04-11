@@ -19,7 +19,7 @@ export const HomeScreen = ({ navigation }) => {
       <>
         <Portal>
           <Modal contentContainerStyle={containerStyle} onDismiss={() => setModalVisible(false)} visible={modalVisible}>
-            <CreateWordlistEntryForm />
+            <CreateWordlistEntryForm setModalVisible={setModalVisible} />
           </Modal>
         </Portal>
         <FAB
