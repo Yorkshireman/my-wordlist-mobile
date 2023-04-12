@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/client';
+import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
-import { MY_WORDLIST, WORDLIST_ENTRY_CREATE } from '../graphql-queries';
+import { gql, useMutation } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
@@ -9,10 +9,29 @@ export const CreateWordlistEntryForm = ({ setModalVisible }) => {
   const [disabled, setDisabled] = useState(true);
   const [wordText, setWordText] = useState('');
   const [wordlistEntryCreate, { data, loading }] = useMutation(WORDLIST_ENTRY_CREATE, {
-    refetchQueries: [
-      {query: MY_WORDLIST},
-      'MyWordlist'
-    ]
+    update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
+      cache.modify({
+        fields: {
+          entries(existingEntryRefs = []) {
+            const newEntryRef = cache.writeFragment({
+              data: wordlistEntry,
+              fragment: gql`
+              fragment NewWordlistEntry on WordlistEntry {
+                id
+                word {
+                  id
+                  text
+                }
+              }
+              `
+            });
+
+            return [newEntryRef, ...existingEntryRefs];
+          }
+        },
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistEntry.wordlistId  })
+      });
+    }
   });
 
   useEffect(() => {
@@ -27,12 +46,13 @@ export const CreateWordlistEntryForm = ({ setModalVisible }) => {
     if (data) {
       setWordText('');
       setModalVisible(false);
+      // store authToken
       console.log('data: ', JSON.stringify(data, null, 2));
     }
   }, [data, setModalVisible]);
 
   const onSubmit = () => {
-    wordlistEntryCreate({ variables: { word: wordText }});
+    wordlistEntryCreate({ variables: { word: wordText.trim() }});
   };
 
   return (
