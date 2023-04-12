@@ -6,8 +6,11 @@ export const MY_WORDLIST = gql`
     myWordlist {
       id
       entries {
+        createdAt
         id
+        wordlistId
         word {
+          createdAt
           id
           text
         }

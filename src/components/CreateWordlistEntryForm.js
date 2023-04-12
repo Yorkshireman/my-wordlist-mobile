@@ -17,8 +17,11 @@ export const CreateWordlistEntryForm = ({ setModalVisible }) => {
               data: wordlistEntry,
               fragment: gql`
               fragment NewWordlistEntry on WordlistEntry {
+                createdAt
                 id
+                wordlistId
                 word {
+                  createdAt
                   id
                   text
                 }
