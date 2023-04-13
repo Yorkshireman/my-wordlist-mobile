@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
+import { useMutation } from '@apollo/client';
 import { useState } from 'react';
+import { WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { CreateWordlistEntryForm, Loading } from '../components';
-import { DataTable, FAB, Modal, Portal, Text } from 'react-native-paper';
+import { DataTable, FAB, IconButton, Modal, Portal, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
+  const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE);
 
   const containerStyle = {backgroundColor: 'white', padding: 20};
 
@@ -30,14 +33,17 @@ export const HomeScreen = ({ navigation }) => {
         <Text>MyWordlist</Text>
         <Text>{data.myWordlist.id}</Text>
         <DataTable id={data.myWordlist.id}>
-          <DataTable.Header>
-            <DataTable.Title>Word</DataTable.Title>
-            <DataTable.Title>Categories</DataTable.Title>
-          </DataTable.Header>
-          {data.myWordlist.entries.map(({ id, word: { id: wordId, text } }) => {
+          {data.myWordlist.entries.map(({ id, word: { text } }) => {
             return (
               <DataTable.Row key={id}>
-                <DataTable.Cell id={wordId}>{text}</DataTable.Cell>
+                <DataTable.Cell>{text}</DataTable.Cell>
+                <View style={styles.delete}>
+                  <IconButton
+                    icon='trash-can-outline'
+                    onPress={() => wordlistEntryDelete({ variables: { id }})}
+                    size={16}
+                  />
+                </View>
               </DataTable.Row>
             );
           })}
@@ -52,6 +58,10 @@ HomeScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  delete: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   fab: {
     bottom: 0,
     margin: 16,
