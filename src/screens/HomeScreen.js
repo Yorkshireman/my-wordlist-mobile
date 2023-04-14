@@ -11,13 +11,26 @@ import { StyleSheet, View } from 'react-native';
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
-  const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE);
+  const [wordlistEntryDelete, { loading: deleteLoading }] = useMutation(WORDLIST_ENTRY_DELETE, {
+    update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
+      cache.modify({
+        fields: {
+          entries(existingEntryRefs, { readField }) {
+            return existingEntryRefs.filter(
+              entryRef => id !== readField('id', entryRef)
+            );
+          }
+        },
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId})
+      });
+    }
+  });
 
   const containerStyle = {backgroundColor: 'white', padding: 20};
 
   return (
     <View style={{ ...sharedStyles.container, alignItems: 'center' }}>
-      {loading && <Loading />}
+      {loading && <Loading size='large' />}
       {data?.myWordlist &&
       <>
         <Portal>
@@ -38,11 +51,14 @@ export const HomeScreen = ({ navigation }) => {
               <DataTable.Row key={id}>
                 <DataTable.Cell>{text}</DataTable.Cell>
                 <View style={styles.delete}>
-                  <IconButton
-                    icon='trash-can-outline'
-                    onPress={() => wordlistEntryDelete({ variables: { id }})}
-                    size={16}
-                  />
+                  {/* TODO: cure movement shift in transition */}
+                  {deleteLoading ?
+                    <Loading size='small' /> :
+                    <IconButton
+                      icon='trash-can-outline'
+                      onPress={() => wordlistEntryDelete({ variables: { id }})}
+                      size={16}
+                    />}
                 </View>
               </DataTable.Row>
             );

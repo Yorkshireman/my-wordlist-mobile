@@ -6,6 +6,7 @@ export const WORDLIST_ENTRY_DELETE = gql`
     wordlistEntryDelete(id: $id) {
       wordlistEntry {
         id
+        wordlistId
       }
     }
   }

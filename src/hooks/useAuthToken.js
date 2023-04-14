@@ -35,7 +35,7 @@ export const useAuthToken = navigation => {
     if (!authToken) {
       return;
     }
-
+    console.log('authToken: ', authToken);
     getWordlist();
   }, [getWordlist, authToken]);
 

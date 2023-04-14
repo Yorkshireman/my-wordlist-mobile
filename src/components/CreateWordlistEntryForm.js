@@ -49,8 +49,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible }) => {
     if (data) {
       setWordText('');
       setModalVisible(false);
-      // store authToken
-      console.log('data: ', JSON.stringify(data, null, 2));
+      // TODO: store authToken
     }
   }, [data, setModalVisible]);
 
