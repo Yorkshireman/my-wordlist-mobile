@@ -1,32 +1,30 @@
+import { NEW_WORDLIST_ENTRY } from '../fragments';
 import PropTypes from 'prop-types';
+import { storeAuthToken } from '../utils';
+import { useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { useWordText } from '../hooks';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
-import { gql, useMutation } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
-import { useEffect, useState } from 'react';
 
 export const CreateWordlistEntryForm = ({ setModalVisible }) => {
   const [disabled, setDisabled] = useState(true);
   const [wordText, setWordText] = useState('');
-  const [wordlistEntryCreate, { data, loading }] = useMutation(WORDLIST_ENTRY_CREATE, {
+  useWordText(wordText, setDisabled);
+  const [wordlistEntryCreate, { loading }] = useMutation(WORDLIST_ENTRY_CREATE, {
+    onCompleted: ({ authToken }) => {
+      setModalVisible(false);
+      setWordText('');
+      storeAuthToken(authToken);
+    },
     update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
       cache.modify({
         fields: {
           entries(existingEntryRefs = []) {
             const newEntryRef = cache.writeFragment({
               data: wordlistEntry,
-              fragment: gql`
-              fragment NewWordlistEntry on WordlistEntry {
-                createdAt
-                id
-                wordlistId
-                word {
-                  createdAt
-                  id
-                  text
-                }
-              }
-              `
+              fragment: NEW_WORDLIST_ENTRY
             });
 
             return [newEntryRef, ...existingEntryRefs];
@@ -36,22 +34,6 @@ export const CreateWordlistEntryForm = ({ setModalVisible }) => {
       });
     }
   });
-
-  useEffect(() => {
-    if (wordText.length) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [wordText]);
-
-  useEffect(() => {
-    if (data) {
-      setWordText('');
-      setModalVisible(false);
-      // TODO: store authToken
-    }
-  }, [data, setModalVisible]);
 
   const onSubmit = () => {
     wordlistEntryCreate({ variables: { word: wordText.trim() }});
