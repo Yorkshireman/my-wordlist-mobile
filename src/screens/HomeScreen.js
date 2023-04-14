@@ -44,7 +44,6 @@ export const HomeScreen = ({ navigation }) => {
           style={styles.fab}
         />
         <Text>MyWordlist</Text>
-        <Text>{data.myWordlist.id}</Text>
         <DataTable id={data.myWordlist.id}>
           {data.myWordlist.entries.map(({ id, word: { text } }) => {
             return (
