@@ -20,8 +20,8 @@ export const LogInScreen = ({ navigation }) => {
     return fetch(SIGN_IN_URL, {
       body: JSON.stringify({
         user: {
-          email,
-          password
+          email: email.trim(),
+          password: password.trim()
         }
       }),
       headers: {
