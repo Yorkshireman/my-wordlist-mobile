@@ -52,9 +52,9 @@ export const SignUpScreen = ({ navigation }) => {
     return fetch(SIGN_UP_URL, {
       body: JSON.stringify({
         user: {
-          email,
-          name,
-          password
+          email: email.trim(),
+          name: name.trim(),
+          password: password.trim()
         }
       }),
       headers: {
