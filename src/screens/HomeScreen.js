@@ -13,7 +13,7 @@ export const HomeScreen = ({ navigation }) => {
   const containerStyle = {backgroundColor: 'white', padding: 20};
 
   return (
-    <View style={{ ...sharedStyles.container, alignItems: 'center' }}>
+    <View style={sharedStyles.container}>
       {loading && <Loading size='large' />}
       {data?.myWordlist &&
       <>
@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
           onPress={() => setModalVisible(true)}
           style={styles.fab}
         />
-        <Text>My Wordlist</Text>
+        <Text style={{ textAlign: 'center' }} variant='headlineSmall'>My Wordlist</Text>
         <Wordlist />
       </>}
     </View>

@@ -1,12 +1,12 @@
 import { Loading } from './Loading';
-import { MY_WORDLIST } from '../graphql-queries';
-import { WORDLIST_ENTRY_DELETE } from '../graphql-queries';
-import { DataTable, IconButton } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { IconButton, Text, useTheme } from 'react-native-paper';
+import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
   const { data } = useQuery(MY_WORDLIST);
+  const { colors } = useTheme();
   const [wordlistEntryDelete, { loading: deleteLoading }] = useMutation(WORDLIST_ENTRY_DELETE, {
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
@@ -23,31 +23,37 @@ export const Wordlist = () => {
   });
 
   return (
-    <DataTable id={data.myWordlist.id}>
+    <View>
       {data.myWordlist.entries.map(({ id, word: { text } }) => {
         return (
-          <DataTable.Row key={id}>
-            <DataTable.Cell>{text}</DataTable.Cell>
-            <View style={styles.delete}>
-              {/* TODO: cure movement shift in transition */}
+          <View key={id} style={{ alignSelf: 'flex-start', columnGap: 5, flexDirection: 'row', flexWrap: 'nowrap' }}>
+            <View style={{ flexBasis: 100, justifyContent: 'center' }}>
+              <Text>{text}</Text>
+            </View>
+            <View style={{ columnGap: 2, flexDirection: 'row' }}>
+              <IconButton
+                icon='plus-circle-outline'
+                onPress={() => console.log('plus pressed')}
+                size={16}
+                style={{ alignItems: 'flex-end', margin: 0 }}
+              />
+              <View style={{ justifyContent: 'center' }}>
+                <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>
+              </View>
+            </View>
+            <View>
               {deleteLoading ?
                 <Loading size='small' /> :
                 <IconButton
                   icon='trash-can-outline'
                   onPress={() => wordlistEntryDelete({ variables: { id }})}
                   size={16}
+                  style={{ margin: 0 }}
                 />}
             </View>
-          </DataTable.Row>
+          </View>
         );
       })}
-    </DataTable>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  delete: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
