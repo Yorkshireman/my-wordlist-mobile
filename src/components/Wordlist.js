@@ -1,4 +1,3 @@
-import { Loading } from './Loading';
 import { View } from 'react-native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
@@ -7,7 +6,7 @@ import { useMutation, useQuery } from '@apollo/client';
 export const Wordlist = () => {
   const { data } = useQuery(MY_WORDLIST);
   const { colors } = useTheme();
-  const [wordlistEntryDelete, { loading: deleteLoading }] = useMutation(WORDLIST_ENTRY_DELETE, {
+  const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
         fields: {
@@ -42,14 +41,12 @@ export const Wordlist = () => {
               </View>
             </View>
             <View>
-              {deleteLoading ?
-                <Loading size='small' /> :
-                <IconButton
-                  icon='trash-can-outline'
-                  onPress={() => wordlistEntryDelete({ variables: { id }})}
-                  size={16}
-                  style={{ margin: 0 }}
-                />}
+              <IconButton
+                icon='trash-can-outline'
+                onPress={() => wordlistEntryDelete({ variables: { id }})}
+                size={16}
+                style={{ margin: 0 }}
+              />
             </View>
           </View>
         );
