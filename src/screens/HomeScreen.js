@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
           onPress={() => setModalVisible(true)}
           style={styles.fab}
         />
-        <Text>MyWordlist</Text>
+        <Text>My Wordlist</Text>
         <Wordlist />
       </>}
     </View>
