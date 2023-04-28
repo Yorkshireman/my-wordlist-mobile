@@ -1,3 +1,4 @@
+import { AddCategories } from './AddCategories';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useState } from 'react';
 import { IconButton, Text, useTheme } from 'react-native-paper';
@@ -9,6 +10,7 @@ export const Wordlist = () => {
   const { colors } = useTheme();
   const { data } = useQuery(MY_WORDLIST);
   const [id, setId] = useState();
+  const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
@@ -36,7 +38,10 @@ export const Wordlist = () => {
             <View style={styles.addCategories.wrapper}>
               <IconButton
                 icon='plus-circle-outline'
-                onPress={() => console.log('plus pressed')}
+                onPress={() => {
+                  setId(id);
+                  setShowAddCategories(true);
+                }}
                 size={16}
                 style={styles.addCategories.icon}
               />
@@ -58,6 +63,12 @@ export const Wordlist = () => {
           </View>
         );
       })}
+      <AddCategories
+        id={id}
+        onDismiss={() => setShowAddCategories(false)}
+        setVisible={setShowAddCategories}
+        visible={showAddCategories}
+      />
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
