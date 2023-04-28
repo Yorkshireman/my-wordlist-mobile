@@ -4,9 +4,9 @@ import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { useWordText } from '../hooks';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
-import { Button, Modal, Portal, TextInput } from 'react-native-paper';
+import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 
-export const AddCategories = ({ id, onDismiss, setVisible, visible }) => {
+export const AddCategories = ({ id, onDismiss, setVisible, word, visible }) => {
   const [disabled, setDisabled] = useState(true);
   const [text, setText] = useState('');
   useWordText(text, setDisabled);
@@ -38,6 +38,7 @@ export const AddCategories = ({ id, onDismiss, setVisible, visible }) => {
         onDismiss={onDismiss}
         visible={visible}
       >
+        <Text variant='bodyLarge'>Add categories for &quot;{word}&quot;</Text>
         <TextInput
           label='categories'
           mode='outlined'

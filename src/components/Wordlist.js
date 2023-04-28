@@ -12,6 +12,7 @@ export const Wordlist = () => {
   const [id, setId] = useState();
   const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [word, setWord] = useState('');
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
@@ -40,6 +41,7 @@ export const Wordlist = () => {
                 icon='plus-circle-outline'
                 onPress={() => {
                   setId(id);
+                  setWord(text);
                   setShowAddCategories(true);
                 }}
                 size={16}
@@ -68,6 +70,7 @@ export const Wordlist = () => {
         onDismiss={() => setShowAddCategories(false)}
         setVisible={setShowAddCategories}
         visible={showAddCategories}
+        word={word}
       />
       <DeleteConfirm
         confirm={() => {
