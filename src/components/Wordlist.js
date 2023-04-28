@@ -1,13 +1,13 @@
 import { DeleteConfirm } from './DeleteConfirm';
 import { useState } from 'react';
-import { View } from 'react-native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
+import { StyleSheet, View } from 'react-native';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
-  const { data } = useQuery(MY_WORDLIST);
   const { colors } = useTheme();
+  const { data } = useQuery(MY_WORDLIST);
   const [id, setId] = useState();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
@@ -29,16 +29,16 @@ export const Wordlist = () => {
     <View>
       {data.myWordlist.entries.map(({ id, word: { text } }) => {
         return (
-          <View key={id} style={{ alignSelf: 'flex-start', columnGap: 5, flexDirection: 'row', flexWrap: 'nowrap' }}>
-            <View style={{ flexBasis: 100, justifyContent: 'center' }}>
+          <View key={id} style={styles.entry}>
+            <View style={styles.word}>
               <Text>{text}</Text>
             </View>
-            <View style={{ columnGap: 2, flexDirection: 'row' }}>
+            <View style={styles.addCategories.wrapper}>
               <IconButton
                 icon='plus-circle-outline'
                 onPress={() => console.log('plus pressed')}
                 size={16}
-                style={{ alignItems: 'flex-end', margin: 0 }}
+                style={styles.addCategories.icon}
               />
               <View style={{ justifyContent: 'center' }}>
                 <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>
@@ -69,3 +69,26 @@ export const Wordlist = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  addCategories: {
+    icon: {
+      alignItems: 'flex-end',
+      margin: 0
+    },
+    wrapper: {
+      columnGap: 2,
+      flexDirection: 'row'
+    }
+  },
+  entry: {
+    alignSelf: 'flex-start',
+    columnGap: 5,
+    flexDirection: 'row',
+    flexWrap: 'nowrap'
+  },
+  word: {
+    flexBasis: 100,
+    justifyContent: 'center'
+  }
+});
