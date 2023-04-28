@@ -1,3 +1,5 @@
+import { DeleteConfirm } from './DeleteConfirm';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
@@ -6,6 +8,8 @@ import { useMutation, useQuery } from '@apollo/client';
 export const Wordlist = () => {
   const { data } = useQuery(MY_WORDLIST);
   const { colors } = useTheme();
+  const [id, setId] = useState();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
@@ -43,7 +47,10 @@ export const Wordlist = () => {
             <View>
               <IconButton
                 icon='trash-can-outline'
-                onPress={() => wordlistEntryDelete({ variables: { id }})}
+                onPress={() => {
+                  setId(id);
+                  setShowDeleteConfirm(true);
+                }}
                 size={16}
                 style={{ margin: 0 }}
               />
@@ -51,6 +58,14 @@ export const Wordlist = () => {
           </View>
         );
       })}
+      <DeleteConfirm
+        confirm={() => {
+          setShowDeleteConfirm(false);
+          wordlistEntryDelete({ variables: { id }});
+        }}
+        onDismiss={() => setShowDeleteConfirm(false)}
+        visible={showDeleteConfirm}
+      />
     </View>
   );
 };
