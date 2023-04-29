@@ -11,7 +11,6 @@ import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-
 import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
-
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   const authToken = await AsyncStorage.getItem('myWordlistAuthToken');
 

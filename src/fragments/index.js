@@ -1,3 +1,3 @@
-import { NEW_WORDLIST_ENTRY } from './newWordlistEntry';
+import { WORDLIST_ENTRY } from './wordlistEntry';
 
-export { NEW_WORDLIST_ENTRY };
+export { WORDLIST_ENTRY };
