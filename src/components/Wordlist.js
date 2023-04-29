@@ -32,7 +32,7 @@ export const Wordlist = () => {
     <View>
       {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
-          <View key={id} style={styles.entry}>
+          <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
             <View style={styles.word}>
               <Text>{text}</Text>
             </View>
@@ -48,7 +48,7 @@ export const Wordlist = () => {
               />
               <View style={{ justifyContent: 'center' }}>
                 {categories.length ? (categories.map(({ id, name}) => {
-                  return <Chip compact key={id}>{name}</Chip>;
+                  return <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>{name}</Chip>;
                 })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
               </View>
             </View>
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   },
   entry: {
     alignSelf: 'flex-start',
+    borderBottomWidth: 1,
     columnGap: 5,
     flexDirection: 'row',
     flexWrap: 'nowrap'
