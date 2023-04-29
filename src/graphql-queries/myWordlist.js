@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { WORDLIST_ENTRY } from '../fragments';
 
 export const MY_WORDLIST = gql`
   query MyWordlist {
@@ -6,19 +7,9 @@ export const MY_WORDLIST = gql`
     myWordlist {
       id
       entries {
-        categories {
-          id
-          name
-        }
-        createdAt
-        id
-        wordlistId
-        word {
-          createdAt
-          id
-          text
-        }
+        ...WordlistEntryFields
       }
     }
   }
+  ${WORDLIST_ENTRY}
 `;
