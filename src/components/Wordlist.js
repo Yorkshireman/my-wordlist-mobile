@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     icon: {
       alignItems: 'flex-end',
       height: '100%',
-      margin: 0
+      margin: 0,
+      width: 15
     },
     wrapper: {
       columnGap: 2,
