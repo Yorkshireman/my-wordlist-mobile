@@ -4,11 +4,11 @@ import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useId, useWordText } from '../hooks';
+import { useWordlistEntryId, useWordText } from '../hooks';
 
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
   const [disabled, setDisabled] = useState(true);
-  const { existingCategories, wordText } = useId(id);
+  const { existingCategories, wordText } = useWordlistEntryId(id);
   const [text, setText] = useState('');
   useWordText(text, setDisabled);
   const [wordlistEntryUpdate, { loading }] = useMutation(WORDLIST_ENTRY_UPDATE, {

@@ -1,5 +1,5 @@
 import { useAuthToken } from './useAuthToken';
-import { useId } from './useId';
+import { useWordlistEntryId } from './useWordlistEntryId';
 import { useWordText } from './useWordText';
 
-export { useAuthToken, useId, useWordText };
+export { useAuthToken, useWordlistEntryId, useWordText };

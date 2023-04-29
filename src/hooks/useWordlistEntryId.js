@@ -1,6 +1,6 @@
 import { gql, useApolloClient } from '@apollo/client';
 
-export const useId = id => {
+export const useWordlistEntryId = id => {
   const client = useApolloClient();
   const wordlistEntry = client.readFragment({
     fragment: gql`
