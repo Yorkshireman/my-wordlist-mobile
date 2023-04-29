@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NEW_WORDLIST_ENTRY } from '../fragments';
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { useWordText } from '../hooks';
+import { WORDLIST_ENTRY } from '../fragments';
+import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
-import { MY_WORDLIST, WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
@@ -58,6 +58,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const [disabled, setDisabled] = useState(true);
   const [wordText, setWordText] = useState('');
   useWordText(wordText, setDisabled);
+
   const [wordlistEntryCreate] = useMutation(WORDLIST_ENTRY_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
@@ -67,13 +68,17 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
       cache.modify({
         fields: {
           entries(existingEntryRefs = []) {
-            return [wordlistEntry, ...existingEntryRefs];
+            const newEntryRef = cache.writeFragment({
+              data: wordlistEntry,
+              fragment: WORDLIST_ENTRY
+            });
+
+            return [newEntryRef, ...existingEntryRefs];
           }
         },
         id: cache.identify({ __typename: 'MyWordlist', id: wordlistEntry.wordlistId })
       });
     }
-
   });
 
   const onSubmit = () => {

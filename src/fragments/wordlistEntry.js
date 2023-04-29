@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const NEW_WORDLIST_ENTRY = gql`
-  fragment NewWordlistEntry on WordlistEntry {
+export const WORDLIST_ENTRY = gql`
+  fragment WordlistEntryFragment on WordlistEntry {
     categories {
       id
       name
