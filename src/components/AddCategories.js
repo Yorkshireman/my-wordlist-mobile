@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
-import { useWordText } from '../hooks';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
+import { useId, useWordText } from '../hooks';
 
-export const AddCategories = ({ id, onDismiss, setVisible, word, visible }) => {
+export const AddCategories = ({ id, onDismiss, setVisible }) => {
   const [disabled, setDisabled] = useState(true);
+  const { existingCategories, wordText } = useId(id);
   const [text, setText] = useState('');
   useWordText(text, setDisabled);
   const [wordlistEntryUpdate, { loading }] = useMutation(WORDLIST_ENTRY_UPDATE, {
@@ -24,6 +25,7 @@ export const AddCategories = ({ id, onDismiss, setVisible, word, visible }) => {
         id,
         wordlistEntryInput: {
           categories: [
+            ...existingCategories,
             { name: text.trim() }
           ]
         }
@@ -36,9 +38,9 @@ export const AddCategories = ({ id, onDismiss, setVisible, word, visible }) => {
       <Modal
         contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}
         onDismiss={onDismiss}
-        visible={visible}
+        visible
       >
-        <Text variant='bodyLarge'>Add a category to &quot;{word}&quot;</Text>
+        <Text variant='bodyLarge'>Add a category to &quot;{wordText}&quot;</Text>
         <TextInput
           label='category'
           mode='outlined'
