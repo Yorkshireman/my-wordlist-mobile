@@ -13,6 +13,7 @@ export const Wordlist = () => {
   const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
+    // need to add optimisticResponse
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
         fields: {

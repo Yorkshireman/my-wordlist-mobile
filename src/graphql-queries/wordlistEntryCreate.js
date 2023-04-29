@@ -5,6 +5,10 @@ export const WORDLIST_ENTRY_CREATE = gql`
     authToken
     wordlistEntryCreate(word: $word, wordId: $wordId) {
       wordlistEntry {
+        categories {
+          id
+          name
+        }
         id
         createdAt
         wordlistId
