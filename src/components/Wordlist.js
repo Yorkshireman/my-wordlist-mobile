@@ -1,7 +1,7 @@
 import { AddCategories } from './AddCategories';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useState } from 'react';
-import { IconButton, Text, useTheme } from 'react-native-paper';
+import { Chip, IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
 import { useMutation, useQuery } from '@apollo/client';
@@ -30,7 +30,7 @@ export const Wordlist = () => {
 
   return (
     <View>
-      {data.myWordlist.entries.map(({ id, word: { text } }) => {
+      {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
           <View key={id} style={styles.entry}>
             <View style={styles.word}>
@@ -48,7 +48,9 @@ export const Wordlist = () => {
                 style={styles.addCategories.icon}
               />
               <View style={{ justifyContent: 'center' }}>
-                <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>
+                {categories.length ? (categories.map(({ id, name}) => {
+                  return <Chip compact key={id}>{name}</Chip>;
+                })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
               </View>
             </View>
             <View>

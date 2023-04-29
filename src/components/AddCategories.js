@@ -38,9 +38,9 @@ export const AddCategories = ({ id, onDismiss, setVisible, word, visible }) => {
         onDismiss={onDismiss}
         visible={visible}
       >
-        <Text variant='bodyLarge'>Add categories for &quot;{word}&quot;</Text>
+        <Text variant='bodyLarge'>Add a category to &quot;{word}&quot;</Text>
         <TextInput
-          label='categories'
+          label='category'
           mode='outlined'
           onChangeText={setText}
           value={text}
