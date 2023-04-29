@@ -59,29 +59,21 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const [wordText, setWordText] = useState('');
   useWordText(wordText, setDisabled);
   const [wordlistEntryCreate] = useMutation(WORDLIST_ENTRY_CREATE, {
-    optimisticResponse: buildOptimisticResponse({ currentAuthToken, wordText, wordlistId }),
-    update(cache, { data: { authToken, wordlistEntryCreate: { wordlistEntry } } }) {
+    onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
-      const currentData = cache.readQuery({
-        query: MY_WORDLIST
-      });
-
-      const updatedMyWordlist = {
-        ...currentData.myWordlist,
-        entries: [
-          wordlistEntry,
-          ...currentData.myWordlist.entries
-        ]
-      };
-
-      cache.writeQuery({
-        data: {
-          authToken,
-          myWordlist: updatedMyWordlist
+    },
+    optimisticResponse: buildOptimisticResponse({ currentAuthToken, wordText, wordlistId }),
+    update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
+      cache.modify({
+        fields: {
+          entries(existingEntryRefs = []) {
+            return [wordlistEntry, ...existingEntryRefs];
+          }
         },
-        query: MY_WORDLIST
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistEntry.wordlistId })
       });
     }
+
   });
 
   const onSubmit = () => {
