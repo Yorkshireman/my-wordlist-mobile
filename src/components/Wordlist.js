@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   addCategories: {
     icon: {
       alignItems: 'flex-end',
+      height: '100%',
       margin: 0
     },
     wrapper: {
