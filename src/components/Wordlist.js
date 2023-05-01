@@ -46,7 +46,7 @@ export const Wordlist = () => {
                 size={16}
                 style={styles.addCategories.icon}
               />
-              <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+              <View style={{ backgroundColor: 'black', flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
                 {categories.length ? (categories.map(({ id, name}) => {
                   return (
                     <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     wrapper: {
       backgroundColor: 'green',
       columnGap: 2,
+      flex: 1,
       flexDirection: 'row'
     }
   },
