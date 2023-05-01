@@ -46,7 +46,7 @@ export const Wordlist = () => {
                 size={16}
                 style={styles.addCategories.icon}
               />
-              <View style={{ backgroundColor: 'black', flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View style={{ columnGap: 1, flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
                 {categories.length ? (categories.map(({ id, name}) => {
                   return (
                     <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>
@@ -56,7 +56,7 @@ export const Wordlist = () => {
                 })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
               </View>
             </View>
-            <View style={{ backgroundColor: 'yellow', justifyContent: 'center', marginLeft: 'auto' }}>
+            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
@@ -97,20 +97,17 @@ const styles = StyleSheet.create({
       width: 15
     },
     wrapper: {
-      backgroundColor: 'green',
       columnGap: 2,
       flex: 1,
       flexDirection: 'row'
     }
   },
   entry: {
-    backgroundColor: 'grey',
     borderBottomWidth: 1,
     columnGap: 5,
     flexDirection: 'row'
   },
   word: {
-    backgroundColor: 'red',
     flexBasis: 100,
     justifyContent: 'center'
   }
