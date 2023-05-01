@@ -7,7 +7,7 @@ export const Categories = ({ categories }) => {
 
   return (
     categories.length ? (
-      <View style={{ columnGap: 1, flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={{ columnGap: 1, flex: 1, flexDirection: 'row', flexWrap: 'wrap', rowGap: 2 }}>
         {categories.map(({ id, name}) => {
           return (
             <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>

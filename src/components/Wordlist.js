@@ -98,7 +98,9 @@ const styles = StyleSheet.create({
   entry: {
     borderBottomWidth: 1,
     columnGap: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingBottom: 2,
+    paddingTop: 2
   },
   word: {
     flexBasis: 100,
