@@ -48,7 +48,11 @@ export const Wordlist = () => {
               />
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 {categories.length ? (categories.map(({ id, name}) => {
-                  return <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>{name}</Chip>;
+                  return (
+                    <Chip compact key={id} style={{ backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>
+                      {name}
+                    </Chip>
+                  );
                 })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
               </View>
             </View>
