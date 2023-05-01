@@ -13,7 +13,7 @@ export const HomeScreen = ({ navigation }) => {
   const containerStyle = {backgroundColor: 'white', padding: 20};
 
   return (
-    <View style={sharedStyles.container}>
+    <View style={{ padding: 10 }}>
       {loading && <Loading size='large' />}
       {data?.myWordlist &&
       <>
