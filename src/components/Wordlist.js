@@ -52,7 +52,7 @@ export const Wordlist = () => {
                 })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
               </View>
             </View>
-            <View style={{ backgroundColor: 'yellow', flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <View style={{ backgroundColor: 'yellow', justifyContent: 'center' }}>
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     wrapper: {
       backgroundColor: 'green',
       columnGap: 2,
+      flex: 1,
       flexDirection: 'row'
     }
   },
