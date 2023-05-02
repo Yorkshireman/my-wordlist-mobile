@@ -51,7 +51,7 @@ export default function App() {
               header: props => <NavigationBar {...props} />
             }}
           >
-            <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'Home' }} />
+            <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
             <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'Log In'}} />
             <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'Sign Up' }} />
           </Stack.Navigator>

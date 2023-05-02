@@ -1,4 +1,5 @@
+import { calculateLongestWordLength } from './calculateLongestWordLength';
 import { customColours } from './customColours';
 import { storeAuthToken } from './storeAuthToken.js';
 
-export { customColours, storeAuthToken };
+export { calculateLongestWordLength, customColours, storeAuthToken };

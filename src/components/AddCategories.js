@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useWordlistEntryId, useWordText } from '../hooks';
+import { useInputRef, useWordlistEntryId, useWordText } from '../hooks';
+import { useRef, useState } from 'react';
 
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
   const [disabled, setDisabled] = useState(true);
   const { existingCategories, wordText } = useWordlistEntryId(id);
+  const inputRef = useRef(null);
   const [text, setText] = useState('');
+  useInputRef(inputRef);
   useWordText(text, setDisabled);
   const [wordlistEntryUpdate, { loading }] = useMutation(WORDLIST_ENTRY_UPDATE, {
     onCompleted: ({ authToken }) => {
@@ -45,6 +47,7 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
           label='category'
           mode='outlined'
           onChangeText={setText}
+          ref={inputRef}
           value={text}
         />
         <Button

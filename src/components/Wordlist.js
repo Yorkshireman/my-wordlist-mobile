@@ -1,9 +1,11 @@
 import { AddCategories } from './AddCategories';
+import { calculateLongestWordLength } from '../utils';
+import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
-import { useState } from 'react';
-import { Chip, IconButton, Text, useTheme } from 'react-native-paper';
+import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
+import { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
@@ -28,13 +30,19 @@ export const Wordlist = () => {
     }
   });
 
+  const longestWordLength = useMemo(() => {
+    return calculateLongestWordLength(data.myWordlist.entries);
+  }, [data.myWordlist.entries]);
+
+  const wordFlexBasis = longestWordLength * 8;
+
   return (
     <View>
       {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
-          <View key={id} style={styles.entry}>
-            <View style={styles.word}>
-              <Text>{text}</Text>
+          <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
+            <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
+              <Text variant={'bodyLarge'}>{text}</Text>
             </View>
             <View style={styles.addCategories.wrapper}>
               <IconButton
@@ -43,16 +51,12 @@ export const Wordlist = () => {
                   setId(id);
                   setShowAddCategories(true);
                 }}
-                size={16}
+                size={20}
                 style={styles.addCategories.icon}
               />
-              <View style={{ justifyContent: 'center' }}>
-                {categories.length ? (categories.map(({ id, name}) => {
-                  return <Chip compact key={id}>{name}</Chip>;
-                })) : <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>}
-              </View>
+              <Categories categories={categories} />
             </View>
-            <View>
+            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
@@ -89,21 +93,26 @@ const styles = StyleSheet.create({
     icon: {
       alignItems: 'flex-end',
       height: '100%',
-      margin: 0
+      margin: 0,
+      marginRight: 3,
+      width: 20
     },
     wrapper: {
       columnGap: 2,
+      flex: 1,
       flexDirection: 'row'
     }
   },
   entry: {
-    alignSelf: 'flex-start',
+    borderBottomWidth: 1,
     columnGap: 5,
     flexDirection: 'row',
-    flexWrap: 'nowrap'
+    paddingBottom: 2,
+    paddingTop: 2
   },
   word: {
     flexBasis: 100,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    maxWidth: 185
   }
 });
