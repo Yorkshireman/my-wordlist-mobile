@@ -1,10 +1,11 @@
 import { AddCategories } from './AddCategories';
+import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
-import { useState } from 'react';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
+import { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
@@ -29,10 +30,9 @@ export const Wordlist = () => {
     }
   });
 
-  const longestWordLength = data.myWordlist.entries.reduce((acc, entry) => {
-    const wordLength = entry.word.text.length;
-    return wordLength > acc ? wordLength : acc;
-  }, 0);
+  const longestWordLength = useMemo(() => {
+    return calculateLongestWordLength(data.myWordlist.entries);
+  }, [data.myWordlist.entries]);
 
   const wordFlexBasis = longestWordLength * 8;
 
