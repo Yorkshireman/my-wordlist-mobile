@@ -9,7 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { useInputRef, useWordText } from '../hooks';
 
-const sanitiseWordText = text => text.trim();
+const sanitiseWordText = text => text.trim().toLowerCase();
 
 const useAsyncStorage = () => {
   const [token, setToken] = useState();
@@ -94,7 +94,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
       <TextInput
         label='new word'
         mode='outlined'
-        onChangeText={setWordText}
+        onChangeText={text => setWordText(text.toLowerCase())}
         ref={inputRef}
         styles={styles.input}
         value={wordText}
