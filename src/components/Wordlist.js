@@ -34,7 +34,7 @@ export const Wordlist = () => {
     return wordLength > acc ? wordLength : acc;
   }, 0);
 
-  const wordFlexBasis = longestWordLength * 7;
+  const wordFlexBasis = longestWordLength * 8;
 
   return (
     <View>
@@ -42,7 +42,7 @@ export const Wordlist = () => {
         return (
           <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
             <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
-              <Text>{text}</Text>
+              <Text variant={'bodyLarge'}>{text}</Text>
             </View>
             <View style={styles.addCategories.wrapper}>
               <IconButton
@@ -51,7 +51,7 @@ export const Wordlist = () => {
                   setId(id);
                   setShowAddCategories(true);
                 }}
-                size={16}
+                size={20}
                 style={styles.addCategories.icon}
               />
               <Categories categories={categories} />
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
       alignItems: 'flex-end',
       height: '100%',
       margin: 0,
-      width: 15
+      marginRight: 3,
+      width: 20
     },
     wrapper: {
       columnGap: 2,
