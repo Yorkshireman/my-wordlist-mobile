@@ -3,7 +3,7 @@ import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
 import { useState } from 'react';
 import { CreateWordlistEntryForm, Loading, Wordlist } from '../components';
-import { FAB, Modal, Portal, Text } from 'react-native-paper';
+import { FAB, Modal, Portal } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
@@ -17,6 +17,7 @@ export const HomeScreen = ({ navigation }) => {
       {loading && <Loading size='large' />}
       {data?.myWordlist &&
       <>
+        <Wordlist />
         <Portal>
           <Modal contentContainerStyle={containerStyle} onDismiss={() => setModalVisible(false)} visible={modalVisible}>
             <CreateWordlistEntryForm setModalVisible={setModalVisible} wordlistId={data.myWordlist.id} />
@@ -27,8 +28,6 @@ export const HomeScreen = ({ navigation }) => {
           onPress={() => setModalVisible(true)}
           style={styles.fab}
         />
-        <Text style={{ textAlign: 'center' }} variant='headlineSmall'>My Wordlist</Text>
-        <Wordlist />
       </>}
     </View>
   );
