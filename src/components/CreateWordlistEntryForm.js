@@ -2,12 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
-import { useWordText } from '../hooks';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useInputRef, useWordText } from '../hooks';
 
 const sanitiseWordText = text => text.trim();
 
@@ -56,7 +56,9 @@ const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => 
 export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
+  const inputRef = useRef();
   const [wordText, setWordText] = useState('');
+  useInputRef(inputRef);
   useWordText(wordText, setDisabled);
 
   const [wordlistEntryCreate] = useMutation(WORDLIST_ENTRY_CREATE, {
@@ -93,6 +95,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         label='new word'
         mode='outlined'
         onChangeText={setWordText}
+        ref={inputRef}
         styles={styles.input}
         value={wordText}
       />
