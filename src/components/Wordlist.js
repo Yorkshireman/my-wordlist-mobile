@@ -29,12 +29,19 @@ export const Wordlist = () => {
     }
   });
 
+  const longestWordLength = data.myWordlist.entries.reduce((acc, entry) => {
+    const wordLength = entry.word.text.length;
+    return wordLength > acc ? wordLength : acc;
+  }, 0);
+
+  const wordFlexBasis = longestWordLength * 8;
+
   return (
     <View>
       {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
           <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
-            <View style={styles.word}>
+            <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
               <Text>{text}</Text>
             </View>
             <View style={styles.addCategories.wrapper}>
@@ -104,6 +111,7 @@ const styles = StyleSheet.create({
   },
   word: {
     flexBasis: 100,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    maxWidth: 185
   }
 });
