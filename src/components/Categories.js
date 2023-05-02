@@ -7,18 +7,23 @@ export const Categories = ({ categories }) => {
 
   return (
     categories.length ? (
-      <View style={{ columnGap: 1, flex: 1, flexDirection: 'row', flexWrap: 'wrap', rowGap: 2 }}>
+      <View style={styles.categoriesContainer}>
         {categories.map(({ id, name}) => {
           return (
-            <Chip compact key={id} style={{ ...styles.category, backgroundColor: colors.primary }} textStyle={{ color: 'white' }}>
+            <Chip
+              compact
+              key={id}
+              style={{ ...styles.category, backgroundColor: colors.primary }}
+              textStyle={{ color: 'white' }}
+            >
               {name}
             </Chip>
           );
         })}
       </View>
     ) :
-      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-        <Text style={{ color: colors.secondary, textAlign: 'center' }}>Categories</Text>
+      <View style={styles.textContainer}>
+        <Text style={{ ...styles.text, color: colors.secondary  }}>Categories</Text>
       </View>
   );
 };
@@ -28,8 +33,22 @@ Categories.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  categoriesContainer: {
+    columnGap: 1,
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: 2
+  },
   category: {
     alignSelf: 'center',
     height: 32
+  },
+  text: {
+    textAlign: 'center'
+  },
+  textContainer: {
+    alignItems: 'center',
+    flexDirection: 'row'
   }
 });
