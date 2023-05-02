@@ -58,8 +58,8 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const [disabled, setDisabled] = useState(true);
   const inputRef = useRef();
   useInputRef(inputRef);
-  useWordText(wordText, setDisabled);
   const [wordText, setWordText] = useState('');
+  useWordText(wordText, setDisabled);
 
   const [wordlistEntryCreate] = useMutation(WORDLIST_ENTRY_CREATE, {
     onCompleted: ({ authToken }) => {
