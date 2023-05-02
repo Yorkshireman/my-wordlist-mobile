@@ -34,7 +34,7 @@ export const Wordlist = () => {
     return wordLength > acc ? wordLength : acc;
   }, 0);
 
-  const wordFlexBasis = longestWordLength * 8;
+  const wordFlexBasis = longestWordLength * 7;
 
   return (
     <View>
