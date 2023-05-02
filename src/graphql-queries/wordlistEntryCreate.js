@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { WORDLIST_ENTRY } from '../fragments';
+import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 
 export const WORDLIST_ENTRY_CREATE = gql`
   mutation WordlistEntryCreate($word: String, $wordId: ID) {

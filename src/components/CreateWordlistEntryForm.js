@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { useWordText } from '../hooks';
-import { WORDLIST_ENTRY } from '../fragments';
+import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
