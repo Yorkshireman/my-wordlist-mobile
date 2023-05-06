@@ -34,7 +34,7 @@ export const Wordlist = () => {
     return calculateLongestWordLength(data.myWordlist.entries);
   }, [data.myWordlist.entries]);
 
-  const wordFlexBasis = longestWordLength * 8;
+  const wordFlexBasis = longestWordLength * 9;
 
   return (
     <View>
