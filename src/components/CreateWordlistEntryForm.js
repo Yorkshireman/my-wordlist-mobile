@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
@@ -6,29 +5,10 @@ import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { useInputRef, useWordText } from '../hooks';
+import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
+import { useRef, useState } from 'react';
 
 const sanitiseWordText = text => text.trim().toLowerCase();
-
-const useAsyncStorage = () => {
-  const [token, setToken] = useState();
-
-  useEffect(() => {
-    const getCurrentAuthToken = async () => {
-      return await AsyncStorage.getItem('myWordlistAuthToken');
-    };
-
-    const setAuthToken = async () => {
-      const currentAuthToken = await getCurrentAuthToken();
-      setToken(currentAuthToken);
-    };
-
-    setAuthToken();
-  }, []);
-
-  return token;
-};
 
 const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => {
   return {

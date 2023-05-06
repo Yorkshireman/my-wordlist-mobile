@@ -3,10 +3,11 @@ import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useInputRef, useWordlistEntryId, useWordText } from '../hooks';
+import { useAsyncStorage, useInputRef, useWordlistEntryId, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
+  const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const { existingCategories, wordText } = useWordlistEntryId(id);
   const inputRef = useRef(null);
@@ -18,6 +19,32 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
       setVisible(false);
       setText('');
       storeAuthToken(authToken);
+    },
+    // improve optimistic response by getting current key/values
+    // from cache, and spreading them in
+    // or possibly insert just the category
+    optimisticResponse: {
+      authToken: currentAuthToken,
+      wordlistEntryUpdate: {
+        __typename: 'WordlistEntryUpdatePayload',
+        wordlistEntry: {
+          __typename: 'WordlistEntry',
+          categories: [
+            ...existingCategories,
+            { id: 'temp-id', name: text.trim() }
+          ],
+          createdAt: 'temp-createdAt',
+          id,
+          word: {
+            __typename: 'Word',
+            createdAt: 'temp-createdAt',
+            id: 'temp-id',
+            text: 'temp-text'
+          },
+          wordId: 'temp-wordId',
+          wordlistId: 'temp-wordlistId'
+        }
+      }
     }
   });
 
