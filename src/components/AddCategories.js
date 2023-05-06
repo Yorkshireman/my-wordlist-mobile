@@ -9,40 +9,26 @@ import { useRef, useState } from 'react';
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const { existingCategories, wordText } = useWordlistEntryId(id);
   const inputRef = useRef(null);
   const [text, setText] = useState('');
   useInputRef(inputRef);
   useWordText(text, setDisabled);
-  const [wordlistEntryUpdate, { loading }] = useMutation(WORDLIST_ENTRY_UPDATE, {
+  const wordlistEntry = useWordlistEntryId(id);
+  const [wordlistEntryUpdate] = useMutation(WORDLIST_ENTRY_UPDATE, {
     onCompleted: ({ authToken }) => {
-      setVisible(false);
-      setText('');
       storeAuthToken(authToken);
     },
-    // improve optimistic response by getting current key/values
-    // from cache, and spreading them in
-    // or possibly insert just the category
     optimisticResponse: {
       authToken: currentAuthToken,
       wordlistEntryUpdate: {
         __typename: 'WordlistEntryUpdatePayload',
         wordlistEntry: {
           __typename: 'WordlistEntry',
+          ...wordlistEntry,
           categories: [
-            ...existingCategories,
+            ...wordlistEntry.categories,
             { id: 'temp-id', name: text.trim() }
-          ],
-          createdAt: 'temp-createdAt',
-          id,
-          word: {
-            __typename: 'Word',
-            createdAt: 'temp-createdAt',
-            id: 'temp-id',
-            text: 'temp-text'
-          },
-          wordId: 'temp-wordId',
-          wordlistId: 'temp-wordlistId'
+          ]
         }
       }
     }
@@ -60,7 +46,13 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
         }
       }
     });
+
+    setText('');
+    setVisible(false);
   };
+
+  const existingCategories = wordlistEntry.categories.map(({ name }) => ({ name }));
+  const wordText = wordlistEntry.word.text;
 
   return (
     <Portal>
@@ -81,7 +73,6 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
           contentStyle={{ flexDirection: 'row-reverse' }}
           disabled={disabled}
           icon='send'
-          loading={loading}
           mode='contained'
           onPress={onSubmit}
         >
