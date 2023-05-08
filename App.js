@@ -52,8 +52,8 @@ export default function App() {
             }}
           >
             <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-            <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'Log In'}} />
-            <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'Sign Up' }} />
+            <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
+            <Stack.Screen component={SignUpScreen} name='SignUp' options={{ title: 'My Wordlist' }} />
           </Stack.Navigator>
           <StatusBar style="auto" />
           {networkLoggerIsEnabled && <NetworkLogger />}
