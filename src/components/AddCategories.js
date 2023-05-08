@@ -3,22 +3,39 @@ import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
-import { useInputRef, useWordlistEntryId, useWordText } from '../hooks';
+import { useAsyncStorage, useInputRef, useWordlistEntryId, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
+const buildOptimisticResponse = ({ currentAuthToken, text, wordlistEntry }) => {
+  return {
+    authToken: currentAuthToken,
+    wordlistEntryUpdate: {
+      __typename: 'WordlistEntryUpdatePayload',
+      wordlistEntry: {
+        __typename: 'WordlistEntry',
+        ...wordlistEntry,
+        categories: [
+          ...wordlistEntry.categories,
+          { id: 'temp-id', name: text.trim() }
+        ]
+      }
+    }
+  };
+};
+
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
+  const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const { existingCategories, wordText } = useWordlistEntryId(id);
   const inputRef = useRef(null);
   const [text, setText] = useState('');
   useInputRef(inputRef);
   useWordText(text, setDisabled);
-  const [wordlistEntryUpdate, { loading }] = useMutation(WORDLIST_ENTRY_UPDATE, {
+  const wordlistEntry = useWordlistEntryId(id);
+  const [wordlistEntryUpdate] = useMutation(WORDLIST_ENTRY_UPDATE, {
     onCompleted: ({ authToken }) => {
-      setVisible(false);
-      setText('');
       storeAuthToken(authToken);
-    }
+    },
+    optimisticResponse: buildOptimisticResponse({ currentAuthToken, text, wordlistEntry })
   });
 
   const onSubmit = () => {
@@ -33,7 +50,13 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
         }
       }
     });
+
+    setText('');
+    setVisible(false);
   };
+
+  const existingCategories = wordlistEntry.categories.map(({ name }) => ({ name }));
+  const wordText = wordlistEntry.word.text;
 
   return (
     <Portal>
@@ -48,13 +71,13 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
           mode='outlined'
           onChangeText={setText}
           ref={inputRef}
+          textTransform='lowercase'
           value={text}
         />
         <Button
           contentStyle={{ flexDirection: 'row-reverse' }}
           disabled={disabled}
           icon='send'
-          loading={loading}
           mode='contained'
           onPress={onSubmit}
         >

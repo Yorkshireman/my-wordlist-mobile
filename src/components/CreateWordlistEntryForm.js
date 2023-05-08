@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
@@ -6,29 +5,8 @@ import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { useInputRef, useWordText } from '../hooks';
-
-const sanitiseWordText = text => text.trim().toLowerCase();
-
-const useAsyncStorage = () => {
-  const [token, setToken] = useState();
-
-  useEffect(() => {
-    const getCurrentAuthToken = async () => {
-      return await AsyncStorage.getItem('myWordlistAuthToken');
-    };
-
-    const setAuthToken = async () => {
-      const currentAuthToken = await getCurrentAuthToken();
-      setToken(currentAuthToken);
-    };
-
-    setAuthToken();
-  }, []);
-
-  return token;
-};
+import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
+import { useRef, useState } from 'react';
 
 const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => {
   return {
@@ -44,7 +22,7 @@ const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => 
           __typename: 'Word',
           createdAt: 'temp-createdAt',
           id: 'temp-id',
-          text: sanitiseWordText(wordText)
+          text: wordText.trim()
         },
         wordId: 'temp-wordId',
         wordlistId
@@ -84,7 +62,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   });
 
   const onSubmit = () => {
-    wordlistEntryCreate({ variables: { word: sanitiseWordText(wordText) }});
+    wordlistEntryCreate({ variables: { word: wordText.trim() }});
     setWordText('');
     setModalVisible(false);
   };
@@ -94,9 +72,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
       <TextInput
         label='new word'
         mode='outlined'
-        onChangeText={text => setWordText(text.toLowerCase())}
+        onChangeText={text => setWordText(text)}
         ref={inputRef}
         styles={styles.input}
+        textTransform='lowercase'
         value={wordText}
       />
       <Button
