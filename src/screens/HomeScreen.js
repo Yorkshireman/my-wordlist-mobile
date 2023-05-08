@@ -10,7 +10,7 @@ export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const containerStyle = {backgroundColor: 'white', padding: 20};
+  const containerStyle = {backgroundColor: 'white', padding: 20, rowGap: 16};
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>

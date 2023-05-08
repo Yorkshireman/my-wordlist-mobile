@@ -4,7 +4,6 @@ import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
@@ -68,13 +67,12 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   };
 
   return (
-    <View>
+    <>
       <TextInput
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
         ref={inputRef}
-        styles={styles.input}
         textTransform='lowercase'
         value={wordText}
       />
@@ -84,11 +82,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         icon='send'
         mode='contained'
         onPress={onSubmit}
-        styles={{ marginTop: 16 }}
       >
-        Add
+          Add
       </Button>
-    </View>
+    </>
   );
 };
 
@@ -96,9 +93,3 @@ CreateWordlistEntryForm.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
   wordlistId: PropTypes.string.isRequired
 };
-
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 16
-  }
-});

@@ -61,7 +61,7 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
   return (
     <Portal>
       <Modal
-        contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}
+        contentContainerStyle={{ backgroundColor: 'white', padding: 20, rowGap: 16 }}
         onDismiss={onDismiss}
         visible
       >
