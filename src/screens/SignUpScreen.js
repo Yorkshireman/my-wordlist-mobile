@@ -23,7 +23,6 @@ export const SignUpScreen = ({ navigation }) => {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +43,7 @@ export const SignUpScreen = ({ navigation }) => {
     }
 
     setErrorMessage('');
-    signUp(email, name, navigation, password);
+    signUp(email, navigation, password);
   };
 
   const signUp = () => {
@@ -53,7 +52,6 @@ export const SignUpScreen = ({ navigation }) => {
       body: JSON.stringify({
         user: {
           email: email.trim(),
-          name: name.trim(),
           password: password.trim()
         }
       }),
@@ -81,18 +79,9 @@ export const SignUpScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
-        label='username'
-        mode='outlined'
-        onChangeText={setName}
-        placeholder='username'
-        style={styles.input}
-        value={name}
-      />
-      <TextInput
         label='email'
         mode='outlined'
         onChangeText={setEmail}
-        placeholder='email'
         style={styles.input}
         value={email}
       />
@@ -100,7 +89,6 @@ export const SignUpScreen = ({ navigation }) => {
         label='password'
         mode='outlined'
         onChangeText={setPassword}
-        placeholder='password'
         right={eyeIcon()}
         secureTextEntry={!passwordVisible}
         style={styles.input}
@@ -110,7 +98,6 @@ export const SignUpScreen = ({ navigation }) => {
         label='confirm password'
         mode='outlined'
         onChangeText={setConfirmPassword}
-        placeholder='confirm password'
         right={eyeIcon(true)}
         secureTextEntry={!confirmPasswordVisible}
         style={styles.input}
