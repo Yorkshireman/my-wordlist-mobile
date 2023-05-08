@@ -6,6 +6,23 @@ import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import { useAsyncStorage, useInputRef, useWordlistEntryId, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
+const buildOptimisticResponse = ({ currentAuthToken, text, wordlistEntry }) => {
+  return {
+    authToken: currentAuthToken,
+    wordlistEntryUpdate: {
+      __typename: 'WordlistEntryUpdatePayload',
+      wordlistEntry: {
+        __typename: 'WordlistEntry',
+        ...wordlistEntry,
+        categories: [
+          ...wordlistEntry.categories,
+          { id: 'temp-id', name: text.trim() }
+        ]
+      }
+    }
+  };
+};
+
 export const AddCategories = ({ id, onDismiss, setVisible }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
@@ -18,20 +35,7 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
-    optimisticResponse: {
-      authToken: currentAuthToken,
-      wordlistEntryUpdate: {
-        __typename: 'WordlistEntryUpdatePayload',
-        wordlistEntry: {
-          __typename: 'WordlistEntry',
-          ...wordlistEntry,
-          categories: [
-            ...wordlistEntry.categories,
-            { id: 'temp-id', name: text.trim() }
-          ]
-        }
-      }
-    }
+    optimisticResponse: buildOptimisticResponse({ currentAuthToken, text, wordlistEntry })
   });
 
   const onSubmit = () => {
@@ -67,6 +71,7 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
           mode='outlined'
           onChangeText={setText}
           ref={inputRef}
+          textTransform='lowercase'
           value={text}
         />
         <Button

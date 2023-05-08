@@ -8,8 +8,6 @@ import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-const sanitiseWordText = text => text.trim().toLowerCase();
-
 const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => {
   return {
     authToken: currentAuthToken,
@@ -24,7 +22,7 @@ const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => 
           __typename: 'Word',
           createdAt: 'temp-createdAt',
           id: 'temp-id',
-          text: sanitiseWordText(wordText)
+          text: wordText.trim()
         },
         wordId: 'temp-wordId',
         wordlistId
@@ -64,7 +62,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   });
 
   const onSubmit = () => {
-    wordlistEntryCreate({ variables: { word: sanitiseWordText(wordText) }});
+    wordlistEntryCreate({ variables: { word: wordText.trim() }});
     setWordText('');
     setModalVisible(false);
   };
@@ -74,9 +72,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
       <TextInput
         label='new word'
         mode='outlined'
-        onChangeText={text => setWordText(text.toLowerCase())}
+        onChangeText={text => setWordText(text)}
         ref={inputRef}
         styles={styles.input}
+        textTransform='lowercase'
         value={wordText}
       />
       <Button
