@@ -1,7 +1,27 @@
-const sum = (a, b) => {
-  return a + b;
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { HomeScreen } from '../src/screens';
+import { MockedProvider } from '@apollo/client/testing';
+import { render } from '@testing-library/react-native';
+import { useLazyQuery } from '@apollo/client';
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
+// jest.mock('@apollo/client', () => ({
+//   ...jest.requireActual(),
+//   useLazyQuery: jest.fn()
+// }));
+
+jest.mock('@react-native-async-storage/async-storage', () => ({ getItem: jest.fn() }));
+
+test('Can create a wordlist entry', () => {
+  AsyncStorage.getItem.mockResolvedValue('mockAuthTokenValue');
+  const navigation = { navigate: jest.fn() };
+  useLazyQuery.mockReturnValue({ data: {} });
+  console.log('-----------', useLazyQuery());
+
+  render(
+    <MockedProvider addTypename={false}>
+      <HomeScreen navigation={navigation} />
+    </MockedProvider>
+  );
+
+  expect(AsyncStorage.getItem).toHaveBeenCalledWith('myWordlistAuthToken');
 });
