@@ -1,23 +1,12 @@
-import PropTypes from 'prop-types';
-import sharedStyles from './styles';
-import { Text } from 'react-native';
-import { useAuthToken } from './hooks';
+import { Text } from 'react-native-paper';
 import { View } from 'react-native';
 
-export const HomeScreen = ({ navigation }) => {
-  const authToken = useAuthToken(navigation);
-  
-  console.log('authToken: ', authToken);
-
+export const HomeScreen = () => {
   return (
-    <View style={sharedStyles.container}>
+    <View>
       <Text>
-        MyWordlist
+        Home Screen
       </Text>
     </View>
   );
-};
-
-HomeScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
