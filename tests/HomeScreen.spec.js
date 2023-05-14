@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HomeScreen } from '../src/screens';
+import { HomeScreen } from '../src/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { act, render, screen, waitFor } from '@testing-library/react-native';
