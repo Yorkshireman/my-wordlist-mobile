@@ -1,5 +1,5 @@
-import { Text } from 'react-native-paper';
 import { View } from 'react-native';
+import { FAB, Text } from 'react-native-paper';
 
 export const HomeScreen = () => {
   return (
@@ -7,6 +7,7 @@ export const HomeScreen = () => {
       <Text>
         Home Screen
       </Text>
+      <FAB />
     </View>
   );
 };
