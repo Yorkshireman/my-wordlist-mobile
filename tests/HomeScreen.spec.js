@@ -19,5 +19,6 @@ describe('HomeScreen', () => {
     );
 
     expect(screen.getByText('Home Screen')).toBeVisible();
+    expect(screen.getByTestId('fab')).toBeVisible();
   });
 });

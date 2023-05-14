@@ -1,6 +1,7 @@
 module.exports = {
   preset: 'jest-expo',
   resetMocks: true,
+  setupFiles: ['./core-js.js'],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   testEnvironment: 'jsdom',
   transformIgnorePatterns: [

@@ -7,7 +7,7 @@ export const HomeScreen = () => {
       <Text>
         Home Screen
       </Text>
-      <FAB />
+      <FAB data-test-id='fab' />
     </View>
   );
 };
