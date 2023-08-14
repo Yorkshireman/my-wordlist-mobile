@@ -1,11 +1,13 @@
 import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
+import React from 'react';
 import sharedStyles from '../styles';
 import { SIGN_IN_URL } from '@env';
 import { storeAuthToken } from '../utils';
 import { useApolloClient } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 export const LogInScreen = ({ navigation }) => {
@@ -14,6 +16,17 @@ export const LogInScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [signInError, setSignInError] = useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setEmail('');
+        setPassword('');
+        setSignInError(false);
+      };
+    }, [])
+  );
 
   const signIn = () => {
     setLoading(true);
@@ -44,7 +57,10 @@ export const LogInScreen = ({ navigation }) => {
       // couldn't get client.clearStore() to work on sign-out in NavigationBar.js
       .then(() => client.resetStore())
       .then(() => navigation.navigate('Home'))
-      .catch(e => console.error(e))
+      .catch(e => {
+        console.error(e);
+        setSignInError(true);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -54,6 +70,7 @@ export const LogInScreen = ({ navigation }) => {
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
         autoComplete='email'
+        error={signInError}
         label='email'
         mode='outlined'
         onChangeText={setEmail}
@@ -62,6 +79,7 @@ export const LogInScreen = ({ navigation }) => {
       />
       <TextInput
         autoComplete='current-password'
+        error={signInError}
         label='password'
         mode='outlined'
         onChangeText={setPassword}
@@ -70,6 +88,9 @@ export const LogInScreen = ({ navigation }) => {
         style={styles.input}
         value={password}
       />
+      <HelperText type="error" visible={signInError}>
+        Sorry, something went wrong. Please ensure your email and password are correct and try again.
+      </HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
         icon='send'
