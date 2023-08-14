@@ -22,10 +22,10 @@ export const SignUpScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [myWordlistCreate] = useMutation(MY_WORDLIST_CREATE, { onCompleted: () => {
     client.resetStore();
     setLoading(false);
@@ -73,7 +73,10 @@ export const SignUpScreen = ({ navigation }) => {
       })
       .then(({ data: { token }}) => storeAuthToken(token))
       .then(() => myWordlistCreate())
-      .catch(e => console.error(e));
+      .catch(e => {
+        console.error(e);
+        setErrorMessage('Sorry, something went wrong. Please ensure you have entered a valid email address and try again.');
+      });
   };
 
   return (
