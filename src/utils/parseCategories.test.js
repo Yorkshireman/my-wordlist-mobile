@@ -42,4 +42,18 @@ describe('parseCategories()', () => {
       expect(parseCategories(str)).toEqual(expectedResult);
     });
   });
+
+  describe('when passed null', () => {
+    const str = null;
+    test('throws an error with appropriate message', () => {
+      expect(() => parseCategories(str)).toThrow('str param cannot be falsey');
+    });
+  });
+
+  describe('when passed an empty string', () => {
+    const str = '';
+    test('throws an error with appropriate message', () => {
+      expect(() => parseCategories(str)).toThrow('str param cannot be falsey');
+    });
+  });
 });
