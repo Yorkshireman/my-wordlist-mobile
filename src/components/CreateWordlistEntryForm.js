@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
-import { parseCategories, storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, TextInput } from 'react-native-paper';
+import { parseCategories, storeAuthToken } from '../utils';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => {
+const buildOptimisticResponse = ({ categories, currentAuthToken, wordText, wordlistId }) => {
   return {
     authToken: currentAuthToken,
     wordlistEntryCreate: {
       __typename: 'WordlistEntryCreatePayload',
       wordlistEntry: {
         __typename: 'WordlistEntry',
-        categories: [],
+        categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
         createdAt: 'temp-createdAt',
         id: 'temp-id',
         word: {
@@ -43,7 +43,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
-    optimisticResponse: buildOptimisticResponse({ currentAuthToken, wordText, wordlistId }),
+    optimisticResponse: () => {
+      const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+      return buildOptimisticResponse({ categories, currentAuthToken, wordText, wordlistId });
+    },
     update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
       cache.modify({
         fields: {
