@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { storeAuthToken } from '../utils';
+import { parseCategories, storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
@@ -62,9 +62,8 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   });
 
   const onSubmit = () => {
-    // parse categories input value
-    const categories = parseMultipleCategories
-    wordlistEntryCreate({ variables: { categories: word: wordText.trim() }});
+    const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+    wordlistEntryCreate({ variables: { categories, word: wordText.trim() }});
     setWordText('');
     setModalVisible(false);
   };
@@ -80,7 +79,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         value={wordText}
       />
       <TextInput
-        label='categories'
+        label='categories (optional)'
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
         textTransform='lowercase'
