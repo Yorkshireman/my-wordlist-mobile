@@ -1,6 +1,6 @@
-import { parseMultipleCategories } from './parseMultipleCategories';
+import { parseCategories } from './parseCategories';
 
-describe('parseMultipleCategories()', () => {
+describe('parseCategories()', () => {
   describe('when passed comma separated words with no spaces', () => {
     const str = 'noun,verb,phrasal verb';
     test('returns array of Categories', () => {
@@ -10,7 +10,7 @@ describe('parseMultipleCategories()', () => {
         { name: 'phrasal verb' }
       ];
 
-      expect(parseMultipleCategories(str)).toEqual(expectedResult);
+      expect(parseCategories(str)).toEqual(expectedResult);
     });
   });
 
@@ -23,7 +23,7 @@ describe('parseMultipleCategories()', () => {
         { name: 'phrasal verb' }
       ];
 
-      expect(parseMultipleCategories(str)).toEqual(expectedResult);
+      expect(parseCategories(str)).toEqual(expectedResult);
     });
   });
 
@@ -31,7 +31,7 @@ describe('parseMultipleCategories()', () => {
     const str = 'noun';
     test('returns word in an array as a Category', () => {
       const expectedResult = [{ name: 'noun' }];
-      expect(parseMultipleCategories(str)).toEqual(expectedResult);
+      expect(parseCategories(str)).toEqual(expectedResult);
     });
   });
 
@@ -39,7 +39,7 @@ describe('parseMultipleCategories()', () => {
     const str = 'verb ';
     test('returns word in an array as a Category', () => {
       const expectedResult = [{ name: 'verb' }];
-      expect(parseMultipleCategories(str)).toEqual(expectedResult);
+      expect(parseCategories(str)).toEqual(expectedResult);
     });
   });
 });
