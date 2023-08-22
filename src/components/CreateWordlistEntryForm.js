@@ -33,8 +33,9 @@ const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => 
 export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const inputRef = useRef();
-  useInputRef(inputRef);
+  const textInputRef = useRef();
+  const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
+  useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
   useWordText(wordText, setDisabled);
 
@@ -61,7 +62,9 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   });
 
   const onSubmit = () => {
-    wordlistEntryCreate({ variables: { word: wordText.trim() }});
+    // parse categories input value
+    const categories = parseMultipleCategories
+    wordlistEntryCreate({ variables: { categories: word: wordText.trim() }});
     setWordText('');
     setModalVisible(false);
   };
@@ -72,9 +75,16 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
-        ref={inputRef}
+        ref={textInputRef}
         textTransform='lowercase'
         value={wordText}
+      />
+      <TextInput
+        label='categories'
+        mode='outlined'
+        onChangeText={text => setUnparsedCategoriesText(text)}
+        textTransform='lowercase'
+        value={unparsedCategoriesText}
       />
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
