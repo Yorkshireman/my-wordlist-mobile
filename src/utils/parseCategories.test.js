@@ -27,6 +27,19 @@ describe('parseCategories()', () => {
     });
   });
 
+  describe('when passed categories with capital letters', () => {
+    const str = 'Noun, verb, Phrasal VeRb';
+    test('returns downcased versions', () => {
+      const expectedResult = [
+        { name: 'noun' },
+        { name: 'verb' },
+        { name: 'phrasal verb' }
+      ];
+
+      expect(parseCategories(str)).toEqual(expectedResult);
+    });
+  });
+
   describe('when passed one word', () => {
     const str = 'noun';
     test('returns word in an array as a Category', () => {
