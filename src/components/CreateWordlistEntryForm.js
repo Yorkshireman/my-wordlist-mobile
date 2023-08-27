@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput } from 'react-native-paper';
 import { parseCategories, storeAuthToken } from '../utils';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
@@ -88,6 +89,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
+      <HelperText style={styles.categoriesInfoText} variant='bodySmall'>* separate categories with a comma</HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
         disabled={disabled}
@@ -105,3 +107,10 @@ CreateWordlistEntryForm.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
   wordlistId: PropTypes.string.isRequired
 };
+
+const styles = StyleSheet.create({
+  categoriesInfoText: {
+    bottom: 12,
+    position: 'relative'
+  }
+});
