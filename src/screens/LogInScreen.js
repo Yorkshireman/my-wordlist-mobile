@@ -88,7 +88,7 @@ export const LogInScreen = ({ navigation }) => {
         style={styles.input}
         value={password}
       />
-      <HelperText type="error" visible={signInError}>
+      <HelperText style={styles.helperText} type="error" visible={signInError}>
         Sorry, something went wrong. Please ensure your email and password are correct and try again.
       </HelperText>
       <Button
@@ -118,6 +118,10 @@ LogInScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  helperText: {
+    bottom: 12,
+    position: 'relative'
+  },
   input: {
     marginBottom: 16
   }
