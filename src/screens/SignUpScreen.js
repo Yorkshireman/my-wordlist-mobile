@@ -11,7 +11,7 @@ import { useApolloClient, useMutation } from '@apollo/client';
 
 const ErrorText = ({ text }) => {
   return (
-    <HelperText style={{ marginBottom: 16 }} type='error'>
+    <HelperText style={styles.helperText} type='error'>
       {text}
     </HelperText>
   );
@@ -140,6 +140,10 @@ SignUpScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  helperText: {
+    bottom: 12,
+    position: 'relative'
+  },
   input: {
     marginBottom: 16
   }
