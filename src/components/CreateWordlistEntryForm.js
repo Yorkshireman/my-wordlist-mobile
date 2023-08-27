@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
-import { storeAuthToken } from '../utils';
+import { StyleSheet } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, HelperText, TextInput } from 'react-native-paper';
+import { parseCategories, storeAuthToken } from '../utils';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => {
+const buildOptimisticResponse = ({ categories, currentAuthToken, wordText, wordlistId }) => {
   return {
     authToken: currentAuthToken,
     wordlistEntryCreate: {
       __typename: 'WordlistEntryCreatePayload',
       wordlistEntry: {
         __typename: 'WordlistEntry',
-        categories: [],
+        categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
         createdAt: 'temp-createdAt',
         id: 'temp-id',
         word: {
@@ -33,8 +34,9 @@ const buildOptimisticResponse = ({ currentAuthToken, wordText, wordlistId }) => 
 export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const inputRef = useRef();
-  useInputRef(inputRef);
+  const textInputRef = useRef();
+  const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
+  useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
   useWordText(wordText, setDisabled);
 
@@ -42,7 +44,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
-    optimisticResponse: buildOptimisticResponse({ currentAuthToken, wordText, wordlistId }),
+    optimisticResponse: () => {
+      const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+      return buildOptimisticResponse({ categories, currentAuthToken, wordText, wordlistId });
+    },
     update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
       cache.modify({
         fields: {
@@ -61,7 +66,8 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   });
 
   const onSubmit = () => {
-    wordlistEntryCreate({ variables: { word: wordText.trim() }});
+    const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+    wordlistEntryCreate({ variables: { categories, word: wordText.trim() }});
     setWordText('');
     setModalVisible(false);
   };
@@ -72,10 +78,18 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
-        ref={inputRef}
+        ref={textInputRef}
         textTransform='lowercase'
         value={wordText}
       />
+      <TextInput
+        label='categories (optional)'
+        mode='outlined'
+        onChangeText={text => setUnparsedCategoriesText(text)}
+        textTransform='lowercase'
+        value={unparsedCategoriesText}
+      />
+      <HelperText style={styles.categoriesInfoText} variant='bodySmall'>* separate categories with a comma</HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
         disabled={disabled}
@@ -93,3 +107,10 @@ CreateWordlistEntryForm.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
   wordlistId: PropTypes.string.isRequired
 };
+
+const styles = StyleSheet.create({
+  categoriesInfoText: {
+    bottom: 12,
+    position: 'relative'
+  }
+});
