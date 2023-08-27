@@ -76,7 +76,8 @@ export const SignUpScreen = ({ navigation }) => {
       .catch(e => {
         console.error(e);
         setErrorMessage('Sorry, something went wrong. Please ensure you have entered a valid email address and try again.');
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
