@@ -96,7 +96,9 @@ export const LogInScreen = ({ navigation }) => {
         icon='send'
         loading={loading}
         mode='contained'
-        onPress={onSubmit}
+        onPress={() => {
+          throw new Error('foobar');
+        }}
         style={{ marginBottom: 16 }}
       >
         Log in
