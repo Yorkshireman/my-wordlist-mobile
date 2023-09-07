@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customColours as colors } from './src/utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ErrorBoundary from 'react-native-error-boundary';
 import { NavigationBar } from './src/components';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
@@ -60,5 +61,6 @@ export default function App() {
         </NavigationContainer>
       </PaperProvider>
     </ApolloProvider>
+
   );
 }

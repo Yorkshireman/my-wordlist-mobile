@@ -1,3 +1,4 @@
+import ErrorBoundary from 'react-native-error-boundary';
 import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
 import React from 'react';
@@ -66,52 +67,59 @@ export const LogInScreen = ({ navigation }) => {
 
   const onSubmit = () => signIn(email, password);
 
+  const ShitComponent = () => {
+    throw new Error('ShitComponent error');
+  };
+
   return (
-    <View style={{ ...sharedStyles.container, padding: 40 }}>
-      <TextInput
-        autoComplete='email'
-        error={signInError}
-        label='email'
-        mode='outlined'
-        onChangeText={setEmail}
-        style={styles.input}
-        value={email}
-      />
-      <TextInput
-        autoComplete='current-password'
-        error={signInError}
-        label='password'
-        mode='outlined'
-        onChangeText={setPassword}
-        right={EyeIcon(() => setPasswordVisible(!passwordVisible), passwordVisible)}
-        secureTextEntry={!passwordVisible}
-        style={styles.input}
-        value={password}
-      />
-      <HelperText style={styles.helperText} type="error" visible={signInError}>
-        Sorry, something went wrong. Please ensure your email and password are correct and try again.
-      </HelperText>
-      <Button
-        contentStyle={{ flexDirection: 'row-reverse' }}
-        icon='send'
-        loading={loading}
-        mode='contained'
-        onPress={() => {
-          throw new Error('foobar');
-        }}
-        style={{ marginBottom: 16 }}
-      >
-        Log in
-      </Button>
-      <Button
-        contentStyle={{ flexDirection: 'row-reverse' }}
-        icon='chevron-right'
-        mode='outlined'
-        onPress={() => navigation.navigate('SignUp')}
-      >
+    <ErrorBoundary>
+      <View style={{ ...sharedStyles.container, padding: 40 }}>
+        <TextInput
+          autoComplete='email'
+          error={signInError}
+          label='email'
+          mode='outlined'
+          onChangeText={setEmail}
+          style={styles.input}
+          value={email}
+        />
+        <ShitComponent />
+        <TextInput
+          autoComplete='current-password'
+          error={signInError}
+          label='password'
+          mode='outlined'
+          onChangeText={setPassword}
+          right={EyeIcon(() => setPasswordVisible(!passwordVisible), passwordVisible)}
+          secureTextEntry={!passwordVisible}
+          style={styles.input}
+          value={password}
+        />
+        <HelperText style={styles.helperText} type="error" visible={signInError}>
+          Sorry, something went wrong. Please ensure your email and password are correct and try again.
+        </HelperText>
+        <Button
+          contentStyle={{ flexDirection: 'row-reverse' }}
+          icon='send'
+          loading={loading}
+          mode='contained'
+          onPress={() => {
+            throw new Error('foobar');
+          }}
+          style={{ marginBottom: 16 }}
+        >
+          Log in
+        </Button>
+        <Button
+          contentStyle={{ flexDirection: 'row-reverse' }}
+          icon='chevron-right'
+          mode='outlined'
+          onPress={() => navigation.navigate('SignUp')}
+        >
         New user? Sign up
-      </Button>
-    </View>
+        </Button>
+      </View>
+    </ErrorBoundary>
   );
 };
 
