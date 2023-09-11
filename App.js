@@ -2,14 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customColours as colors } from './src/utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ErrorBoundary from 'react-native-error-boundary';
-import { NavigationBar } from './src/components';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { ErrorScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
+import { Error, NavigationBar } from './src/components';
+import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
@@ -44,7 +44,7 @@ const theme = {
 export default function App() {
   networkLoggerIsEnabled && startNetworkLogging();
   return (
-    <ErrorBoundary FallbackComponent={ErrorScreen}>
+    <ErrorBoundary FallbackComponent={Error}>
       <ApolloProvider client={client}>
         <PaperProvider theme={theme}>
           <NavigationContainer>

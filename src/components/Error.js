@@ -3,7 +3,7 @@ import sharedStyles from '../styles';
 import { Text } from 'react-native-paper';
 import { View } from 'react-native';
 
-export const ErrorScreen = ({ error }) => {
+export const Error = ({ error }) => {
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <Text style={{ marginBottom: 16 }} variant="displayLarge">Oops!</Text>
@@ -14,6 +14,6 @@ export const ErrorScreen = ({ error }) => {
   );
 };
 
-ErrorScreen.propTypes = {
+Error.propTypes = {
   error: PropTypes.object
 };
