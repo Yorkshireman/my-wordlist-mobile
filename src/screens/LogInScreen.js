@@ -110,7 +110,6 @@ export const LogInScreen = ({ navigation }) => {
         New user? Sign up
       </Button>
     </View>
-
   );
 };
 
