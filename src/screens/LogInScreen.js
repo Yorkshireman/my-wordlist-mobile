@@ -89,7 +89,7 @@ export const LogInScreen = ({ navigation }) => {
         value={password}
       />
       <HelperText style={styles.helperText} type="error" visible={signInError}>
-          Sorry, something went wrong. Please ensure your email and password are correct and try again.
+        Sorry, something went wrong. Please ensure your email and password are correct and try again.
       </HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
@@ -99,7 +99,7 @@ export const LogInScreen = ({ navigation }) => {
         onPress={onSubmit}
         style={{ marginBottom: 16 }}
       >
-          Log in
+        Log in
       </Button>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
