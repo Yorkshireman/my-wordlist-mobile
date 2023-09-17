@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customColours as colors } from './src/utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ErrorBoundary from 'react-native-error-boundary';
+import { loadDevMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
 import { startNetworkLogging } from 'react-native-network-logger';
@@ -11,6 +12,10 @@ import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-
 import { Error, NavigationBar } from './src/components';
 import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
+
+if (__DEV__) {
+  loadDevMessages();
+}
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   const authToken = await AsyncStorage.getItem('myWordlistAuthToken');

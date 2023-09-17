@@ -2,6 +2,7 @@ import { AddCategories } from './AddCategories';
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
+import { useAsyncStorage } from '../hooks';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
@@ -10,12 +11,19 @@ import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
   const { colors } = useTheme();
+  const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
-  const [id, setId] = useState();
   const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
-    // need to add optimisticResponse
+    optimisticResponse: () => ({
+      authToken: currentAuthToken,
+      wordlistEntryDelete: {
+        wordlistEntry: {
+          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryId)
+        }
+      }
+    }),
     update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
       cache.modify({
         fields: {
@@ -29,6 +37,8 @@ export const Wordlist = () => {
       });
     }
   });
+
+  const [wordlistEntryId, setWordlistEntryId] = useState();
 
   const longestWordLength = useMemo(() => {
     return calculateLongestWordLength(data.myWordlist.entries);
@@ -48,7 +58,7 @@ export const Wordlist = () => {
               <IconButton
                 icon='plus-circle-outline'
                 onPress={() => {
-                  setId(id);
+                  setWordlistEntryId(id);
                   setShowAddCategories(true);
                 }}
                 size={20}
@@ -60,7 +70,7 @@ export const Wordlist = () => {
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
-                  setId(id);
+                  setWordlistEntryId(id);
                   setShowDeleteConfirm(true);
                 }}
                 size={16}
@@ -71,7 +81,7 @@ export const Wordlist = () => {
         );
       })}
       {showAddCategories && <AddCategories
-        id={id}
+        id={wordlistEntryId}
         onDismiss={() => setShowAddCategories(false)}
         setVisible={setShowAddCategories}
         visible={showAddCategories}
@@ -79,7 +89,7 @@ export const Wordlist = () => {
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
-          wordlistEntryDelete({ variables: { id }});
+          wordlistEntryDelete({ variables: { id: wordlistEntryId }});
         }}
         onDismiss={() => setShowDeleteConfirm(false)}
         visible={showDeleteConfirm}
