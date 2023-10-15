@@ -1,32 +1,34 @@
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { useMutation } from '@apollo/client';
+import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
-import { WORDLIST_ENTRY_CREATE } from '../graphql-queries';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { parseCategories, storeAuthToken } from '../utils';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-const buildOptimisticResponse = ({ categories, currentAuthToken, wordText, wordlistId }) => {
+const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   return {
     authToken: currentAuthToken,
-    wordlistEntryCreate: {
-      __typename: 'WordlistEntryCreatePayload',
-      wordlistEntry: {
-        __typename: 'WordlistEntry',
-        categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
-        createdAt: 'temp-createdAt',
-        id: 'temp-id',
-        word: {
-          __typename: 'Word',
+    wordlistEntriesCreate: {
+      __typename: 'WordlistEntriesCreatePayload',
+      wordlistEntries: wordlistEntries.map(({ categories, wordlistId, wordText }) => {
+        return {
+          __typename: 'WordlistEntry',
+          categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
           createdAt: 'temp-createdAt',
-          id: 'temp-id',
-          text: wordText.trim()
-        },
-        wordId: 'temp-wordId',
-        wordlistId
-      }
+          id: `${wordText}-temp-id`,
+          word: {
+            __typename: 'Word',
+            createdAt: 'temp-createdAt',
+            id: 'temp-id',
+            text: wordText.trim()
+          },
+          wordId: 'temp-wordId',
+          wordlistId
+        };
+      })
     }
   };
 };
@@ -40,34 +42,49 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
   const [wordText, setWordText] = useState('');
   useWordText(wordText, setDisabled);
 
-  const [wordlistEntryCreate] = useMutation(WORDLIST_ENTRY_CREATE, {
+  const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
     optimisticResponse: () => {
       const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-      return buildOptimisticResponse({ categories, currentAuthToken, wordText, wordlistId });
+      const wordlistEntries = [{ categories, wordText, wordlistId }];
+      return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
     },
-    update(cache, { data: { wordlistEntryCreate: { wordlistEntry } } }) {
+    update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
       cache.modify({
         fields: {
           entries(existingEntryRefs = []) {
-            const newEntryRef = cache.writeFragment({
-              data: wordlistEntry,
-              fragment: WORDLIST_ENTRY
+            const newEntryRefs = wordlistEntries.map(wordlistEntry => {
+              return cache.writeFragment({
+                data: wordlistEntry,
+                fragment: WORDLIST_ENTRY
+              });
             });
 
-            return [newEntryRef, ...existingEntryRefs];
+            return [...newEntryRefs, ...existingEntryRefs];
           }
         },
-        id: cache.identify({ __typename: 'MyWordlist', id: wordlistEntry.wordlistId })
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId })
       });
     }
   });
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-    wordlistEntryCreate({ variables: { categories, word: wordText.trim() }});
+    wordlistEntriesCreate({
+      variables: {
+        wordlistEntries: [
+          {
+            categories,
+            word: {
+              text: wordText.trim()
+            }
+          }
+        ]
+      }
+    });
+
     setWordText('');
     setModalVisible(false);
   };

@@ -1,13 +1,6 @@
-import { MY_WORDLIST } from './myWordlist';
-import { MY_WORDLIST_CREATE } from './myWordlistCreate';
-import { WORDLIST_ENTRY_CREATE } from './wordlistEntryCreate';
-import { WORDLIST_ENTRY_DELETE } from './wordlistEntryDelete';
-import { WORDLIST_ENTRY_UPDATE } from './wordlistEntryUpdate';
-
-export {
-  MY_WORDLIST,
-  MY_WORDLIST_CREATE,
-  WORDLIST_ENTRY_CREATE,
-  WORDLIST_ENTRY_DELETE,
-  WORDLIST_ENTRY_UPDATE
-};
+export { MY_WORDLIST } from './myWordlist';
+export { MY_WORDLIST_CREATE } from './myWordlistCreate';
+export { WORDLIST_ENTRIES_CREATE } from './wordlistEntriesCreate';
+export { WORDLIST_ENTRY_CREATE } from './wordlistEntryCreate';
+export { WORDLIST_ENTRY_DELETE } from './wordlistEntryDelete';
+export { WORDLIST_ENTRY_UPDATE } from './wordlistEntryUpdate';
