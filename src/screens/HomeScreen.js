@@ -1,9 +1,10 @@
+import { CreateWordlistEntriesForm } from '../components/create-wordlist-entries';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
 import { useState } from 'react';
-import { CreateWordlistEntryForm, Loading, Wordlist } from '../components';
 import { FAB, Modal, Portal } from 'react-native-paper';
+import { Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
@@ -20,7 +21,7 @@ export const HomeScreen = ({ navigation }) => {
         <Wordlist />
         <Portal>
           <Modal contentContainerStyle={containerStyle} onDismiss={() => setModalVisible(false)} visible={modalVisible}>
-            <CreateWordlistEntryForm setModalVisible={setModalVisible} wordlistId={data.myWordlist.id} />
+            <CreateWordlistEntriesForm setModalVisible={setModalVisible} wordlistId={data.myWordlist.id} />
           </Modal>
         </Portal>
         <FAB

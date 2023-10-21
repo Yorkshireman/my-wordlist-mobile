@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
+import { useAsyncStorage } from '../../hooks';
 import { useMutation } from '@apollo/client';
-import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
-import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
+import { WORDLIST_ENTRIES_CREATE } from '../../graphql-queries';
+import { WORDLIST_ENTRY } from '../../fragments/wordlistEntry';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
-import { parseCategories, storeAuthToken } from '../utils';
-import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
+import { parseCategories, storeAuthToken } from '../../utils';
+import { useInputRef, useWordText } from '../../hooks';
 import { useRef, useState } from 'react';
 
 const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
@@ -33,13 +34,13 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   };
 };
 
-export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
+export const WordlistEntry = ({ setModalVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
+  const textInputRef = useRef();
+  useInputRef(textInputRef);
   useWordText(wordText, setDisabled);
 
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
@@ -117,15 +118,10 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         mode='contained'
         onPress={onSubmit}
       >
-          Add
+        Add
       </Button>
     </>
   );
-};
-
-CreateWordlistEntryForm.propTypes = {
-  setModalVisible: PropTypes.func.isRequired,
-  wordlistId: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -143,3 +139,8 @@ const styles = StyleSheet.create({
     }
   }
 });
+
+WordlistEntry.propTypes = {
+  setModalVisible: PropTypes.func.isRequired,
+  wordlistId: PropTypes.string.isRequired
+};
