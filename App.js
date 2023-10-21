@@ -14,6 +14,7 @@ import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 if (__DEV__) {
+  console.log('Running in dev mode.');
   loadDevMessages();
 }
 
@@ -34,6 +35,7 @@ const httpLink = new HttpLink({ uri: MY_WORDLIST_GRAPHQL_URL });
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
+  connectToDevTools: true,
   link: concat(authMiddleware, httpLink)
 });
 
