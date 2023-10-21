@@ -6,6 +6,7 @@ export const useWordlistEntryId = id => {
     fragment: gql`
       fragment MyWordlistEntry on WordlistEntry {
         categories {
+          id
           name
         }
         createdAt
