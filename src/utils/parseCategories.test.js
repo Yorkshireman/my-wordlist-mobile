@@ -56,6 +56,14 @@ describe('parseCategories()', () => {
     });
   });
 
+  describe('when passed one word with a comma', () => {
+    const str = 'verb,';
+    test('returns word in an array as a Category', () => {
+      const expectedResult = [{ name: 'verb' }];
+      expect(parseCategories(str)).toEqual(expectedResult);
+    });
+  });
+
   describe('when passed null', () => {
     const str = null;
     test('throws an error with appropriate message', () => {
