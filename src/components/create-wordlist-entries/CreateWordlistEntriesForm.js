@@ -1,5 +1,4 @@
 import { Button } from 'react-native-paper';
-import { parseCategories } from '../../utils';
 import PropTypes from 'prop-types';
 import { storeAuthToken } from '../../utils';
 import { useAsyncStorage } from '../../hooks';
@@ -9,22 +8,22 @@ import { WORDLIST_ENTRY } from '../../fragments/wordlistEntry';
 import { WordlistEntry } from './WordlistEntry';
 import { useEffect, useState } from 'react';
 
-const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
+const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries, wordlistId }) => {
   return {
     authToken: currentAuthToken,
     wordlistEntriesCreate: {
       __typename: 'WordlistEntriesCreatePayload',
-      wordlistEntries: wordlistEntries.map(({ categories, wordlistId, wordText }) => {
+      wordlistEntries: wordlistEntries.map(({ categories, word }) => {
         return {
           __typename: 'WordlistEntry',
           categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
           createdAt: 'temp-createdAt',
-          id: `${wordText}-temp-id`,
+          id: `${word.text}-temp-id`,
           word: {
             __typename: 'Word',
             createdAt: 'temp-createdAt',
             id: 'temp-id',
-            text: wordText.trim()
+            text: word.text
           },
           wordId: 'temp-wordId',
           wordlistId
@@ -42,41 +41,35 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
       categories: [],
       word: {
         text: ''
-      },
-      wordlistId
+      }
     }
   ]);
 
-  // const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
-  //   onCompleted: ({ authToken }) => {
-  //     storeAuthToken(authToken);
-  //   },
-  //   optimisticResponse: () => {
-  //     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-  //     const wordlistEntries = [{ categories, wordText, wordlistId }];
-  //     return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
-  //   },
-  //   update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
-  //     cache.modify({
-  //       fields: {
-  //         entries(existingEntryRefs = []) {
-  //           const newEntryRefs = wordlistEntries.map(wordlistEntry => {
-  //             return cache.writeFragment({
-  //               data: wordlistEntry,
-  //               fragment: WORDLIST_ENTRY
-  //             });
-  //           });
+  const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
+    onCompleted: ({ authToken }) => {
+      storeAuthToken(authToken);
+    },
+    optimisticResponse: () => buildOptimisticResponse({ currentAuthToken, wordlistEntries, wordlistId }),
+    update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
+      cache.modify({
+        fields: {
+          entries(existingEntryRefs = []) {
+            const newEntryRefs = wordlistEntries.map(wordlistEntry => {
+              return cache.writeFragment({
+                data: wordlistEntry,
+                fragment: WORDLIST_ENTRY
+              });
+            });
 
-  //           return [...newEntryRefs, ...existingEntryRefs];
-  //         }
-  //       },
-  //       id: cache.identify({ __typename: 'MyWordlist', id: wordlistId })
-  //     });
-  //   }
-  // });
+            return [...newEntryRefs, ...existingEntryRefs];
+          }
+        },
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId })
+      });
+    }
+  });
 
   useEffect(() => {
-    console.log(JSON.stringify(wordlistEntries, null, 2));
     if (wordlistEntries.find(wordlistEntry => wordlistEntry?.word?.text?.length)) {
       setDisabled(false);
     } else {
@@ -84,16 +77,24 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
     }
   }, [setDisabled, wordlistEntries]);
 
-  // const onSubmit = () => {
-  //   wordlistEntriesCreate({
-  //     variables: {
-  //       wordlistEntries
-  //     }
-  //   });
+  const onSubmit = () => {
+    wordlistEntriesCreate({
+      variables: {
+        wordlistEntries
+      }
+    });
 
-  //   // setWordText('');
-  //   setModalVisible(false);
-  // };
+    setWordlistEntries([
+      {
+        categories: [],
+        word: {
+          text: ''
+        }
+      }
+    ]);
+
+    setModalVisible(false);
+  };
 
   return (
     <>
@@ -105,7 +106,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
         disabled={disabled}
         icon='send'
         mode='contained'
-        // onPress={onSubmit}
+        onPress={onSubmit}
       >
         Add
       </Button>

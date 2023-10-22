@@ -7,7 +7,6 @@ import { useRef, useState } from 'react';
 
 export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  // const [wordText, setWordText] = useState('');
   const textInputRef = useRef();
   useInputRef(textInputRef);
 
