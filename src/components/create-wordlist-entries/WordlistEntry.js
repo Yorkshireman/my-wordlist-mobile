@@ -6,8 +6,8 @@ import { HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { useRef, useState } from 'react';
 
 export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
-  const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   const textInputRef = useRef();
+  const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
 
   return (

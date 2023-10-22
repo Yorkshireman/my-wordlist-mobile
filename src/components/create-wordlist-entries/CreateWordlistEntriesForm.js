@@ -14,8 +14,8 @@ const defaultWordlistEntries = [
 ];
 
 export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
-  const currentAuthToken = useAsyncStorage();
   const [addWordlistEntryButtonIsDisabled, setAddWordlistEntryButtonIsDisabled] = useState(true);
+  const currentAuthToken = useAsyncStorage();
   const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   const [wordlistEntries, setWordlistEntries] = useState(defaultWordlistEntries);
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, wordlistEntries, wordlistId });
