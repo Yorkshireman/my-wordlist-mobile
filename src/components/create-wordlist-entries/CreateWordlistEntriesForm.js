@@ -31,15 +31,6 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
       }
     });
 
-    setWordlistEntries([
-      {
-        categories: [],
-        word: {
-          text: ''
-        }
-      }
-    ]);
-
     setModalVisible(false);
   };
 
