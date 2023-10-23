@@ -7,30 +7,22 @@ import { Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
+const deepCopy = (arr) => JSON.parse(JSON.stringify(arr));
+const defaultWordlistEntries = [
+  {
+    categories: [],
+    word: {
+      text: ''
+    }
+  }
+];
+
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
-  const [wordlistEntries, setWordlistEntries] = useState([
-    {
-      categories: [],
-      word: {
-        text: ''
-      }
-    }
-  ]);
+  const [wordlistEntries, setWordlistEntries] = useState(defaultWordlistEntries);
 
-  useEffect(() => {
-    setWordlistEntries([
-      {
-        categories: [],
-        word: {
-          text: ''
-        }
-      }
-    ]);
-  }, [modalVisible]);
-
-  const containerStyle = {backgroundColor: 'white', padding: 20, rowGap: 16};
+  useEffect(() => setWordlistEntries(deepCopy(defaultWordlistEntries)), [modalVisible]);
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
@@ -40,7 +32,7 @@ export const HomeScreen = ({ navigation }) => {
         <Wordlist />
         <Portal>
           <Modal
-            contentContainerStyle={containerStyle}
+            contentContainerStyle={{ backgroundColor: 'white', padding: 20, rowGap: 16 }}
             onDismiss={() => {
               setModalVisible(false);
             }}
