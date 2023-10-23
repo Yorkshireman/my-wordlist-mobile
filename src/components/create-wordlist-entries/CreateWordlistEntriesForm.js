@@ -23,9 +23,13 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
   useEffect(() => {
     if (wordlistEntries.every(wordlistEntry => wordlistEntry?.word?.text?.length)) {
       setAddWordlistEntryButtonIsDisabled(false);
-      setSubmitButtonIsDisabled(false);
     } else {
       setAddWordlistEntryButtonIsDisabled(true);
+    }
+
+    if (wordlistEntries.find(wordlistEntry => wordlistEntry?.word?.text?.length)) {
+      setSubmitButtonIsDisabled(false);
+    } else {
       setSubmitButtonIsDisabled(true);
     }
   }, [setSubmitButtonIsDisabled, wordlistEntries]);
