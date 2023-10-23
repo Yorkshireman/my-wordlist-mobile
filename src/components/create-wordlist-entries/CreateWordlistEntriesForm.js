@@ -1,5 +1,6 @@
 import { isValidWordlistEntry } from '../../utils';
 import PropTypes from 'prop-types';
+import { ScrollView } from 'react-native-web';
 import { WordlistEntry } from './WordlistEntry';
 import { Button, IconButton } from 'react-native-paper';
 import { useAsyncStorage, useWordlistEntriesCreate } from '../../hooks';
@@ -12,13 +13,13 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, wordlistEntries, wordlistId });
 
   useEffect(() => {
-    if (wordlistEntries.every(wordlistEntry => wordlistEntry?.word?.text?.length)) {
+    if (wordlistEntries.every(isValidWordlistEntry)) {
       setAddWordlistEntryButtonIsDisabled(false);
     } else {
       setAddWordlistEntryButtonIsDisabled(true);
     }
 
-    if (wordlistEntries.find(wordlistEntry => wordlistEntry?.word?.text?.length)) {
+    if (wordlistEntries.find(isValidWordlistEntry)) {
       setSubmitButtonIsDisabled(false);
     } else {
       setSubmitButtonIsDisabled(true);
