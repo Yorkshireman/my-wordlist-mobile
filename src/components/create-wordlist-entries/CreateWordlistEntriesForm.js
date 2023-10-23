@@ -4,20 +4,10 @@ import { Button, IconButton } from 'react-native-paper';
 import { useAsyncStorage, useWordlistEntriesCreate } from '../../hooks';
 import { useEffect, useState } from 'react';
 
-const defaultWordlistEntries = [
-  {
-    categories: [],
-    word: {
-      text: ''
-    }
-  }
-];
-
-export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
+export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries, wordlistEntries, wordlistId }) => {
   const [addWordlistEntryButtonIsDisabled, setAddWordlistEntryButtonIsDisabled] = useState(true);
   const currentAuthToken = useAsyncStorage();
   const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
-  const [wordlistEntries, setWordlistEntries] = useState(defaultWordlistEntries);
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, wordlistEntries, wordlistId });
 
   useEffect(() => {
@@ -41,7 +31,15 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
       }
     });
 
-    setWordlistEntries(defaultWordlistEntries);
+    setWordlistEntries([
+      {
+        categories: [],
+        word: {
+          text: ''
+        }
+      }
+    ]);
+
     setModalVisible(false);
   };
 
@@ -71,5 +69,12 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
 
 CreateWordlistEntriesForm.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
+  setWordlistEntries: PropTypes.func.isRequired,
+  wordlistEntries: PropTypes.arrayOf(PropTypes.shape({
+    categories: PropTypes.array.isRequired,
+    word: PropTypes.shape({
+      text: PropTypes.string.isRequired
+    })
+  })).isRequired,
   wordlistId: PropTypes.string.isRequired
 };

@@ -2,14 +2,33 @@ import { CreateWordlistEntriesForm } from '../components/create-wordlist-entries
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
-import { useState } from 'react';
 import { FAB, Modal, Portal } from 'react-native-paper';
 import { Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
+  const [wordlistEntries, setWordlistEntries] = useState([
+    {
+      categories: [],
+      word: {
+        text: ''
+      }
+    }
+  ]);
+
+  useEffect(() => {
+    setWordlistEntries([
+      {
+        categories: [],
+        word: {
+          text: ''
+        }
+      }
+    ]);
+  }, [modalVisible]);
 
   const containerStyle = {backgroundColor: 'white', padding: 20, rowGap: 16};
 
@@ -20,8 +39,19 @@ export const HomeScreen = ({ navigation }) => {
       <>
         <Wordlist />
         <Portal>
-          <Modal contentContainerStyle={containerStyle} onDismiss={() => setModalVisible(false)} visible={modalVisible}>
-            <CreateWordlistEntriesForm setModalVisible={setModalVisible} wordlistId={data.myWordlist.id} />
+          <Modal
+            contentContainerStyle={containerStyle}
+            onDismiss={() => {
+              setModalVisible(false);
+            }}
+            visible={modalVisible}
+          >
+            <CreateWordlistEntriesForm
+              setModalVisible={setModalVisible}
+              setWordlistEntries={setWordlistEntries}
+              wordlistEntries={wordlistEntries}
+              wordlistId={data.myWordlist.id}
+            />
           </Modal>
         </Portal>
         <FAB
