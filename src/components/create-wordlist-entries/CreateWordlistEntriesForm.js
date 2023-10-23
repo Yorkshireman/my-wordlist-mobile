@@ -1,3 +1,4 @@
+import { isValidWordlistEntry } from '../../utils';
 import PropTypes from 'prop-types';
 import { WordlistEntry } from './WordlistEntry';
 import { Button, IconButton } from 'react-native-paper';
@@ -27,7 +28,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
   const onSubmit = () => {
     wordlistEntriesCreate({
       variables: {
-        wordlistEntries
+        wordlistEntries: wordlistEntries.filter(isValidWordlistEntry)
       }
     });
 

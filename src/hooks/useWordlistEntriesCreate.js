@@ -1,7 +1,9 @@
+import { isValidWordlistEntry } from '../utils';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
+import { useEffect, useState } from 'react';
 
 const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries, wordlistId }) => {
   return {
@@ -29,11 +31,17 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries, wordlistId
 };
 
 export const useWordlistEntriesCreate = ({ currentAuthToken, wordlistEntries, wordlistId }) => {
+  const [filteredWordlistEntries, setFilteredWordlistEntries] = useState([]);
+
+  useEffect(() => {
+    setFilteredWordlistEntries(wordlistEntries.filter(isValidWordlistEntry));
+  }, [wordlistEntries]);
+
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
-    optimisticResponse: () => buildOptimisticResponse({ currentAuthToken, wordlistEntries, wordlistId }),
+    optimisticResponse: () => buildOptimisticResponse({ currentAuthToken, wordlistEntries: filteredWordlistEntries, wordlistId }),
     update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
       cache.modify({
         fields: {
