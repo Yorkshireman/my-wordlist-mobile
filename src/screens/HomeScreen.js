@@ -32,7 +32,7 @@ export const HomeScreen = ({ navigation }) => {
         <Wordlist />
         <Portal>
           <Modal
-            contentContainerStyle={{ backgroundColor: 'white', padding: 20, rowGap: 16 }}
+            contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}
             onDismiss={() => {
               setModalVisible(false);
             }}

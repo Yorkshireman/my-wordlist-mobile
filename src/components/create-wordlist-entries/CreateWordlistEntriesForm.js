@@ -37,7 +37,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
   };
 
   return (
-    <>
+    <ScrollView style={{ maxHeight: '95vh' }}>
       {wordlistEntries.map(({ word }, i) =>
         <WordlistEntry index={i} key={i} setWordlistEntries={setWordlistEntries} word={word} />
       )}
@@ -56,7 +56,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
       >
         Add
       </Button>
-    </>
+    </ScrollView>
   );
 };
 

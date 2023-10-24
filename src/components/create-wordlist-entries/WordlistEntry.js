@@ -1,8 +1,8 @@
 import { parseCategories } from '../../utils';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
 import { useInputRef } from '../../hooks';
 import { HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import { useRef, useState } from 'react';
 
 export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
@@ -11,7 +11,7 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
   useInputRef(textInputRef);
 
   return (
-    <>
+    <View style={{ paddingBottom: 12 }}>
       <TextInput
         label='new word'
         mode='outlined'
@@ -45,13 +45,13 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
         <IconButton icon='information-outline' size={16} style={styles.categoriesHelperText.icon} />
         <Text style={styles.categoriesHelperText.text}>separate categories with a comma</Text>
       </HelperText>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   categoriesHelperText: {
-    bottom: 12,
+    bottom: -3,
     icon: {
       left: 0,
       margin: 0,
