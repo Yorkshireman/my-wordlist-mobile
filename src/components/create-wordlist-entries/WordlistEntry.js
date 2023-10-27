@@ -41,10 +41,12 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
-      <HelperText style={styles.categoriesHelperText} variant='bodySmall'>
-        <IconButton icon='information-outline' size={16} style={styles.categoriesHelperText.icon} />
-        <Text style={styles.categoriesHelperText.text}>separate categories with a comma</Text>
-      </HelperText>
+      {index === 0 &&
+        <HelperText style={styles.categoriesHelperText} variant='bodySmall'>
+          <IconButton icon='information-outline' size={16} style={styles.categoriesHelperText.icon} />
+          <Text style={styles.categoriesHelperText.text}>separate categories with a comma</Text>
+        </HelperText>
+      }
     </View>
   );
 };
