@@ -19,10 +19,10 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries, wordlistId
           word: {
             __typename: 'Word',
             createdAt: 'temp-createdAt',
-            id: 'temp-id',
+            id: `${word.text}-temp-id`,
             text: word.text
           },
-          wordId: 'temp-wordId',
+          wordId: `${word.text}-temp-id`,
           wordlistId
         };
       })
