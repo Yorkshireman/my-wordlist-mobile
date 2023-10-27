@@ -33,6 +33,7 @@ export const HomeScreen = ({ navigation }) => {
         <Portal>
           <Modal
             contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}
+            dismissableBackButton
             onDismiss={() => {
               setModalVisible(false);
             }}
