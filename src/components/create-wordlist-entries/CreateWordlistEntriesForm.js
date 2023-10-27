@@ -1,6 +1,7 @@
 import { isValidWordlistEntry } from '../../utils';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-web';
+import { View } from 'react-native';
 import { WordlistEntry } from './WordlistEntry';
 import { Button, IconButton } from 'react-native-paper';
 import { useAsyncStorage, useWordlistEntriesCreate } from '../../hooks';
@@ -47,15 +48,26 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
         onPress={() => setWordlistEntries([...wordlistEntries, { categories: [], word: { text: '' }}])}
         size={20}
       />
-      <Button
-        contentStyle={{ flexDirection: 'row-reverse' }}
-        disabled={submitButtonIsDisabled}
-        icon='send'
-        mode='contained'
-        onPress={onSubmit}
-      >
-        Add
-      </Button>
+      <View style={{ columnGap: 12, flexDirection: 'row' }}>
+        <Button
+          contentStyle={{ flexDirection: 'row-reverse' }}
+          mode='outlined'
+          onPress={() => setModalVisible(false)}
+          style={{ flex: 1 } }
+        >
+          Cancel
+        </Button>
+        <Button
+          contentStyle={{ flexDirection: 'row-reverse' }}
+          disabled={submitButtonIsDisabled}
+          icon='send'
+          mode='contained'
+          onPress={onSubmit}
+          style={{ flex: 2 } }
+        >
+          Add
+        </Button>
+      </View>
     </ScrollView>
   );
 };
