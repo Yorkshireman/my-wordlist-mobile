@@ -18,7 +18,7 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
         onChangeText={text => {
           setWordlistEntries(prevWordlistEntries => {
             const newWordlistEntries = [...prevWordlistEntries];
-            newWordlistEntries[index].word.text = text.trim();
+            newWordlistEntries[index].word.text = text;
             return newWordlistEntries;
           });
         }}

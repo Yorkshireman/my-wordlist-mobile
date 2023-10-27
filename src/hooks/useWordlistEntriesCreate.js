@@ -1,4 +1,4 @@
-import { isValidWordlistEntry } from '../utils';
+import { sanitiseWordlistEntries } from '../utils';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
@@ -34,7 +34,7 @@ export const useWordlistEntriesCreate = ({ currentAuthToken, wordlistEntries, wo
   const [filteredWordlistEntries, setFilteredWordlistEntries] = useState([]);
 
   useEffect(() => {
-    setFilteredWordlistEntries(wordlistEntries.filter(isValidWordlistEntry));
+    setFilteredWordlistEntries(sanitiseWordlistEntries(wordlistEntries));
   }, [wordlistEntries]);
 
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {

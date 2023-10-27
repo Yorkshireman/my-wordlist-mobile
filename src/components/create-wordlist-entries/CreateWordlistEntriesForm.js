@@ -1,5 +1,6 @@
 import { isValidWordlistEntry } from '../../utils';
 import PropTypes from 'prop-types';
+import { sanitiseWordlistEntries } from '../../utils';
 import { ScrollView } from 'react-native-web';
 import { View } from 'react-native';
 import { WordlistEntry } from './WordlistEntry';
@@ -30,7 +31,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries,
   const onSubmit = () => {
     wordlistEntriesCreate({
       variables: {
-        wordlistEntries: wordlistEntries.filter(isValidWordlistEntry)
+        wordlistEntries: sanitiseWordlistEntries(wordlistEntries)
       }
     });
 
