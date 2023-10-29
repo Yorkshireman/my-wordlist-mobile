@@ -1,28 +1,22 @@
 import { CreateWordlistEntriesForm } from '../components/create-wordlist-entries';
+import { deepCopy } from '../utils';
+import { emptyWordlistEntry } from '../../constants';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
+import { unsanitisedWordlistEntriesVar } from '../../reactive-vars';
 import { useAuthToken } from '../hooks';
 import { FAB, Modal, Portal } from 'react-native-paper';
 import { Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 
-const deepCopy = (arr) => JSON.parse(JSON.stringify(arr));
-const defaultWordlistEntries = [
-  {
-    categories: [],
-    word: {
-      text: ''
-    }
-  }
-];
-
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
-  const [unsanitisedWordlistEntries, setUnsanitisedWordlistEntries] = useState(defaultWordlistEntries);
 
-  useEffect(() => setUnsanitisedWordlistEntries(deepCopy(defaultWordlistEntries)), [modalVisible]);
+  useEffect(() => {
+    unsanitisedWordlistEntriesVar(deepCopy([emptyWordlistEntry]));
+  }, [modalVisible]);
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
@@ -39,12 +33,7 @@ export const HomeScreen = ({ navigation }) => {
             }}
             visible={modalVisible}
           >
-            <CreateWordlistEntriesForm
-              setModalVisible={setModalVisible}
-              setUnsanitisedWordlistEntries={setUnsanitisedWordlistEntries}
-              unsanitisedWordlistEntries={unsanitisedWordlistEntries}
-              wordlistId={data.myWordlist.id}
-            />
+            <CreateWordlistEntriesForm setModalVisible={setModalVisible} wordlistId={data.myWordlist.id} />
           </Modal>
         </Portal>
         <FAB

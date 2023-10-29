@@ -1,15 +1,20 @@
+import { deepCopy } from '../../utils';
+import { emptyWordlistEntry } from '../../../constants';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native-web';
+import { unsanitisedWordlistEntriesVar } from '../../../reactive-vars';
+import { useReactiveVar } from '@apollo/client';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { WordlistEntry } from './WordlistEntry';
 import { Button, IconButton } from 'react-native-paper';
 import { useAsyncStorage, useUnsanitisedWordlistEntries, useWordlistEntriesCreate } from '../../hooks';
 
-export const CreateWordlistEntriesForm = ({ setModalVisible, setUnsanitisedWordlistEntries, unsanitisedWordlistEntries, wordlistId }) => {
+export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
   const [addWordlistEntryButtonIsDisabled, setAddWordlistEntryButtonIsDisabled] = useState(true);
   const currentAuthToken = useAsyncStorage();
   const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
+  const unsanitisedWordlistEntries = useReactiveVar(unsanitisedWordlistEntriesVar);
   const sanitisedWordlistEntries = useUnsanitisedWordlistEntries({ setAddWordlistEntryButtonIsDisabled, setSubmitButtonIsDisabled, unsanitisedWordlistEntries });
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, sanitisedWordlistEntries, wordlistId });
 
@@ -26,12 +31,12 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setUnsanitisedWordl
   return (
     <ScrollView style={{ maxHeight: '95vh' }}>
       {unsanitisedWordlistEntries.map(({ word }, i) =>
-        <WordlistEntry index={i} key={i} setUnsanitisedWordlistEntries={setUnsanitisedWordlistEntries} word={word} />
+        <WordlistEntry index={i} key={i} word={word} />
       )}
       <IconButton
         disabled={addWordlistEntryButtonIsDisabled}
         icon="camera"
-        onPress={() => setUnsanitisedWordlistEntries([...unsanitisedWordlistEntries, { categories: [], word: { text: '' }}])}
+        onPress={() => unsanitisedWordlistEntriesVar([...unsanitisedWordlistEntries, deepCopy(emptyWordlistEntry)])}
         size={20}
       />
       <View style={{ columnGap: 12, flexDirection: 'row' }}>
@@ -60,12 +65,5 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, setUnsanitisedWordl
 
 CreateWordlistEntriesForm.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
-  setUnsanitisedWordlistEntries: PropTypes.func.isRequired,
-  unsanitisedWordlistEntries: PropTypes.arrayOf(PropTypes.shape({
-    categories: PropTypes.array.isRequired,
-    word: PropTypes.shape({
-      text: PropTypes.string.isRequired
-    })
-  })).isRequired,
   wordlistId: PropTypes.string.isRequired
 };
