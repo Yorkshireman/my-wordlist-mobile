@@ -35,7 +35,7 @@ export const WordlistEntry = ({ index, setUnsanitisedWordlistEntries, word }) =>
             return newUnsanitisedWordlistEntries;
           });
 
-          return setUnparsedCategoriesText(text);
+          return setUnparsedCategoriesText(text.toLowerCase());
         }}
         value={unparsedCategoriesText}
       />
