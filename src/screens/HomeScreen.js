@@ -20,9 +20,9 @@ const defaultWordlistEntries = [
 export const HomeScreen = ({ navigation }) => {
   const { data, loading } = useAuthToken(navigation);
   const [modalVisible, setModalVisible] = useState(false);
-  const [wordlistEntries, setWordlistEntries] = useState(defaultWordlistEntries);
+  const [unsanitisedWordlistEntries, setUnsanitisedWordlistEntries] = useState(defaultWordlistEntries);
 
-  useEffect(() => setWordlistEntries(deepCopy(defaultWordlistEntries)), [modalVisible]);
+  useEffect(() => setUnsanitisedWordlistEntries(deepCopy(defaultWordlistEntries)), [modalVisible]);
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
@@ -41,8 +41,8 @@ export const HomeScreen = ({ navigation }) => {
           >
             <CreateWordlistEntriesForm
               setModalVisible={setModalVisible}
-              setWordlistEntries={setWordlistEntries}
-              wordlistEntries={wordlistEntries}
+              setUnsanitisedWordlistEntries={setUnsanitisedWordlistEntries}
+              unsanitisedWordlistEntries={unsanitisedWordlistEntries}
               wordlistId={data.myWordlist.id}
             />
           </Modal>

@@ -5,7 +5,7 @@ import { HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useRef, useState } from 'react';
 
-export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
+export const WordlistEntry = ({ index, setUnsanitisedWordlistEntries, word }) => {
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
@@ -16,10 +16,10 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
         label='new word'
         mode='outlined'
         onChangeText={text => {
-          setWordlistEntries(prevWordlistEntries => {
-            const newWordlistEntries = [...prevWordlistEntries];
-            newWordlistEntries[index].word.text = text;
-            return newWordlistEntries;
+          setUnsanitisedWordlistEntries(prevUnsanitisedWordlistEntries => {
+            const newUnsanitisedWordlistEntries = [...prevUnsanitisedWordlistEntries];
+            newUnsanitisedWordlistEntries[index].word.text = text;
+            return newUnsanitisedWordlistEntries;
           });
         }}
         ref={textInputRef}
@@ -30,10 +30,10 @@ export const WordlistEntry = ({ index, setWordlistEntries, word }) => {
         label='categories (optional)'
         mode='outlined'
         onChangeText={text => {
-          setWordlistEntries(prevWordlistEntries => {
-            const newWordlistEntries = [...prevWordlistEntries];
-            newWordlistEntries[index].categories = text ? parseCategories(text) : [];
-            return newWordlistEntries;
+          setUnsanitisedWordlistEntries(prevUnsanitisedWordlistEntries => {
+            const newUnsanitisedWordlistEntries = [...prevUnsanitisedWordlistEntries];
+            newUnsanitisedWordlistEntries[index].categories = text ? parseCategories(text) : [];
+            return newUnsanitisedWordlistEntries;
           });
 
           return setUnparsedCategoriesText(text);
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 
 WordlistEntry.propTypes = {
   index: PropTypes.number.isRequired,
-  setWordlistEntries: PropTypes.func.isRequired,
+  setUnsanitisedWordlistEntries: PropTypes.func.isRequired,
   word: PropTypes.shape({
     text: PropTypes.string.isRequired
   }).isRequired
