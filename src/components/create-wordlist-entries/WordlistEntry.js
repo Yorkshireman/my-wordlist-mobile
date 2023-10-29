@@ -18,12 +18,11 @@ export const WordlistEntry = ({ index, setUnsanitisedWordlistEntries, word }) =>
         onChangeText={text => {
           setUnsanitisedWordlistEntries(prevUnsanitisedWordlistEntries => {
             const newUnsanitisedWordlistEntries = [...prevUnsanitisedWordlistEntries];
-            newUnsanitisedWordlistEntries[index].word.text = text;
+            newUnsanitisedWordlistEntries[index].word.text = text.toLowerCase();
             return newUnsanitisedWordlistEntries;
           });
         }}
         ref={textInputRef}
-        textTransform='lowercase'
         value={word?.text}
       />
       <TextInput
@@ -38,7 +37,6 @@ export const WordlistEntry = ({ index, setUnsanitisedWordlistEntries, word }) =>
 
           return setUnparsedCategoriesText(text);
         }}
-        textTransform='lowercase'
         value={unparsedCategoriesText}
       />
       {index === 0 &&
