@@ -5,7 +5,7 @@ export const sanitiseWordlistEntries = wordlistEntries => {
     return {
       categories,
       word: {
-        text: word.text.trim()
+        text: word.text.trim().toLowerCase()
       }
     };
   }).filter(isValidWordlistEntry);
