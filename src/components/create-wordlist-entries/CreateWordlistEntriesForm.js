@@ -1,32 +1,18 @@
-import { isValidWordlistEntry } from '../../utils';
 import PropTypes from 'prop-types';
 import { sanitiseWordlistEntries } from '../../utils';
 import { ScrollView } from 'react-native-web';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { WordlistEntry } from './WordlistEntry';
 import { Button, IconButton } from 'react-native-paper';
-import { useAsyncStorage, useWordlistEntriesCreate } from '../../hooks';
-import { useEffect, useState } from 'react';
+import { useAsyncStorage, useWordlistEntries, useWordlistEntriesCreate } from '../../hooks';
 
 export const CreateWordlistEntriesForm = ({ setModalVisible, setWordlistEntries, wordlistEntries, wordlistId }) => {
   const [addWordlistEntryButtonIsDisabled, setAddWordlistEntryButtonIsDisabled] = useState(true);
   const currentAuthToken = useAsyncStorage();
   const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, wordlistEntries, wordlistId });
-
-  useEffect(() => {
-    if (wordlistEntries.every(isValidWordlistEntry)) {
-      setAddWordlistEntryButtonIsDisabled(false);
-    } else {
-      setAddWordlistEntryButtonIsDisabled(true);
-    }
-
-    if (wordlistEntries.find(isValidWordlistEntry)) {
-      setSubmitButtonIsDisabled(false);
-    } else {
-      setSubmitButtonIsDisabled(true);
-    }
-  }, [setSubmitButtonIsDisabled, wordlistEntries]);
+  useWordlistEntries({ setAddWordlistEntryButtonIsDisabled, setSubmitButtonIsDisabled, wordlistEntries });
 
   const onSubmit = () => {
     wordlistEntriesCreate({
