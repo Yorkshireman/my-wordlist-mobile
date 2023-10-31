@@ -2,24 +2,24 @@ import { isValidWordlistEntry } from '../utils';
 import { sanitiseWordlistEntries } from '../utils';
 import { useEffect, useState } from 'react';
 
-export const useUnsanitisedWordlistEntries = ({ setAddWordlistEntryButtonIsDisabled, setSubmitButtonIsDisabled, unsanitisedWordlistEntries }) => {
+export const useUnsanitisedWordlistEntries = ({ setAddWordlistEntryButtonIsEnabled, setSubmitButtonIsEnabled, unsanitisedWordlistEntries }) => {
   const [sanitisedWordlistEntries, setSanitisedWordlistEntries] = useState([]);
 
   useEffect(() => {
     if (unsanitisedWordlistEntries.every(isValidWordlistEntry)) {
-      setAddWordlistEntryButtonIsDisabled(false);
+      setAddWordlistEntryButtonIsEnabled(true);
     } else {
-      setAddWordlistEntryButtonIsDisabled(true);
+      setAddWordlistEntryButtonIsEnabled(false);
     }
 
     if (unsanitisedWordlistEntries.find(isValidWordlistEntry)) {
-      setSubmitButtonIsDisabled(false);
+      setSubmitButtonIsEnabled(true);
     } else {
-      setSubmitButtonIsDisabled(true);
+      setSubmitButtonIsEnabled(false);
     }
 
     setSanitisedWordlistEntries(sanitiseWordlistEntries(unsanitisedWordlistEntries));
-  }, [setAddWordlistEntryButtonIsDisabled, setSubmitButtonIsDisabled, unsanitisedWordlistEntries]);
+  }, [setAddWordlistEntryButtonIsEnabled, setSubmitButtonIsEnabled, unsanitisedWordlistEntries]);
 
   return sanitisedWordlistEntries;
 };

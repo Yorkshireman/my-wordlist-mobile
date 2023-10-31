@@ -11,11 +11,11 @@ import { Button, IconButton } from 'react-native-paper';
 import { useAsyncStorage, useUnsanitisedWordlistEntries, useWordlistEntriesCreate } from '../../hooks';
 
 export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
-  const [addWordlistEntryButtonIsDisabled, setAddWordlistEntryButtonIsDisabled] = useState(true);
+  const [addWordlistEntryButtonIsEnabled, setAddWordlistEntryButtonIsEnabled] = useState(true);
   const currentAuthToken = useAsyncStorage();
-  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
+  const [submitButtonIsEnabled, setSubmitButtonIsEnabled] = useState(true);
   const unsanitisedWordlistEntries = useReactiveVar(unsanitisedWordlistEntriesVar);
-  const sanitisedWordlistEntries = useUnsanitisedWordlistEntries({ setAddWordlistEntryButtonIsDisabled, setSubmitButtonIsDisabled, unsanitisedWordlistEntries });
+  const sanitisedWordlistEntries = useUnsanitisedWordlistEntries({ setAddWordlistEntryButtonIsEnabled, setSubmitButtonIsEnabled, unsanitisedWordlistEntries });
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, sanitisedWordlistEntries, wordlistId });
 
   const onSubmit = () => {
@@ -34,7 +34,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
         <WordlistEntry index={i} key={i} word={word} />
       )}
       <IconButton
-        disabled={addWordlistEntryButtonIsDisabled}
+        disabled={!addWordlistEntryButtonIsEnabled}
         icon="camera"
         onPress={() => unsanitisedWordlistEntriesVar([...unsanitisedWordlistEntries, deepCopy(emptyWordlistEntry)])}
         size={20}
@@ -50,7 +50,7 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
         </Button>
         <Button
           contentStyle={{ flexDirection: 'row-reverse' }}
-          disabled={submitButtonIsDisabled}
+          disabled={!submitButtonIsEnabled}
           icon='send'
           mode='contained'
           onPress={onSubmit}
