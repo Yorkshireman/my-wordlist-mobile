@@ -35,9 +35,10 @@ export const CreateWordlistEntriesForm = ({ setModalVisible, wordlistId }) => {
       )}
       <IconButton
         disabled={!addWordlistEntryButtonIsEnabled}
-        icon="camera"
+        icon="plus-circle"
         onPress={() => unsanitisedWordlistEntriesVar([...unsanitisedWordlistEntries, deepCopy(emptyWordlistEntry)])}
-        size={20}
+        size={40}
+        style={{ alignSelf: 'center', marginTop: -5 }}
       />
       <View style={{ columnGap: 12, flexDirection: 'row' }}>
         <Button
