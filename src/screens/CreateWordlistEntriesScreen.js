@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
 import { useAuthToken } from '../hooks';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { parseCategories, storeAuthToken } from '../utils';
+import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
@@ -34,7 +34,7 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   };
 };
 
-export const CreateWordlistEntries = ({ navigation }) => {
+export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const { data } = useAuthToken(navigation);
@@ -96,7 +96,7 @@ export const CreateWordlistEntries = ({ navigation }) => {
   const { myWordlist: { id } } = data;
 
   return (
-    <>
+    <View>
       <TextInput
         label='new word'
         mode='outlined'
@@ -125,11 +125,11 @@ export const CreateWordlistEntries = ({ navigation }) => {
       >
           Add
       </Button>
-    </>
+    </View>
   );
 };
 
-CreateWordlistEntries.propTypes = {
+CreateWordlistEntriesScreen.propTypes = {
   navigation: PropTypes.object.isRequired
 };
 

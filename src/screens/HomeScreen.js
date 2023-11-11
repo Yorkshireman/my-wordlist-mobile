@@ -25,7 +25,7 @@ export const HomeScreen = ({ navigation }) => {
         </Portal>
         <FAB
           icon='plus'
-          onPress={() => navigation.navigate('CreateWordlistEntries')}
+          onPress={() => navigation.navigate('CreateWordlistEntriesScreen')}
           style={styles.fab}
         />
       </>}
