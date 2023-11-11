@@ -1,9 +1,4 @@
-import { HomeScreen } from './HomeScreen';
-import { LogInScreen } from './LogInScreen';
-import { SignUpScreen } from './SignUpScreen';
-
-export {
-  HomeScreen,
-  LogInScreen,
-  SignUpScreen
-};
+export { CreateWordlistEntries } from './CreateWordlistEntries';
+export { HomeScreen } from './HomeScreen';
+export { LogInScreen } from './LogInScreen';
+export { SignUpScreen } from './SignUpScreen';

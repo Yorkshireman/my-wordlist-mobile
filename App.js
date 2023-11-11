@@ -10,7 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
-import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
+import { CreateWordlistEntries, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 if (__DEV__) {
@@ -61,6 +61,7 @@ export default function App() {
               }}
             >
               <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+              <Stack.Screen component={CreateWordlistEntries} name="CreateWordlistEntries" options={{ title: 'Add Word' }} />
               <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
               <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
             </Stack.Navigator>
