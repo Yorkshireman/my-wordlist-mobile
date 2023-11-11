@@ -16,7 +16,7 @@ const signOut = async navigation => {
 // HomeScreen always redirects to LogIn screen when no auth token is in AsyncStorage
 // so when tapping back from the LogIn screen is bad UX - it appears to the user
 // like the button just isn't working
-const screensWithNoBackArrow = ['LogIn', 'SignUp'];
+const screensWithNoBackArrow = ['CreateWordlistEntriesScreen', 'LogIn', 'SignUp'];
 
 export const NavigationBar = ({ back, navigation, options, route }) => {
   const [visible, setVisible] = useState(false);

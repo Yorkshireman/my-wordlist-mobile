@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
@@ -96,7 +97,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const { myWordlist: { id } } = data;
 
   return (
-    <View>
+    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
       <TextInput
         label='new word'
         mode='outlined'
