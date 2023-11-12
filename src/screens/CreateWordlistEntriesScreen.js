@@ -1,39 +1,11 @@
+import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
-import { useMutation } from '@apollo/client';
-import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
-import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
-import { parseCategories, storeAuthToken } from '../utils';
 import { StyleSheet, View } from 'react-native';
-import { useAsyncStorage, useInputRef, useWordText } from '../hooks';
+import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
-
-const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
-  return {
-    authToken: currentAuthToken,
-    wordlistEntriesCreate: {
-      __typename: 'WordlistEntriesCreatePayload',
-      wordlistEntries: wordlistEntries.map(({ categories, wordlistId, wordText }) => {
-        return {
-          __typename: 'WordlistEntry',
-          categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
-          createdAt: 'temp-createdAt',
-          id: `${wordText}-temp-id`,
-          word: {
-            __typename: 'Word',
-            createdAt: 'temp-createdAt',
-            id: 'temp-id',
-            text: wordText.trim()
-          },
-          wordId: 'temp-wordId',
-          wordlistId
-        };
-      })
-    }
-  };
-};
 
 export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
@@ -43,35 +15,8 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
+  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, id, unparsedCategoriesText, wordText });
   useWordText(wordText, setDisabled);
-
-  const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
-    onCompleted: ({ authToken }) => {
-      storeAuthToken(authToken);
-    },
-    optimisticResponse: () => {
-      const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-      const wordlistEntries = [{ categories, wordText, wordlistId: id }];
-      return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
-    },
-    update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
-      cache.modify({
-        fields: {
-          entries(existingEntryRefs = []) {
-            const newEntryRefs = wordlistEntries.map(wordlistEntry => {
-              return cache.writeFragment({
-                data: wordlistEntry,
-                fragment: WORDLIST_ENTRY
-              });
-            });
-
-            return [...newEntryRefs, ...existingEntryRefs];
-          }
-        },
-        id: cache.identify({ __typename: 'MyWordlist', id })
-      });
-    }
-  });
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
@@ -89,7 +34,6 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     });
 
     setWordText('');
-    // setModalVisible(false);
   };
 
   if (!data) return null;
