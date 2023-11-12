@@ -36,7 +36,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     });
 
     setWordText('');
-    setVisible(!visible);
+    setVisible(true);
   };
 
   if (!data) return null;
