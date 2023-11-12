@@ -15,7 +15,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
-  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, id, unparsedCategoriesText, wordText });
+  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, id: data?.myWordlist.id, unparsedCategoriesText, wordText });
   useWordText(wordText, setDisabled);
 
   const onSubmit = () => {
@@ -37,8 +37,6 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   };
 
   if (!data) return null;
-
-  const { myWordlist: { id } } = data;
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', marginTop: 10, padding: 20 }}>
