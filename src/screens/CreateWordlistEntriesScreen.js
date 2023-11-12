@@ -41,7 +41,9 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const { myWordlist: { id } } = data;
 
   return (
-    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
+    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', marginTop: 10, padding: 20 }}>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' }}>Add</Text>
+      <Text onPress={() => navigation.navigate('Home')} style={{ fontSize: 16, position: 'absolute', right: 20 }}>Close</Text>
       <TextInput
         label='new word'
         mode='outlined'
