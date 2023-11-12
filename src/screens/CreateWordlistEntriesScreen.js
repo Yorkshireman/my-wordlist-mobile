@@ -82,13 +82,13 @@ CreateWordlistEntriesScreen.propTypes = {
 
 const styles = StyleSheet.create({
   categoriesHelperText: {
-    bottom: 12,
     icon: {
       left: 0,
       margin: 0,
       position: 'absolute',
       top: -4
     },
+    marginBottom: 16,
     position: 'relative',
     text: {
       marginLeft: 15
