@@ -2,7 +2,7 @@ import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAuthToken } from '../hooks';
-import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { Button, HelperText, IconButton, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
@@ -11,9 +11,11 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const { data } = useAuthToken(navigation);
+  const { colors: { primary } } = useTheme();
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
+  const [visible, setVisible] = useState(false);
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId: data?.myWordlist.id });
   useWordText(wordText, setDisabled);
@@ -34,6 +36,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     });
 
     setWordText('');
+    setVisible(!visible);
   };
 
   if (!data) return null;
@@ -70,6 +73,16 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
       >
           Add
       </Button>
+      <View style={{ marginTop: 'auto' }}>
+        <Snackbar
+          duration={3000}
+          onDismiss={() => setVisible(false)}
+          style={{ backgroundColor: primary }}
+          visible={visible}
+        >
+          Word added!
+        </Snackbar>
+      </View>
     </View>
   );
 };
