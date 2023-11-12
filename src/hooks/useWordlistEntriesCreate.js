@@ -29,14 +29,14 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   };
 };
 
-export const useWordlistEntriesCreate = ({ currentAuthToken, id, unparsedCategoriesText, wordText }) => {
+export const useWordlistEntriesCreate = ({ currentAuthToken, unparsedCategoriesText, wordlistId, wordText }) => {
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     },
     optimisticResponse: () => {
       const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-      const wordlistEntries = [{ categories, wordText, wordlistId: id }];
+      const wordlistEntries = [{ categories, wordText, wordlistId }];
       return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
     },
     update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
@@ -53,7 +53,7 @@ export const useWordlistEntriesCreate = ({ currentAuthToken, id, unparsedCategor
             return [...newEntryRefs, ...existingEntryRefs];
           }
         },
-        id: cache.identify({ __typename: 'MyWordlist', id })
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId })
       });
     }
   });

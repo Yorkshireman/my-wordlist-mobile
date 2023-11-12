@@ -15,7 +15,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
   const [wordText, setWordText] = useState('');
-  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, id: data?.myWordlist.id, unparsedCategoriesText, wordText });
+  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId: data?.myWordlist.id });
   useWordText(wordText, setDisabled);
 
   const onSubmit = () => {
