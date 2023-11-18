@@ -55,7 +55,7 @@ export const LogInScreen = ({ navigation }) => {
       })
       .then(({ data: { token }}) => storeAuthToken(token))
       // couldn't get client.clearStore() to work on sign-out in NavigationBar.js
-      .then(() => client.resetStore())
+      .then(() => client.cache.reset())
       .then(() => navigation.navigate('Home'))
       .catch(e => {
         console.error(e);
