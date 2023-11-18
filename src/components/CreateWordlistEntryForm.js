@@ -117,7 +117,7 @@ export const CreateWordlistEntryForm = ({ setModalVisible, wordlistId }) => {
         mode='contained'
         onPress={onSubmit}
       >
-          Add
+          Add Word
       </Button>
     </>
   );
