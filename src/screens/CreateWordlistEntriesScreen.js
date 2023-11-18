@@ -1,3 +1,4 @@
+import { ClearIcon } from '../components/ClearIcon';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
@@ -43,13 +44,14 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', marginTop: 10, padding: 20 }}>
-      <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' }}>Add</Text>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' }}>Add Word</Text>
       <Text onPress={() => navigation.navigate('Home')} style={{ fontSize: 16, position: 'absolute', right: 20 }}>Close</Text>
       <TextInput
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
         ref={textInputRef}
+        right={ClearIcon(() => setWordText(''), wordText.length)}
         textTransform='lowercase'
         value={wordText}
       />
@@ -57,6 +59,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
         label='categories (optional)'
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
+        right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />

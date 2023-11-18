@@ -1,3 +1,4 @@
+export { ClearIcon } from './ClearIcon';
 export { CreateWordlistEntryForm } from './CreateWordlistEntryForm';
 export { Error } from './Error';
 export { EyeIcon } from './EyeIcon';
