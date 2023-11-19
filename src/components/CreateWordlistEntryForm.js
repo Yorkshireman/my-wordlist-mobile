@@ -35,6 +35,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
 
     setWordText('');
     setVisible(true);
+    textInputRef.current.focus();
   };
 
   return (
