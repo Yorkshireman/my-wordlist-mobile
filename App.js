@@ -8,9 +8,9 @@ import NetworkLogger from 'react-native-network-logger';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
+import { CreateWordlistEntriesScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
-import { HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 if (__DEV__) {
@@ -61,6 +61,7 @@ export default function App() {
               }}
             >
               <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+              <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntriesScreen" options={{ headerShown: false }} />
               <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
               <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
             </Stack.Navigator>
