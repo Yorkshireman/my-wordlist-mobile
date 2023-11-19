@@ -1,8 +1,8 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import { Button, HelperText, IconButton, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
@@ -17,7 +17,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
   const [visible, setVisible] = useState(false);
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId });
-  useWordText(wordText, setDisabled);
+  useWordText(wordText, setDisabled, textInputRef);
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
@@ -38,7 +38,6 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
     setUnparsedCategoriesText('');
     setVisible(true);
     setWordText('');
-    textInputRef.current.focus();
   };
 
   return (
