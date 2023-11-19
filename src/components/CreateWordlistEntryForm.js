@@ -8,8 +8,9 @@ import { useRef, useState } from 'react';
 
 export const CreateWordlistEntryForm = ({ wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
-  const { colors: { primary } } = useTheme();
   const [disabled, setDisabled] = useState(true);
+  const { colors: { primary } } = useTheme();
+  const [snackbarKey, setSnackbarKey] = useState(0);
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
@@ -33,8 +34,9 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
       }
     });
 
-    setWordText('');
+    setSnackbarKey(prevKey => prevKey + 1);
     setVisible(true);
+    setWordText('');
     textInputRef.current.focus();
   };
 
@@ -73,6 +75,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
       <View style={{ marginTop: 'auto' }}>
         <Snackbar
           duration={3000}
+          key={snackbarKey}
           onDismiss={() => setVisible(false)}
           style={{ backgroundColor: primary }}
           visible={visible}
