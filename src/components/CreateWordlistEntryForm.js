@@ -34,10 +34,10 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
       }
     });
 
-    setSnackbarKey(prevKey => prevKey + 1);
     setUnparsedCategoriesText('');
-    setVisible(true);
     setWordText('');
+    setSnackbarKey(prevKey => prevKey + 1);
+    setVisible(true);
   };
 
   return (
