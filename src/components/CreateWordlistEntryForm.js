@@ -5,7 +5,7 @@ import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-pa
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-export const CreateWordlistEntryForm = ({ setSnackbarKey, setVisible, wordlistId }) => {
+export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const textInputRef = useRef();
@@ -33,7 +33,7 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setVisible, wordlistId
     setUnparsedCategoriesText('');
     setWordText('');
     setSnackbarKey(prevKey => prevKey + 1);
-    setVisible(true);
+    setSnackbarVisible(true);
   };
 
   return (
@@ -86,6 +86,6 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setVisible, wordlistId
 
 CreateWordlistEntryForm.propTypes = {
   setSnackbarKey: PropTypes.func.isRequired,
-  setVisible: PropTypes.func.isRequired,
+  setSnackbarVisible: PropTypes.func.isRequired,
   wordlistId: PropTypes.string.isRequired
 };

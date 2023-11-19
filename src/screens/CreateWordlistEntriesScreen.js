@@ -10,7 +10,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
   const { data } = useAuthToken(navigation);
   const { colors: { primary } } = useTheme();
   const [snackbarKey, setSnackbarKey] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   if (!data) return null;
 
@@ -18,14 +18,14 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', marginTop: 10, padding: 20 }}>
       <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' }}>Add Word</Text>
       <Text onPress={() => navigation.navigate('Home')} style={{ fontSize: 16, position: 'absolute', right: 20 }}>Close</Text>
-      <CreateWordlistEntryForm setSnackbarKey={setSnackbarKey} setVisible={setVisible} wordlistId={data.myWordlist.id} />
+      <CreateWordlistEntryForm setSnackbarKey={setSnackbarKey} setSnackbarVisible={setSnackbarVisible} wordlistId={data.myWordlist.id} />
       <View style={{ marginTop: 'auto' }}>
         <Snackbar
           duration={3000}
           key={snackbarKey}
-          onDismiss={() => setVisible(false)}
+          onDismiss={() => setSnackbarVisible(false)}
           style={{ backgroundColor: primary }}
-          visible={visible}
+          visible={snackbarVisible}
         >
           Word added!
         </Snackbar>
