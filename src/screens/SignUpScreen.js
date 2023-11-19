@@ -83,6 +83,7 @@ export const SignUpScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
+        autoCapitalize='none'
         label='email'
         mode='outlined'
         onChangeText={setEmail}
@@ -90,6 +91,7 @@ export const SignUpScreen = ({ navigation }) => {
         value={email}
       />
       <TextInput
+        autoCapitalize='none'
         label='password'
         mode='outlined'
         onChangeText={setPassword}
@@ -99,6 +101,7 @@ export const SignUpScreen = ({ navigation }) => {
         value={password}
       />
       <TextInput
+        autoCapitalize='none'
         label='confirm password'
         mode='outlined'
         onChangeText={setConfirmPassword}

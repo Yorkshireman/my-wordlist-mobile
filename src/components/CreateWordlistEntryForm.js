@@ -44,6 +44,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
   return (
     <>
       <TextInput
+        autoCapitalize='none'
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
@@ -53,6 +54,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
         value={wordText}
       />
       <TextInput
+        autoCapitalize='none'
         label='categories (optional)'
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
