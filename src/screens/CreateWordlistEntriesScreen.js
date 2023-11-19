@@ -39,7 +39,7 @@ CreateWordlistEntriesScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  close: { fontSize: 16, position: 'absolute', right: 20 },
+  close: { fontSize: 16, position: 'absolute', right: 20, top: 20 },
   snackbarWrapper: { marginTop: 'auto' },
   title: { fontSize: 16, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' },
   wrapper: { justifyContent: 'flex-start', marginTop: 10, padding: 20 }
