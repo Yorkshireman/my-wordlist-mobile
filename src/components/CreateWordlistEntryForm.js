@@ -60,9 +60,19 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
-      <HelperText style={styles.categoriesHelperText} variant='bodySmall'>
-        <IconButton icon='information-outline' size={16} style={styles.categoriesHelperText.icon} />
-        <Text style={styles.categoriesHelperText.text}>separate categories with a comma</Text>
+      <HelperText style={{
+        marginBottom: 16,
+        position: 'relative'
+      }} variant='bodySmall'
+      >
+        <IconButton icon='information-outline' size={16} style={{
+          left: 0,
+          margin: 0,
+          position: 'absolute',
+          top: -4
+        }}
+        />
+        <Text style={{ marginLeft: 15 }}>separate categories with a comma</Text>
       </HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
@@ -91,19 +101,3 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
 CreateWordlistEntryForm.propTypes = {
   wordlistId: PropTypes.string.isRequired
 };
-
-const styles = StyleSheet.create({
-  categoriesHelperText: {
-    icon: {
-      left: 0,
-      margin: 0,
-      position: 'absolute',
-      top: -4
-    },
-    marginBottom: 16,
-    position: 'relative',
-    text: {
-      marginLeft: 15
-    }
-  }
-});
