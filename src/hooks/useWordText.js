@@ -7,7 +7,7 @@ export const useWordText = (wordText, setDisabled, textInputRef) => {
     } else {
       setDisabled(true);
       setTimeout(() => {
-        textInputRef.current.focus();
+        textInputRef?.current.focus();
       }, 0);
     }
   }, [setDisabled, textInputRef, wordText]);
