@@ -1,8 +1,8 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
@@ -58,12 +58,14 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wo
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
-      <HelperText style={styles.helperText} variant='bodySmall'>
+      <View style={styles.helperTextWrapper}>
         <IconButton icon='information-outline' size={16} style={styles.helperTextIcon} />
-        <Text style={{ marginLeft: 15 }}>separate categories with a comma</Text>
-      </HelperText>
+        <HelperText style={styles.helperText} variant='bodySmall'>
+          <Text>separate categories with a comma</Text>
+        </HelperText>
+      </View>
       <Button
-        contentStyle={{ flexDirection: 'row-reverse' }}
+        contentStyle={styles.submitButtonContent}
         disabled={disabled}
         icon='send'
         mode='contained'
@@ -83,13 +85,15 @@ CreateWordlistEntryForm.propTypes = {
 
 const styles = StyleSheet.create({
   helperText: {
-    marginBottom: 16,
-    position: 'relative'
+    marginLeft: -16
   },
   helperTextIcon: {
-    left: 0,
-    margin: 0,
-    position: 'absolute',
-    top: -4
-  }
+    margin: 0
+  },
+  helperTextWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 16
+  },
+  submitButtonContent: { flexDirection: 'row-reverse' }
 });
