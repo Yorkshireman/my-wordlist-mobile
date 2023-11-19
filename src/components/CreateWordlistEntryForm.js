@@ -1,6 +1,7 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
@@ -57,18 +58,8 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wo
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
-      <HelperText style={{
-        marginBottom: 16,
-        position: 'relative'
-      }} variant='bodySmall'
-      >
-        <IconButton icon='information-outline' size={16} style={{
-          left: 0,
-          margin: 0,
-          position: 'absolute',
-          top: -4
-        }}
-        />
+      <HelperText style={styles.helperText} variant='bodySmall'>
+        <IconButton icon='information-outline' size={16} style={styles.helperTextIcon} />
         <Text style={{ marginLeft: 15 }}>separate categories with a comma</Text>
       </HelperText>
       <Button
@@ -78,14 +69,27 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wo
         mode='contained'
         onPress={onSubmit}
       >
-          Add
+        Add
       </Button>
     </>
   );
 };
 
 CreateWordlistEntryForm.propTypes = {
-  setSnackbarKey: PropTypes.func.isRequired,
-  setSnackbarVisible: PropTypes.func.isRequired,
+  setSnackbarKey: PropTypes.func,
+  setSnackbarVisible: PropTypes.func,
   wordlistId: PropTypes.string.isRequired
 };
+
+const styles = StyleSheet.create({
+  helperText: {
+    marginBottom: 16,
+    position: 'relative'
+  },
+  helperTextIcon: {
+    left: 0,
+    margin: 0,
+    position: 'absolute',
+    top: -4
+  }
+});
