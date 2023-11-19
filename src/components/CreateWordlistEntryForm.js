@@ -35,6 +35,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
     });
 
     setSnackbarKey(prevKey => prevKey + 1);
+    setUnparsedCategoriesText('');
     setVisible(true);
     setWordText('');
     textInputRef.current.focus();
