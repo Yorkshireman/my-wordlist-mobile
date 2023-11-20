@@ -1,23 +1,20 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
-import { Button, HelperText, IconButton, Snackbar, Text, TextInput, useTheme } from 'react-native-paper';
+import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-export const CreateWordlistEntryForm = ({ wordlistId }) => {
+export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wordlistId }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const { colors: { primary } } = useTheme();
-  const [snackbarKey, setSnackbarKey] = useState(0);
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
-  const [visible, setVisible] = useState(false);
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId });
-  useWordText(wordText, setDisabled);
+  useWordText(wordText, setDisabled, textInputRef);
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
@@ -34,16 +31,16 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
       }
     });
 
-    setSnackbarKey(prevKey => prevKey + 1);
     setUnparsedCategoriesText('');
-    setVisible(true);
     setWordText('');
-    textInputRef.current.focus();
+    setSnackbarKey(prevKey => prevKey + 1);
+    setSnackbarVisible(true);
   };
 
   return (
     <>
       <TextInput
+        autoCapitalize='none'
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(text)}
@@ -53,6 +50,7 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
         value={wordText}
       />
       <TextInput
+        autoCapitalize='none'
         label='categories (optional)'
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
@@ -60,50 +58,42 @@ export const CreateWordlistEntryForm = ({ wordlistId }) => {
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
-      <HelperText style={styles.categoriesHelperText} variant='bodySmall'>
-        <IconButton icon='information-outline' size={16} style={styles.categoriesHelperText.icon} />
-        <Text style={styles.categoriesHelperText.text}>separate categories with a comma</Text>
-      </HelperText>
+      <View style={styles.helperTextWrapper}>
+        <IconButton icon='information-outline' size={16} style={styles.helperTextIcon} />
+        <HelperText style={styles.helperText} variant='bodySmall'>
+          <Text>separate categories with a comma</Text>
+        </HelperText>
+      </View>
       <Button
-        contentStyle={{ flexDirection: 'row-reverse' }}
+        contentStyle={styles.submitButtonContent}
         disabled={disabled}
         icon='send'
         mode='contained'
         onPress={onSubmit}
       >
-          Add
+        Add
       </Button>
-      <View style={{ marginTop: 'auto' }}>
-        <Snackbar
-          duration={3000}
-          key={snackbarKey}
-          onDismiss={() => setVisible(false)}
-          style={{ backgroundColor: primary }}
-          visible={visible}
-        >
-          Word added!
-        </Snackbar>
-      </View>
     </>
   );
 };
 
 CreateWordlistEntryForm.propTypes = {
+  setSnackbarKey: PropTypes.func,
+  setSnackbarVisible: PropTypes.func,
   wordlistId: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
-  categoriesHelperText: {
-    icon: {
-      left: 0,
-      margin: 0,
-      position: 'absolute',
-      top: -4
-    },
-    marginBottom: 16,
-    position: 'relative',
-    text: {
-      marginLeft: 15
-    }
-  }
+  helperText: {
+    marginLeft: -16
+  },
+  helperTextIcon: {
+    margin: 0
+  },
+  helperTextWrapper: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 16
+  },
+  submitButtonContent: { flexDirection: 'row-reverse' }
 });

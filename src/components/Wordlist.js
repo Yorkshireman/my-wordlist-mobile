@@ -5,7 +5,7 @@ import { DeleteConfirm } from './DeleteConfirm';
 import { useAsyncStorage } from '../hooks';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -47,7 +47,7 @@ export const Wordlist = () => {
   const wordFlexBasis = longestWordLength * 9;
 
   return (
-    <View>
+    <ScrollView>
       {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
           <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
@@ -94,7 +94,7 @@ export const Wordlist = () => {
         onDismiss={() => setShowDeleteConfirm(false)}
         visible={showDeleteConfirm}
       />
-    </View>
+    </ScrollView>
   );
 };
 

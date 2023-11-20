@@ -5,6 +5,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import { loadDevMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
+import { SafeAreaView } from 'react-native';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
@@ -51,25 +52,27 @@ const theme = {
 export default function App() {
   networkLoggerIsEnabled && startNetworkLogging();
   return (
-    <ErrorBoundary FallbackComponent={Error}>
-      <ApolloProvider client={client}>
-        <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{
-                header: props => <NavigationBar {...props} />
-              }}
-            >
-              <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-              <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntriesScreen" options={{ headerShown: false }} />
-              <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
-              <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
-            </Stack.Navigator>
-            <StatusBar style="auto" />
-            {networkLoggerIsEnabled && <NetworkLogger />}
-          </NavigationContainer>
-        </PaperProvider>
-      </ApolloProvider>
-    </ErrorBoundary>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ErrorBoundary FallbackComponent={Error}>
+        <ApolloProvider client={client}>
+          <PaperProvider theme={theme}>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  header: props => <NavigationBar {...props} />
+                }}
+              >
+                <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+                <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntriesScreen" options={{ headerShown: false }} />
+                <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
+                <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
+              </Stack.Navigator>
+              <StatusBar style="auto" />
+              {networkLoggerIsEnabled && <NetworkLogger />}
+            </NavigationContainer>
+          </PaperProvider>
+        </ApolloProvider>
+      </ErrorBoundary>
+    </SafeAreaView>
   );
 }

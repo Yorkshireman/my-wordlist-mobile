@@ -69,6 +69,7 @@ export const LogInScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
+        autoCapitalize='none'
         autoComplete='email'
         error={signInError}
         label='email'
@@ -78,6 +79,7 @@ export const LogInScreen = ({ navigation }) => {
         value={email}
       />
       <TextInput
+        autoCapitalize='none'
         autoComplete='current-password'
         error={signInError}
         label='password'

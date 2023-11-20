@@ -67,6 +67,7 @@ export const AddCategories = ({ id, onDismiss, setVisible }) => {
       >
         <Text variant='bodyLarge'>Add a category to &quot;{wordText}&quot;</Text>
         <TextInput
+          autoCapitalize='none'
           label='category'
           mode='outlined'
           onChangeText={setText}
