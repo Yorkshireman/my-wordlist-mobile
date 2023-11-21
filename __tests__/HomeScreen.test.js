@@ -73,7 +73,7 @@ describe('HomeScreen', () => {
       });
     });
 
-    test.each(categories.map(({ name }) => name))('category, %s, is displayed', async name => {
+    test.each(categories.map(({ name }) => name))('category "%s" is displayed', async name => {
       await waitFor(() => {
         expect(screen.getByText(name)).toBeOnTheScreen();
       });
