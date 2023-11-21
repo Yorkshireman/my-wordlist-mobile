@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { MY_WORDLIST } from '../src/graphql-queries';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { render, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 jest.useFakeTimers();
 
@@ -118,6 +118,38 @@ describe('HomeScreen', () => {
     test.each(categories.map(({ name }) => name))('category, %s, is displayed', async name => {
       await waitFor(() => {
         expect(screen.getByText(name)).toBeOnTheScreen();
+      });
+    });
+  });
+
+  describe('Pressing FAB (+ sign) button', () => {
+    beforeEach(async () => {
+      await waitFor(() => {
+        render(
+          <PaperProvider>
+            <NavigationContainer>
+              <MockedProvider addTypename={true} mocks={mocks}>
+                <HomeScreen navigation={mockNavigation} />
+              </MockedProvider>
+            </NavigationContainer>
+          </PaperProvider>
+        );
+      });
+
+      await waitFor(() => {
+        fireEvent.press(screen.getByTestId('fab'));
+      });
+    });
+
+    test('calls navigate() once', async () => {
+      await waitFor(() => {
+        expect(mockNavigation.navigate).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test('calls navigate() with CreateWordlistEntries', async () => {
+      await waitFor(() => {
+        expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateWordlistEntries');
       });
     });
   });
