@@ -183,7 +183,7 @@ const config = {
     // "/node_modules/",
     // "\\.pnp\\.[^\\/]+$"
     'node_modules/(?!(react-native|@react-native|react-native-error-boundary|@react-native/js-polyfills|expo-status-bar|react-native-vector-icons)/)'
-  ],
+  ]
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

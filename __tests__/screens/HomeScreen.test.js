@@ -1,8 +1,8 @@
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { HomeScreen } from '../src/screens';
+import { HomeScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
-import { myWordlistQueryMock } from '../mockedProviderMocks/my-wordlist';
+import { myWordlistQueryMock } from '../../mockedProviderMocks/my-wordlist';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
