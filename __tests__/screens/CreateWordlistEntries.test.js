@@ -82,4 +82,15 @@ describe('CreateWordlistEntriesScreen', () => {
       expect(input.props).toHaveProperty('textTransform', 'lowercase');
     });
   });
+
+  describe('categories input field', () => {
+    let input;
+    beforeEach(async () => {
+      input = await waitFor(() => screen.getByTestId('categories-text-input-field'));
+    });
+
+    test('has textTransform lowercase', () => {
+      expect(input.props).toHaveProperty('textTransform', 'lowercase');
+    });
+  });
 });

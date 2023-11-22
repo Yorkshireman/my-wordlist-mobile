@@ -56,6 +56,7 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wo
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
         right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
+        testID='categories-text-input-field'
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />
