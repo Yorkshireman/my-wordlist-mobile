@@ -45,15 +45,33 @@ describe('CreateWordlistEntriesScreen', () => {
     await waitFor(() => expect(screen.getByText('Close')).toBeOnTheScreen());
   });
 
-  test('submit button is disabled', async () => {
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Add' })).toBeDisabled());
-  });
-
   test('displays new word input field', async () => {
     await waitFor(() => expect(screen.getByTestId('new-word-text-input-field')).toBeOnTheScreen());
   });
 
-  describe('Close button', () => {
+  test('new word input field has textTransform lowercase prop', async () => {
+    const input = await waitFor(() => screen.getByTestId('new-word-text-input-field'));
+    expect(input.props).toHaveProperty('textTransform', 'lowercase');
+  });
+
+  test('displays categories input field', async () => {
+    await waitFor(() => expect(screen.getByTestId('categories-text-input-field')).toBeOnTheScreen());
+  });
+
+  test('categories input field has textTransform lowercase prop', async () => {
+    const input = await waitFor(() => screen.getByTestId('categories-text-input-field'));
+    expect(input.props).toHaveProperty('textTransform', 'lowercase');
+  });
+
+  test('displays submit button', async () => {
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Add' })).toBeOnTheScreen());
+  });
+
+  test('submit button is disabled', async () => {
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Add' })).toBeDisabled());
+  });
+
+  describe('Close text when pressed', () => {
     beforeEach(async () => {
       const closeText = await waitFor(() => screen.getByText('Close'));
       fireEvent.press(closeText);
@@ -69,28 +87,6 @@ describe('CreateWordlistEntriesScreen', () => {
       await waitFor(() => {
         expect(navigate).toHaveBeenCalledWith('Home');
       });
-    });
-  });
-
-  describe('new word text input field', () => {
-    let input;
-    beforeEach(async () => {
-      input = await waitFor(() => screen.getByTestId('new-word-text-input-field'));
-    });
-
-    test('has textTransform lowercase', () => {
-      expect(input.props).toHaveProperty('textTransform', 'lowercase');
-    });
-  });
-
-  describe('categories input field', () => {
-    let input;
-    beforeEach(async () => {
-      input = await waitFor(() => screen.getByTestId('categories-text-input-field'));
-    });
-
-    test('has textTransform lowercase', () => {
-      expect(input.props).toHaveProperty('textTransform', 'lowercase');
     });
   });
 });
