@@ -26,7 +26,7 @@ describe('CreateWordlistEntriesScreen', () => {
       render(
         <PaperProvider>
           <NavigationContainer>
-            <MockedProvider addTypename={true} mocks={myWordlistQueryMock}>
+            <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
               <CreateWordlistEntriesScreen navigation={mockNavigation} />
             </MockedProvider>
           </NavigationContainer>

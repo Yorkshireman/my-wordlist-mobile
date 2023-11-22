@@ -18,7 +18,7 @@ describe('HomeScreen', () => {
     beforeEach(() => {
       render(
         <NavigationContainer>
-          <MockedProvider addTypename={true} mocks={myWordlistQueryMock}>
+          <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
             <HomeScreen navigation={mockNavigation} />
           </MockedProvider>
         </NavigationContainer>
@@ -39,7 +39,7 @@ describe('HomeScreen', () => {
   });
 
   describe('when auth token is in storage', () => {
-    const { categories } = myWordlistQueryMock[0].result.data.myWordlist.entries[0];
+    const { categories } = myWordlistQueryMock.result.data.myWordlist.entries[0];
 
     beforeEach(async () => {
       AsyncStorage.getItem.mockImplementation((key) => {
@@ -54,7 +54,7 @@ describe('HomeScreen', () => {
         render(
           <PaperProvider>
             <NavigationContainer>
-              <MockedProvider addTypename={true} mocks={myWordlistQueryMock}>
+              <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
                 <HomeScreen navigation={mockNavigation} />
               </MockedProvider>
             </NavigationContainer>
@@ -86,7 +86,7 @@ describe('HomeScreen', () => {
         render(
           <PaperProvider>
             <NavigationContainer>
-              <MockedProvider addTypename={true} mocks={myWordlistQueryMock}>
+              <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
                 <HomeScreen navigation={mockNavigation} />
               </MockedProvider>
             </NavigationContainer>
