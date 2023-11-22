@@ -12,7 +12,7 @@ jest.useFakeTimers();
 
 describe('Add Wordlist Entry journey', () => {
   beforeEach(async () => {
-    AsyncStorage.getItem.mockImplementation((key) => {
+    AsyncStorage.getItem.mockImplementation(key => {
       if (key === 'myWordlistAuthToken') {
         return Promise.resolve('auth-token');
       }

@@ -42,7 +42,7 @@ describe('HomeScreen', () => {
     const { categories } = myWordlistQueryMock.result.data.myWordlist.entries[0];
 
     beforeEach(async () => {
-      AsyncStorage.getItem.mockImplementation((key) => {
+      AsyncStorage.getItem.mockImplementation(key => {
         if (key === 'myWordlistAuthToken') {
           return Promise.resolve('auth-token');
         }

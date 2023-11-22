@@ -14,7 +14,7 @@ const { navigate } = mockNavigation;
 
 describe('CreateWordlistEntriesScreen', () => {
   beforeEach(async () => {
-    AsyncStorage.getItem.mockImplementation((key) => {
+    AsyncStorage.getItem.mockImplementation(key => {
       if (key === 'myWordlistAuthToken') {
         return Promise.resolve('auth-token');
       }
