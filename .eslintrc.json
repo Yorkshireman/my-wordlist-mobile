@@ -59,5 +59,10 @@
             }
         ],
         "sort-keys": "error"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
