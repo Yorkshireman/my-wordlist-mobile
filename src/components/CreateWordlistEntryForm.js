@@ -46,6 +46,7 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible, wo
         onChangeText={text => setWordText(text)}
         ref={textInputRef}
         right={ClearIcon(() => setWordText(''), wordText.length)}
+        testID='new-word-text-input-field'
         textTransform='lowercase'
         value={wordText}
       />

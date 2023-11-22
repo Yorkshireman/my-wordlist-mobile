@@ -49,6 +49,10 @@ describe('CreateWordlistEntriesScreen', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Add' })).toBeDisabled());
   });
 
+  test('displays new word input field', async () => {
+    await waitFor(() => expect(screen.getByTestId('new-word-text-input-field')).toBeOnTheScreen());
+  });
+
   describe('Close button', () => {
     beforeEach(async () => {
       const closeText = await waitFor(() => screen.getByText('Close'));
@@ -65,6 +69,17 @@ describe('CreateWordlistEntriesScreen', () => {
       await waitFor(() => {
         expect(navigate).toHaveBeenCalledWith('Home');
       });
+    });
+  });
+
+  describe('new word text input field', () => {
+    let input;
+    beforeEach(async () => {
+      input = await waitFor(() => screen.getByTestId('new-word-text-input-field'));
+    });
+
+    test('has textTransform lowercase', () => {
+      expect(input.props).toHaveProperty('textTransform', 'lowercase');
     });
   });
 });
