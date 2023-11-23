@@ -6,11 +6,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { CreateWordlistEntriesScreen, HomeScreen } from '../../src/screens';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import { myWordlistQueryMock, wordlistEntriesCreateQueryMock } from '../../mockedProviderMocks';
+import { myWordlistQueryMock, wordlistEntriesCreateWithCategories, wordlistEntriesCreateWithNoCategories } from '../../mockedProviderMocks';
 
 jest.useFakeTimers();
 
 describe('Add Wordlist Entry journey', () => {
+  let mutationMock = wordlistEntriesCreateWithNoCategories;
+
   beforeEach(async () => {
     AsyncStorage.getItem.mockImplementation(key => {
       if (key === 'myWordlistAuthToken') {
@@ -24,7 +26,7 @@ describe('Add Wordlist Entry journey', () => {
       const Stack = createNativeStackNavigator();
       render(
         <PaperProvider>
-          <MockedProvider addTypename={true} mocks={[myWordlistQueryMock, wordlistEntriesCreateQueryMock]}>
+          <MockedProvider addTypename={true} mocks={[myWordlistQueryMock, mutationMock]}>
             <NavigationContainer>
               <Stack.Navigator>
                 <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
@@ -46,24 +48,64 @@ describe('Add Wordlist Entry journey', () => {
       });
 
       const wordInput = await waitFor(() => screen.getByTestId('new-word-text-input-field'));
-      const submitButton = await waitFor(() => screen.getByRole('button', { name: 'Add' }));
       fireEvent.changeText(wordInput, 'chair');
-      fireEvent.press(submitButton);
     });
 
-    test('notification is displayed', async () => {
-      await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
-    });
-
-    describe('after pressing Close', () => {
+    describe('with no categories', () => {
       beforeEach(async () => {
-        await waitFor(() => {
-          fireEvent.press(screen.getByText('Close'));
-        });
+        const submitButton = await waitFor(() => screen.getByRole('button', { name: 'Add' }));
+        fireEvent.press(submitButton);
       });
 
-      test('new wordlist entry is displayed', async () => {
-        await waitFor(() => expect(screen.getByText('chair')).toBeOnTheScreen());
+      test('notification is displayed', async () => {
+        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+      });
+
+      describe('after pressing Close', () => {
+        beforeEach(async () => {
+          await waitFor(() => {
+            fireEvent.press(screen.getByText('Close'));
+          });
+        });
+
+        test('new wordlist entry is displayed', async () => {
+          await waitFor(() => expect(screen.getByText('chair')).toBeOnTheScreen());
+        });
+      });
+    });
+
+    describe('with categories', () => {
+      beforeAll(() => {
+        mutationMock = wordlistEntriesCreateWithCategories;
+      });
+
+      afterAll(() => mutationMock = wordlistEntriesCreateWithNoCategories);
+
+      beforeEach(async () => {
+        const categoriesInput = await waitFor(() => screen.getByTestId('categories-text-input-field'));
+        fireEvent.changeText(categoriesInput, 'household, phrasal verb');
+        const submitButton = await waitFor(() => screen.getByRole('button', { name: 'Add' }));
+        fireEvent.press(submitButton);
+      });
+
+      test('notification is displayed', async () => {
+        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+      });
+
+      describe('after pressing Close', () => {
+        beforeEach(async () => {
+          await waitFor(() => {
+            fireEvent.press(screen.getByText('Close'));
+          });
+        });
+
+        test('new wordlist entry\'s word is displayed', async () => {
+          await waitFor(() => expect(screen.getByText('chair')).toBeOnTheScreen());
+        });
+
+        test.each(['household', 'phrasal verb'])('category, \'%s\', is displayed', async category => {
+          await waitFor(() => expect(screen.getByText(category)).toBeOnTheScreen());
+        });
       });
     });
   });
