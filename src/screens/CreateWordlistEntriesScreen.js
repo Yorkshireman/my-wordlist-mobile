@@ -36,7 +36,11 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Add Word</Text>
       <Text onPress={() => navigation.navigate('Home')} style={styles.close}>Close</Text>
-      <CreateWordlistEntryForm setSnackbarKey={setSnackbarKey} setSnackbarVisible={setSnackbarVisible} wordlistId={data.myWordlist.id} />
+      <CreateWordlistEntryForm
+        setSnackbarKey={setSnackbarKey}
+        setSnackbarVisible={setSnackbarVisible}
+        wordlistId={data.myWordlist.id}
+      />
       <View style={styles.snackbarWrapper}>
         <Snackbar
           duration={3000}

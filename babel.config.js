@@ -7,6 +7,9 @@ module.exports = function(api) {
       }
     },
     plugins: [['module:react-native-dotenv']],
-    presets: ['babel-preset-expo']
+    presets: [
+      'babel-preset-expo',
+      '@babel/preset-flow'
+    ]
   };
 };

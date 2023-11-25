@@ -1,4 +1,4 @@
-import { parseCategories } from './parseCategories';
+import { parseCategories } from '../../src/utils/parseCategories';
 
 describe('parseCategories()', () => {
   describe('when passed comma separated words with no spaces', () => {

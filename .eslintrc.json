@@ -30,10 +30,21 @@
         "react-native"
     ],
     "rules": {
+        "arrow-parens": ["error", "as-needed"],
         "comma-dangle": ["error", "never"],
         "indent": [
             "error",
             2
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 128,
+                "comments": 128,
+                "ignoreUrls": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true
+            }
         ],
         "react/jsx-sort-props": "error",
         "linebreak-style": [
@@ -59,5 +70,10 @@
             }
         ],
         "sort-keys": "error"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
