@@ -66,7 +66,7 @@ export const wordlistEntriesCreateWithNoCategories = {
         {
           categories: [],
           word: {
-            text: 'chair'.trim()
+            text: 'chair'
           }
         }
       ]
