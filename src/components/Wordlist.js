@@ -3,6 +3,7 @@ import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useAsyncStorage } from '../hooks';
+import { useNavigation } from '@react-navigation/native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -13,6 +14,7 @@ export const Wordlist = () => {
   const { colors } = useTheme();
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
+  const navigation = useNavigation();
   const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
@@ -69,7 +71,7 @@ export const Wordlist = () => {
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
                 icon='note-edit-outline'
-                onPress={() => console.log('edit tapped')}
+                onPress={() => navigation.navigate('EditWordlistEntry')}
                 size={16}
                 style={{ margin: 0 }}
               />

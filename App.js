@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
-import { CreateWordlistEntriesScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
+import { CreateWordlistEntriesScreen, EditWordlistEntryScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
 import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
@@ -62,10 +62,15 @@ export default function App() {
                   header: props => <NavigationBar {...props} />
                 }}
               >
-                <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
-                <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
-                <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
+                <Stack.Group>
+                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+                  <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
+                  <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
+                </Stack.Group>
+                <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
+                  <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" />
+                  <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
+                </Stack.Group>
               </Stack.Navigator>
               <StatusBar style="auto" />
               {networkLoggerIsEnabled && <NetworkLogger />}
