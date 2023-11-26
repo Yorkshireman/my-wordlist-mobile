@@ -7,6 +7,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useRoute: () => ({
+    params: {
+      wordlistId: 'mock-wordlistId'
+    }
+  })
+}));
+
 jest.useFakeTimers();
 
 const mockNavigation = { navigate: jest.fn() };
