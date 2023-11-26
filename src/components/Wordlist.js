@@ -68,6 +68,14 @@ export const Wordlist = () => {
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
+                icon='note-edit-outline'
+                onPress={() => console.log('edit tapped')}
+                size={16}
+                style={{ margin: 0 }}
+              />
+            </View>
+            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
+              <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
                   setWordlistEntryId(id);
