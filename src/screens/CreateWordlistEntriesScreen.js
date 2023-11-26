@@ -1,13 +1,11 @@
 import { CreateWordlistEntryForm } from '../components/CreateWordlistEntryForm';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
-import { useAuthToken } from '../hooks';
 import { Keyboard, Platform, StyleSheet, View } from 'react-native';
 import { Snackbar, Text, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 
 export const CreateWordlistEntriesScreen = ({ navigation }) => {
-  const { data } = useAuthToken(navigation);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { colors: { primary } } = useTheme();
   const [snackbarKey, setSnackbarKey] = useState(0);
@@ -30,8 +28,6 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
     };
   }, []);
 
-  if (!data) return null;
-
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Add Word</Text>
@@ -39,7 +35,6 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
       <CreateWordlistEntryForm
         setSnackbarKey={setSnackbarKey}
         setSnackbarVisible={setSnackbarVisible}
-        wordlistId={data.myWordlist.id}
       />
       <View style={styles.snackbarWrapper}>
         <Snackbar
