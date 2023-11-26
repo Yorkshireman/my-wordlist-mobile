@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { Text } from 'react-native-paper';
+import { useRoute } from '@react-navigation/native';
+import { useWordlistEntryId } from '../hooks';
 import { StyleSheet, View } from 'react-native';
 
 export const EditWordlistEntryScreen = ({ navigation }) => {
+  const { params: { id } } = useRoute();
+  const wordlistEntry = useWordlistEntryId(id);
+
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>

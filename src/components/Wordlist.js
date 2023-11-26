@@ -71,7 +71,7 @@ export const Wordlist = () => {
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
                 icon='note-edit-outline'
-                onPress={() => navigation.navigate('EditWordlistEntry')}
+                onPress={() => navigation.navigate('EditWordlistEntry', { id })}
                 size={16}
                 style={{ margin: 0 }}
               />
