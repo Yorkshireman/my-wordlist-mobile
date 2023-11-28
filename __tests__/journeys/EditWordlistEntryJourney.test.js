@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -9,6 +10,18 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react-nativ
 import { myWordlistQueryMock, wordlistEntryUpdate } from '../../mockedProviderMocks';
 
 jest.useFakeTimers();
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    WordlistEntry: {
+      fields: {
+        categories: {
+          merge: (_, incoming) => incoming
+        }
+      }
+    }
+  }
+});
 
 describe('Edit Wordlist Entry journey', () => {
   beforeEach(async () => {
@@ -24,7 +37,7 @@ describe('Edit Wordlist Entry journey', () => {
       const Stack = createNativeStackNavigator();
       render(
         <PaperProvider>
-          <MockedProvider addTypename mocks={[myWordlistQueryMock, wordlistEntryUpdate]}>
+          <MockedProvider addTypename cache={cache} mocks={[myWordlistQueryMock, wordlistEntryUpdate]}>
             <NavigationContainer>
               <Stack.Navigator>
                 <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
