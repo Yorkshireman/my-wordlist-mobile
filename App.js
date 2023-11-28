@@ -2,13 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customColours as colors } from './src/utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ErrorBoundary from 'react-native-error-boundary';
+import { getMainDefinition } from '@apollo/client/utilities';
 import { loadDevMessages } from '@apollo/client/dev';
 import { NavigationContainer } from '@react-navigation/native';
 import NetworkLogger from 'react-native-network-logger';
+import { removeTypename } from './src/utils/removeTypename';
 import { SafeAreaView } from 'react-native';
 import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
-import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
 import { CreateWordlistEntriesScreen, EditWordlistEntryScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
@@ -32,12 +34,22 @@ const authMiddleware = new ApolloLink(async (operation, forward) => {
   return forward(operation);
 });
 
+const cleanTypenameLink = new ApolloLink((operation, forward) => {
+  const definition = getMainDefinition(operation.query);
+
+  if (definition.kind === 'OperationDefinition' && definition.operation === 'mutation') {
+    operation.variables = removeTypename(operation.operationName, operation.variables);
+  }
+
+  return forward(operation);
+});
+
 const httpLink = new HttpLink({ uri: MY_WORDLIST_GRAPHQL_URL });
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   connectToDevTools: true,
-  link: concat(authMiddleware, httpLink)
+  link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink])
 });
 
 const networkLoggerIsEnabled = NETWORK_LOGGER === 'true';

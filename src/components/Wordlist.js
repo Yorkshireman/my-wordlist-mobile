@@ -74,6 +74,7 @@ export const Wordlist = () => {
                 onPress={() => navigation.navigate('EditWordlistEntry', { id })}
                 size={16}
                 style={{ margin: 0 }}
+                testID='edit-wordlist-entry-icon'
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
