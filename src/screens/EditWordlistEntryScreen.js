@@ -1,29 +1,49 @@
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { storeAuthToken } from '../utils';
-import { useMutation } from '@apollo/client';
+import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
-import { useWordlistEntryId } from '../hooks';
-import { WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { Chip, IconButton, Text } from 'react-native-paper';
+import { MY_WORDLIST, WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
 import { StyleSheet, View } from 'react-native';
+import { useMutation, useQuery } from '@apollo/client';
+
+const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
+  return {
+    authToken: currentAuthToken,
+    wordlistEntryUpdate: {
+      __typename: 'WordlistEntryUpdatePayload',
+      wordlistEntry: {
+        __typename: 'WordlistEntry',
+        ...wordlistEntry,
+        categories
+      }
+    }
+  };
+};
 
 export const EditWordlistEntryScreen = ({ navigation }) => {
+  const currentAuthToken = useAsyncStorage();
   const { params: { id } } = useRoute();
-  const wordlistEntry = useWordlistEntryId(id);
-  const { categories, word: { text } } = wordlistEntry;
+  const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
   const [wordlistEntryUpdate] = useMutation(WORDLIST_ENTRY_UPDATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
     }
   });
 
+  const wordlistEntry = entries.find(entry => entry.id === id);
+  const { categories, word: { text } } = wordlistEntry;
+
   const deleteCategory = _id => {
+    const categories = wordlistEntry.categories.filter(({ id }) => id !== _id);
+
     wordlistEntryUpdate({
+      optimisticResponse: buildOptimisticResponse({ categories, currentAuthToken, wordlistEntry }),
       variables: {
         id,
         wordlistEntryInput: {
-          categories: wordlistEntry.categories.filter(({ id }) => id !== _id)
+          categories
         }
       }
     });
