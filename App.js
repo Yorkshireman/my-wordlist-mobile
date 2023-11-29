@@ -47,7 +47,17 @@ const cleanTypenameLink = new ApolloLink((operation, forward) => {
 const httpLink = new HttpLink({ uri: MY_WORDLIST_GRAPHQL_URL });
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      WordlistEntry: {
+        fields: {
+          categories: {
+            merge: (_, incoming) => incoming
+          }
+        }
+      }
+    }
+  }),
   connectToDevTools: true,
   link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink])
 });
