@@ -109,10 +109,15 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
           <Text>separate multiple categories with a comma</Text>
         </HelperText>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row' }}>
         {categories.map(({ id, name }) => {
           return (
-            <Chip closeIconAccessibilityLabel={`delete-${name}-category`} compact key={id} onClose={() => deleteCategory(id)}>
+            <Chip
+              closeIconAccessibilityLabel={`delete-${name}-category`}
+              compact key={id}
+              onClose={() => deleteCategory(id)}
+              style={styles.chip}
+            >
               <Text variant='bodyLarge'>{name}</Text>
             </Chip>
           );
@@ -127,6 +132,9 @@ EditWordlistEntryScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  chip: {
+    marginRight: 5
+  },
   close: {
     fontSize: 16,
     position: 'absolute',
