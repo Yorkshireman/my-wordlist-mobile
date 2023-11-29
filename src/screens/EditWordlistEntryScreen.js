@@ -18,7 +18,7 @@ const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }
       wordlistEntry: {
         __typename: 'WordlistEntry',
         ...wordlistEntry,
-        categories
+        categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
       }
     }
   };
