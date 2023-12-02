@@ -90,16 +90,15 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
         </View>
       </View>
       <TextInput
+        aria-label='categories'
         autoCapitalize='none'
         dense
-        label='categories'
         maxLength={32}
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
         onSubmitEditing={() => addCategories()}
         right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
         spellCheck={false}
-        testID='categories-text-input-field'
         textTransform='lowercase'
         value={unparsedCategoriesText}
       />

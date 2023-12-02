@@ -1,18 +1,12 @@
 import { WORDLIST_ENTRY_UPDATE } from '../src/graphql-queries';
 
-export const wordlistEntryUpdate = {
+export const wordlistEntryUpdate = (requestCategories = [], responseCategories = []) => ({
   request: {
     query: WORDLIST_ENTRY_UPDATE,
     variables: {
       id: 'dd284553-a78c-447f-baa3-832515e506d6',
       wordlistEntryInput: {
-        categories: [
-          {
-            __typename: 'Category',
-            id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
-            name: 'noun'
-          }
-        ]
+        categories: requestCategories
       }
     }
   },
@@ -23,13 +17,7 @@ export const wordlistEntryUpdate = {
         __typename: 'WordlistEntryUpdatePayload',
         wordlistEntry: {
           __typename: 'WordlistEntry',
-          categories: [
-            {
-              __typename: 'Category',
-              id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
-              name: 'noun'
-            }
-          ],
+          categories: responseCategories,
           createdAt: '2023-11-25T15:41:35Z',
           id: 'dd284553-a78c-447f-baa3-832515e506d6',
           word: {
@@ -44,4 +32,4 @@ export const wordlistEntryUpdate = {
       }
     }
   }
-};
+});
