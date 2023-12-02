@@ -108,7 +108,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
           <Text>separate multiple categories with a comma</Text>
         </HelperText>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.categoryChipsWrapper}>
         {categories.map(({ id, name }) => {
           return (
             <Chip
@@ -131,6 +131,11 @@ EditWordlistEntryScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  categoryChipsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 5
+  },
   chip: {
     marginRight: 5
   },
