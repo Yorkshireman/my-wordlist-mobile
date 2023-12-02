@@ -1,4 +1,3 @@
-import { AddCategories } from './AddCategories';
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
@@ -15,7 +14,6 @@ export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
   const navigation = useNavigation();
-  const [showAddCategories, setShowAddCategories] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
@@ -57,15 +55,6 @@ export const Wordlist = () => {
               <Text variant={'bodyLarge'}>{text}</Text>
             </View>
             <View style={styles.addCategories.wrapper}>
-              <IconButton
-                icon='plus-circle-outline'
-                onPress={() => {
-                  setWordlistEntryId(id);
-                  setShowAddCategories(true);
-                }}
-                size={20}
-                style={styles.addCategories.icon}
-              />
               <Categories categories={categories} />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
@@ -91,12 +80,6 @@ export const Wordlist = () => {
           </View>
         );
       })}
-      {showAddCategories && <AddCategories
-        id={wordlistEntryId}
-        onDismiss={() => setShowAddCategories(false)}
-        setVisible={setShowAddCategories}
-        visible={showAddCategories}
-      />}
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
