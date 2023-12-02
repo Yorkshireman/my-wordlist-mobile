@@ -11,18 +11,6 @@ import { myWordlistQueryMock, wordlistEntryUpdate } from '../../mockedProviderMo
 
 jest.useFakeTimers();
 
-const cache = new InMemoryCache({
-  typePolicies: {
-    WordlistEntry: {
-      fields: {
-        categories: {
-          merge: (_, incoming) => incoming
-        }
-      }
-    }
-  }
-});
-
 describe('Edit Wordlist Entry journey', () => {
   let requestCategories;
   let responseCategories;
@@ -34,6 +22,18 @@ describe('Edit Wordlist Entry journey', () => {
       }
 
       return Promise.resolve(null);
+    });
+
+    const cache = new InMemoryCache({
+      typePolicies: {
+        WordlistEntry: {
+          fields: {
+            categories: {
+              merge: (_, incoming) => incoming
+            }
+          }
+        }
+      }
     });
 
     await waitFor(() => {
@@ -129,6 +129,23 @@ describe('Edit Wordlist Entry journey', () => {
         expect(screen.getByText('tech')).toBeOnTheScreen();
       });
     });
+
+    describe('after tapping back to the homescreen', () => {
+      beforeEach(async () => {
+        await waitFor(() => {
+          fireEvent.press(screen.getByText('Close'));
+        });
+      });
+
+      test('all expected categories are on the screen', async () => {
+        await waitFor(() => {
+          expect(screen.getByText('verb')).toBeOnTheScreen();
+          expect(screen.getByText('industry')).toBeOnTheScreen();
+          expect(screen.getByText('noun')).toBeOnTheScreen();
+          expect(screen.getByText('tech')).toBeOnTheScreen();
+        });
+      });
+    });
   });
 
   describe('after deleting a category from a wordlist entry', () => {
@@ -167,7 +184,7 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test.only('expected categories are on the screen', async () => {
+      test('expected categories are on the screen', async () => {
         await waitFor(() => {
           expect(screen.getByText('noun')).toBeOnTheScreen();
         });
