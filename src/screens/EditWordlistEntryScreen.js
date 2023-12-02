@@ -76,7 +76,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
       <Text onPress={() => navigation.navigate('Home')} style={styles.close}>Close</Text>
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View style={styles.wordWrapper}>
         <View style={{ justifyContent: 'center' }}>
           <Text variant={'titleLarge'}>{text}</Text>
         </View>
@@ -161,6 +161,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 32,
     textAlign: 'center'
+  },
+  wordWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 12
   },
   wrapper: {
     justifyContent: 'flex-start',
