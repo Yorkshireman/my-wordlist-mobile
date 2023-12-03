@@ -18,7 +18,7 @@ describe('HomeScreen', () => {
     beforeEach(() => {
       render(
         <NavigationContainer>
-          <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
+          <MockedProvider addTypename mocks={[myWordlistQueryMock]}>
             <HomeScreen navigation={mockNavigation} />
           </MockedProvider>
         </NavigationContainer>
