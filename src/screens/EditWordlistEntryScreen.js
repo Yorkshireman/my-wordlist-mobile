@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     gap: 5
   },
   chip: {
-    marginRight: 5
+    marginRight: 2.5
   },
   close: {
     fontSize: 16,
