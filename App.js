@@ -4,17 +4,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ErrorBoundary from 'react-native-error-boundary';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { loadDevMessages } from '@apollo/client/dev';
+import { MY_WORDLIST_GRAPHQL_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
-import NetworkLogger from 'react-native-network-logger';
 import { removeTypename } from './src/utils/removeTypename';
 import { SafeAreaView } from 'react-native';
-import { startNetworkLogging } from 'react-native-network-logger';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
 import { CreateWordlistEntriesScreen, EditWordlistEntryScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
-import { MY_WORDLIST_GRAPHQL_URL, NETWORK_LOGGER } from '@env';
 
 if (__DEV__) {
   console.log('Running in dev mode.');
@@ -62,8 +60,6 @@ const client = new ApolloClient({
   link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink])
 });
 
-const networkLoggerIsEnabled = NETWORK_LOGGER === 'true';
-
 const Stack = createNativeStackNavigator();
 
 const theme = {
@@ -72,7 +68,6 @@ const theme = {
 };
 
 export default function App() {
-  networkLoggerIsEnabled && startNetworkLogging();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ErrorBoundary FallbackComponent={Error}>
@@ -95,7 +90,6 @@ export default function App() {
                 </Stack.Group>
               </Stack.Navigator>
               <StatusBar style="auto" />
-              {networkLoggerIsEnabled && <NetworkLogger />}
             </NavigationContainer>
           </PaperProvider>
         </ApolloProvider>
