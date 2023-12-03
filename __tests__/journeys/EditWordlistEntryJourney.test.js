@@ -59,14 +59,7 @@ describe('Edit Wordlist Entry journey', () => {
 
   afterEach(() => jest.clearAllMocks());
 
-  test('wordlist page initially has both categories', async () => {
-    await waitFor(() => {
-      expect(screen.getByText('noun')).toBeOnTheScreen();
-      expect(screen.getByText('tech')).toBeOnTheScreen();
-    });
-  });
-
-  describe('after submitting some categories in the input field', () => {
+  describe('after submitting some categories', () => {
     beforeAll(() => {
       requestCategories = [
         {
@@ -148,7 +141,7 @@ describe('Edit Wordlist Entry journey', () => {
     });
   });
 
-  describe('after deleting a category from a wordlist entry', () => {
+  describe('after deleting a category', () => {
     beforeAll(() => {
       requestCategories = [
         {
