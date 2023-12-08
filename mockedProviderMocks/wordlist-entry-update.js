@@ -1,12 +1,13 @@
 import { WORDLIST_ENTRY_UPDATE } from '../src/graphql-queries';
 
-export const wordlistEntryUpdate = (requestCategories = [], responseCategories = []) => ({
+export const wordlistEntryUpdate = (requestCategories, responseCategories, requestWord, responseWord) => ({
   request: {
     query: WORDLIST_ENTRY_UPDATE,
     variables: {
       id: 'dd284553-a78c-447f-baa3-832515e506d6',
       wordlistEntryInput: {
-        categories: requestCategories
+        categories: requestCategories,
+        word: requestWord
       }
     }
   },
@@ -20,7 +21,7 @@ export const wordlistEntryUpdate = (requestCategories = [], responseCategories =
           categories: responseCategories,
           createdAt: '2023-11-25T15:41:35Z',
           id: 'dd284553-a78c-447f-baa3-832515e506d6',
-          word: {
+          word: responseWord || {
             __typename: 'Word',
             createdAt: '2023-10-29T19:11:14Z',
             id: '4ecf7f86-c394-4a66-8152-1100af8a6cc7',

@@ -22,7 +22,7 @@ jest.mock('@react-navigation/native', () => ({
 
 jest.useFakeTimers();
 
-describe('Edit Wordlist Entry journey', () => {
+describe('EditWordlistEntryScreen', () => {
   beforeEach(async () => {
     AsyncStorage.getItem.mockImplementation(key => {
       if (key === 'myWordlistAuthToken') {
@@ -44,30 +44,32 @@ describe('Edit Wordlist Entry journey', () => {
 
   afterEach(() => jest.clearAllMocks());
 
-  describe('EditWordlistEntryScreen', () => {
-    test('displays page title', async () => {
-      await waitFor(() => expect(screen.getByText('Edit')).toBeOnTheScreen());
-    });
+  test('displays page title', async () => {
+    await waitFor(() => expect(screen.getByText('Edit')).toBeOnTheScreen());
+  });
 
-    test('displays Close', async () => {
-      await waitFor(() => expect(screen.getByText('Close')).toBeOnTheScreen());
-    });
+  test('displays Close', async () => {
+    await waitFor(() => expect(screen.getByText('Close')).toBeOnTheScreen());
+  });
 
-    test('displays word', async () => {
-      await waitFor(() => expect(screen.getByText('phone')).toBeOnTheScreen());
-    });
+  test('displays word', async () => {
+    await waitFor(() => expect(screen.getByText('phone')).toBeOnTheScreen());
+  });
 
-    test('displays input field', async () => {
-      await waitFor(() => expect(screen.getByLabelText('categories')).toBeOnTheScreen());
-    });
+  test('displays edit word button', async () => {
+    await waitFor(() => expect(screen.getByTestId('edit-word-button')).toBeOnTheScreen());
+  });
 
-    test('displays helper text', async () => {
-      await waitFor(() => expect(screen.getByText('separate multiple categories with a comma')).toBeOnTheScreen());
-    });
+  test('displays input field', async () => {
+    await waitFor(() => expect(screen.getByLabelText('categories')).toBeOnTheScreen());
+  });
 
-    test('displays categories', async () => {
-      await waitFor(() => expect(screen.getByText('noun')).toBeOnTheScreen());
-      await waitFor(() => expect(screen.getByText('tech')).toBeOnTheScreen());
-    });
+  test('displays helper text', async () => {
+    await waitFor(() => expect(screen.getByText('separate multiple categories with a comma')).toBeOnTheScreen());
+  });
+
+  test('displays categories', async () => {
+    await waitFor(() => expect(screen.getByText('noun')).toBeOnTheScreen());
+    await waitFor(() => expect(screen.getByText('tech')).toBeOnTheScreen());
   });
 });

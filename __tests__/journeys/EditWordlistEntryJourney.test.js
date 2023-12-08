@@ -14,6 +14,8 @@ jest.useFakeTimers();
 describe('Edit Wordlist Entry journey', () => {
   let requestCategories;
   let responseCategories;
+  let requestWord;
+  let responseWord;
 
   beforeEach(async () => {
     AsyncStorage.getItem.mockImplementation(key => {
@@ -43,7 +45,7 @@ describe('Edit Wordlist Entry journey', () => {
           <MockedProvider
             addTypename
             cache={cache}
-            mocks={[myWordlistQueryMock, wordlistEntryUpdate(requestCategories, responseCategories)]}
+            mocks={[myWordlistQueryMock, wordlistEntryUpdate(requestCategories, responseCategories, requestWord, responseWord)]}
           >
             <NavigationContainer>
               <Stack.Navigator>
@@ -55,9 +57,75 @@ describe('Edit Wordlist Entry journey', () => {
         </PaperProvider>
       );
     });
+
+    await waitFor(() => {
+      const user = userEvent.setup();
+      user.press(screen.getByTestId('edit-wordlist-entry-icon'));
+    });
   });
 
   afterEach(() => jest.clearAllMocks());
+
+  describe('after submitting a word change', () => {
+    beforeAll(() => {
+      requestWord = {
+        text: 'phones'
+      };
+
+      responseWord = {
+        __typename: 'Word',
+        createdAt: '2023-12-03T18:48:10Z',
+        id: 'f476c9b9-2417-4bdf-b3d0-3bf9c6ec4429',
+        text: 'phones'
+      };
+
+      responseCategories = [
+        {
+          __typename: 'Category',
+          id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
+          name: 'noun'
+        },
+        {
+          __typename: 'Category',
+          id: 'f7302234-57b4-4234-b9c7-5483a84e6bf7',
+          name: 'tech'
+        }
+      ];
+    });
+
+    afterAll(() => {
+      requestWord = undefined;
+      responseWord = undefined;
+      responseCategories = undefined;
+    });
+
+    beforeEach(async () => {
+      const editWordButton = await waitFor(() => screen.getByTestId('edit-word-button'));
+      const user = userEvent.setup();
+      await user.press(editWordButton);
+      const wordInput = await waitFor(() => screen.getByLabelText('word'));
+      await user.type(wordInput, 's');
+      fireEvent(wordInput, 'onSubmitEditing');
+    });
+
+    test('the updated word is on the screen', async () => {
+      await waitFor(() => expect(screen.getByText('phones')).toBeOnTheScreen());
+    });
+
+    test('the edit word button is on the screen', async () => {
+      await waitFor(() => expect(screen.getByTestId('edit-word-button')).toBeOnTheScreen());
+    });
+
+    test('the word input box is not on the screen', async () => {
+      await waitFor(() => expect(screen.queryByLabelText('word')).toBeNull());
+    });
+
+    test.each(['noun', 'tech'])('"%s" category is on the screen', async category => {
+      await waitFor(() => {
+        expect(screen.getByText(category)).toBeOnTheScreen();
+      });
+    });
+  });
 
   describe('after submitting some categories', () => {
     beforeAll(() => {
@@ -104,22 +172,20 @@ describe('Edit Wordlist Entry journey', () => {
       ];
     });
 
-    beforeEach(async () => {
-      await waitFor(() => {
-        fireEvent.press(screen.getByTestId('edit-wordlist-entry-icon'));
-      });
+    afterAll(() => {
+      requestCategories = undefined;
+      responseCategories = undefined;
+    });
 
+    beforeEach(async () => {
       const categoriesInput = await waitFor(() => screen.getByLabelText('categories'));
       const user = userEvent.setup();
       await user.type(categoriesInput, 'verb, industry', { submitEditing: true });
     });
 
-    test('the categories are added to the screen', async () => {
+    test.each(['verb', 'industry', 'noun', 'tech'])('"%s" category is on the screen', async category => {
       await waitFor(() => {
-        expect(screen.getByText('verb')).toBeOnTheScreen();
-        expect(screen.getByText('industry')).toBeOnTheScreen();
-        expect(screen.getByText('noun')).toBeOnTheScreen();
-        expect(screen.getByText('tech')).toBeOnTheScreen();
+        expect(screen.getByText(category)).toBeOnTheScreen();
       });
     });
 
@@ -130,12 +196,9 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test('all expected categories are on the screen', async () => {
+      test.each(['verb', 'industry', 'noun', 'tech'])('"%s" category is on the screen', async category => {
         await waitFor(() => {
-          expect(screen.getByText('verb')).toBeOnTheScreen();
-          expect(screen.getByText('industry')).toBeOnTheScreen();
-          expect(screen.getByText('noun')).toBeOnTheScreen();
-          expect(screen.getByText('tech')).toBeOnTheScreen();
+          expect(screen.getByText(category)).toBeOnTheScreen();
         });
       });
     });
@@ -160,13 +223,26 @@ describe('Edit Wordlist Entry journey', () => {
       ];
     });
 
-    beforeEach(async () => {
-      await waitFor(() => {
-        fireEvent.press(screen.getByTestId('edit-wordlist-entry-icon'));
-      });
+    afterAll(() => {
+      requestCategories = undefined;
+      responseCategories = undefined;
+    });
 
+    beforeEach(async () => {
       await waitFor(async () => {
         fireEvent.press(screen.getByLabelText('delete-tech-category'));
+      });
+    });
+
+    test('"noun" category is on the screen', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('noun')).toBeOnTheScreen();
+      });
+    });
+
+    test('"tech" category is not on the screen', async () => {
+      await waitFor(() => {
+        expect(screen.queryByText('tech')).toBeNull();
       });
     });
 
@@ -177,12 +253,16 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test('expected categories are on the screen', async () => {
+      test('"noun" category is on the screen', async () => {
         await waitFor(() => {
           expect(screen.getByText('noun')).toBeOnTheScreen();
         });
+      });
 
-        expect(screen.queryByText('tech')).toBeNull();
+      test('"tech" category is not on the screen', async () => {
+        await waitFor(() => {
+          expect(screen.queryByText('tech')).toBeNull();
+        });
       });
     });
   });
