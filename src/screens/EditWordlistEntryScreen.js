@@ -1,14 +1,15 @@
 import { ClearIcon } from '../components';
+import { MY_WORDLIST } from '../graphql-queries';
+import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
+import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
+import { useWordlistEntryUpdate } from '../hooks';
 import { Chip, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
-import { MY_WORDLIST, WORDLIST_ENTRY_UPDATE } from '../graphql-queries';
-import { parseCategories, storeAuthToken } from '../utils';
 import { StyleSheet, View } from 'react-native';
-import { useMutation, useQuery } from '@apollo/client';
 
 const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
   return {
@@ -31,11 +32,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
   const [editWordInputFieldOpen, setEditWordInputFieldOpen] = useState(false);
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   const [wordInputValue, setWordInputValue] = useState();
-  const [wordlistEntryUpdate] = useMutation(WORDLIST_ENTRY_UPDATE, {
-    onCompleted: ({ authToken }) => {
-      storeAuthToken(authToken);
-    }
-  });
+  const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { categories, word: { text } } = wordlistEntry;
@@ -43,6 +40,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
   const addCategories = () => {
     const existingCategories = categories;
     const newCategories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+
     wordlistEntryUpdate({
       optimisticResponse: buildOptimisticResponse({
         categories: [...existingCategories, ...newCategories.map(cat => ({ ...cat, id: `${cat.name}-id` }))],
