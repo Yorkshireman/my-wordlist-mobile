@@ -1,4 +1,3 @@
-import { ClearIcon } from '../components';
 import { MY_WORDLIST } from '../graphql-queries';
 import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
@@ -9,6 +8,7 @@ import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
 import { Chip, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { ClearIcon, EditWordForm } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
@@ -17,7 +17,6 @@ const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }
     wordlistEntryUpdate: {
       __typename: 'WordlistEntryUpdatePayload',
       wordlistEntry: {
-        __typename: 'WordlistEntry',
         ...wordlistEntry,
         categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
       }
@@ -29,9 +28,8 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
   const { params: { id } } = useRoute();
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
-  const [editWordInputFieldOpen, setEditWordInputFieldOpen] = useState(false);
+  const [editWordFormVisible, setEditWordFormVisible] = useState(false);
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  const [wordInputValue, setWordInputValue] = useState();
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const wordlistEntry = entries.find(entry => entry.id === id);
@@ -72,59 +70,13 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
     });
   };
 
-  const updateWord = () => {
-    wordlistEntryUpdate({
-      optimisticResponse: {
-        authToken: currentAuthToken,
-        wordlistEntryUpdate: {
-          __typename: 'WordlistEntryUpdatePayload',
-          wordlistEntry: {
-            ...wordlistEntry,
-            word: {
-              __typename: 'Word',
-              createdAt: 'temp-createdAt',
-              id: `${wordInputValue.trim()}-temp-id`,
-              text: wordInputValue.trim()
-            },
-            wordId: `${wordInputValue.trim()}-temp-id`
-          }
-        }
-      },
-      variables: {
-        id,
-        wordlistEntryInput: {
-          word: {
-            text: wordInputValue.trim()
-          }
-        }
-      }
-    });
-  };
-
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
       <Text onPress={() => navigation.navigate('Home')} style={styles.close}>Close</Text>
-      {editWordInputFieldOpen ?
-        <View style={styles.wordInputWrapper}>
-          <TextInput
-            aria-label='word'
-            autoCapitalize='none'
-            autoFocus
-            dense
-            maxLength={32}
-            mode='outlined'
-            onChangeText={text => setWordInputValue(text)}
-            onSubmitEditing={() => {
-              wordInputValue !== text && updateWord();
-              setEditWordInputFieldOpen(false);
-            }}
-            right={ClearIcon(() => setWordInputValue(''), wordInputValue.length)}
-            spellCheck={false}
-            textTransform='lowercase'
-            value={wordInputValue}
-          />
-        </View> :
+      {editWordFormVisible ?
+        <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
+        :
         <View style={styles.wordWrapper}>
           <View style={{ justifyContent: 'center' }}>
             <Text variant={'titleLarge'}>{text}</Text>
@@ -132,10 +84,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
           <View style={{ justifyContent: 'center' }}>
             <IconButton
               icon='note-edit-outline'
-              onPress={() => {
-                setWordInputValue(text);
-                setEditWordInputFieldOpen(true);
-              }}
+              onPress={() => setEditWordFormVisible(true)}
               size={22}
               style={{ margin: 0 }}
               testID='edit-word-button'
@@ -214,9 +163,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 32,
     textAlign: 'center'
-  },
-  wordInputWrapper: {
-    marginBottom: 16
   },
   wordWrapper: {
     flexDirection: 'row',
