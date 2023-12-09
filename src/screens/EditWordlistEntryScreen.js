@@ -1,5 +1,4 @@
 import { MY_WORDLIST } from '../graphql-queries';
-import { parseCategories } from '../utils';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
@@ -7,8 +6,8 @@ import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
-import { Chip, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
-import { ClearIcon, EditWordForm } from '../components';
+import { AddCategoriesForm, EditWordForm } from '../components';
+import { Chip, IconButton, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
@@ -26,35 +25,13 @@ const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }
 
 export const EditWordlistEntryScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
-  const { params: { id } } = useRoute();
-  const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
-  const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
+  const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
+  const { params: { id } } = useRoute();
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { categories, word: { text } } = wordlistEntry;
-
-  const addCategories = () => {
-    const existingCategories = categories;
-    const newCategories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-
-    wordlistEntryUpdate({
-      optimisticResponse: buildOptimisticResponse({
-        categories: [...existingCategories, ...newCategories.map(cat => ({ ...cat, id: `${cat.name}-id` }))],
-        currentAuthToken,
-        wordlistEntry
-      }),
-      variables: {
-        id,
-        wordlistEntryInput: {
-          categories: [...existingCategories, ...newCategories]
-        }
-      }
-    });
-
-    setUnparsedCategoriesText('');
-  };
 
   const deleteCategory = _id => {
     const categories = wordlistEntry.categories.filter(({ id }) => id !== _id);
@@ -91,25 +68,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
             />
           </View>
         </View>}
-      <TextInput
-        aria-label='categories'
-        autoCapitalize='none'
-        dense
-        maxLength={32}
-        mode='outlined'
-        onChangeText={text => setUnparsedCategoriesText(text)}
-        onSubmitEditing={() => addCategories()}
-        right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
-        spellCheck={false}
-        textTransform='lowercase'
-        value={unparsedCategoriesText}
-      />
-      <View style={styles.helperTextWrapper}>
-        <IconButton icon='information-outline' size={16} style={styles.helperTextIcon} />
-        <HelperText style={styles.helperText} variant='bodySmall'>
-          <Text>separate multiple categories with a comma</Text>
-        </HelperText>
-      </View>
+      <AddCategoriesForm />
       <View style={styles.categoryChipsWrapper}>
         {categories.map(({ id, name }) => {
           return (
@@ -146,17 +105,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     top: 20
-  },
-  helperText: {
-    marginLeft: -16
-  },
-  helperTextIcon: {
-    margin: 0
-  },
-  helperTextWrapper: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: 16
   },
   title: {
     fontSize: 16,

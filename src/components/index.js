@@ -1,3 +1,4 @@
+export { AddCategoriesForm } from './AddCategoriesForm';
 export { ClearIcon } from './ClearIcon';
 export { CreateWordlistEntryForm } from './CreateWordlistEntryForm';
 export { EditWordForm } from './EditWordForm';
