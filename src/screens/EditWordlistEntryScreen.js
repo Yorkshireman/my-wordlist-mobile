@@ -10,19 +10,6 @@ import { AddCategoriesForm, EditWordForm } from '../components';
 import { Chip, IconButton, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
-const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
-  return {
-    authToken: currentAuthToken,
-    wordlistEntryUpdate: {
-      __typename: 'WordlistEntryUpdatePayload',
-      wordlistEntry: {
-        ...wordlistEntry,
-        categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
-      }
-    }
-  };
-};
-
 export const EditWordlistEntryScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
@@ -37,7 +24,16 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
     const categories = wordlistEntry.categories.filter(({ id }) => id !== _id);
 
     wordlistEntryUpdate({
-      optimisticResponse: buildOptimisticResponse({ categories, currentAuthToken, wordlistEntry }),
+      optimisticResponse: {
+        authToken: currentAuthToken,
+        wordlistEntryUpdate: {
+          __typename: 'WordlistEntryUpdatePayload',
+          wordlistEntry: {
+            ...wordlistEntry,
+            categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
+          }
+        }
+      },
       variables: {
         id,
         wordlistEntryInput: {

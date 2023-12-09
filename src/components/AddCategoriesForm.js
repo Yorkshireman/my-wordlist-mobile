@@ -9,19 +9,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 
-const buildOptimisticResponse = ({ categories, currentAuthToken, wordlistEntry }) => {
-  return {
-    authToken: currentAuthToken,
-    wordlistEntryUpdate: {
-      __typename: 'WordlistEntryUpdatePayload',
-      wordlistEntry: {
-        ...wordlistEntry,
-        categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
-      }
-    }
-  };
-};
-
 export const AddCategoriesForm = () => {
   const currentAuthToken = useAsyncStorage();
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
@@ -33,13 +20,19 @@ export const AddCategoriesForm = () => {
     const wordlistEntry = entries.find(entry => entry.id === id);
     const { categories: existingCategories } = wordlistEntry;
     const newCategories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+    const categories = [...existingCategories, ...newCategories.map(cat => ({ ...cat, id: `${cat.name}-id` }))];
 
     wordlistEntryUpdate({
-      optimisticResponse: buildOptimisticResponse({
-        categories: [...existingCategories, ...newCategories.map(cat => ({ ...cat, id: `${cat.name}-id` }))],
-        currentAuthToken,
-        wordlistEntry
-      }),
+      optimisticResponse: {
+        authToken: currentAuthToken,
+        wordlistEntryUpdate: {
+          __typename: 'WordlistEntryUpdatePayload',
+          wordlistEntry: {
+            ...wordlistEntry,
+            categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
+          }
+        }
+      },
       variables: {
         id,
         wordlistEntryInput: {
