@@ -48,7 +48,7 @@ const Word = ({ setEditWordFormVisible, text }) => {
   );
 };
 
-export const EditWordlistEntryScreen = ({ navigation }) => {
+export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
@@ -59,7 +59,9 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
   const { categories, word: { text } } = wordlistEntry;
 
   const deleteCategory = _id => {
-    const categories = wordlistEntry.categories.filter(({ id }) => id !== _id);
+    const categories = wordlistEntry
+      .categories.filter(({ id }) => id !== _id)
+      .map(cat => ({ __typename: 'Category', ...cat }));
 
     wordlistEntryUpdate({
       optimisticResponse: {
@@ -68,7 +70,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
           __typename: 'WordlistEntryUpdatePayload',
           wordlistEntry: {
             ...wordlistEntry,
-            categories: categories.map(cat => ({ __typename: 'Category', ...cat }))
+            categories
           }
         }
       },
@@ -84,7 +86,7 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
-      <Text onPress={() => navigation.navigate('Home')} style={styles.close}>Close</Text>
+      <Text onPress={() => navigate('Home')} style={styles.close}>Close</Text>
       {editWordFormVisible ?
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
         :
