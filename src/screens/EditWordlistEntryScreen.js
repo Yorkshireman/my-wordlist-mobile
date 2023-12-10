@@ -58,9 +58,9 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { categories, word: { text } } = wordlistEntry;
 
-  const deleteCategory = _id => {
-    const categories = wordlistEntry
-      .categories.filter(({ id }) => id !== _id)
+  const deleteCategory = selectedCategoryId => {
+    const categoriesMinusSelected = categories
+      .filter(({ id }) => id !== selectedCategoryId)
       .map(cat => ({ __typename: 'Category', ...cat }));
 
     wordlistEntryUpdate({
@@ -70,14 +70,14 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
           __typename: 'WordlistEntryUpdatePayload',
           wordlistEntry: {
             ...wordlistEntry,
-            categories
+            categories: categoriesMinusSelected
           }
         }
       },
       variables: {
         id,
         wordlistEntryInput: {
-          categories
+          categories: categoriesMinusSelected
         }
       }
     });
