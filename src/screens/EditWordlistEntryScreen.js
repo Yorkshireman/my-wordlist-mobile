@@ -10,6 +10,44 @@ import { AddCategoriesForm, EditWordForm } from '../components';
 import { Chip, IconButton, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
+const Categories = ({ categories, deleteCategory }) => {
+  return (
+    <View style={styles.categoryChipsWrapper}>
+      {categories.map(({ id, name }) => {
+        return (
+          <Chip
+            closeIconAccessibilityLabel={`delete-${name}-category`}
+            compact key={id}
+            onClose={() => deleteCategory(id)}
+            style={styles.chip}
+          >
+            <Text variant='bodyLarge'>{name}</Text>
+          </Chip>
+        );
+      })}
+    </View>
+  );
+};
+
+const Word = ({ setEditWordFormVisible, text }) => {
+  return (
+    <View style={styles.wordWrapper}>
+      <View style={{ justifyContent: 'center' }}>
+        <Text variant={'titleLarge'}>{text}</Text>
+      </View>
+      <View style={{ justifyContent: 'center' }}>
+        <IconButton
+          icon='note-edit-outline'
+          onPress={() => setEditWordFormVisible(true)}
+          size={22}
+          style={{ margin: 0 }}
+          testID='edit-word-button'
+        />
+      </View>
+    </View>
+  );
+};
+
 export const EditWordlistEntryScreen = ({ navigation }) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
@@ -50,41 +88,26 @@ export const EditWordlistEntryScreen = ({ navigation }) => {
       {editWordFormVisible ?
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
         :
-        <View style={styles.wordWrapper}>
-          <View style={{ justifyContent: 'center' }}>
-            <Text variant={'titleLarge'}>{text}</Text>
-          </View>
-          <View style={{ justifyContent: 'center' }}>
-            <IconButton
-              icon='note-edit-outline'
-              onPress={() => setEditWordFormVisible(true)}
-              size={22}
-              style={{ margin: 0 }}
-              testID='edit-word-button'
-            />
-          </View>
-        </View>}
+        <Word setEditWordFormVisible={setEditWordFormVisible} text={text} />
+      }
       <AddCategoriesForm />
-      <View style={styles.categoryChipsWrapper}>
-        {categories.map(({ id, name }) => {
-          return (
-            <Chip
-              closeIconAccessibilityLabel={`delete-${name}-category`}
-              compact key={id}
-              onClose={() => deleteCategory(id)}
-              style={styles.chip}
-            >
-              <Text variant='bodyLarge'>{name}</Text>
-            </Chip>
-          );
-        })}
-      </View>
+      <Categories categories={categories} deleteCategory={deleteCategory} />
     </View>
   );
 };
 
+Categories.propTypes = {
+  categories: PropTypes.array.isRequired,
+  deleteCategory: PropTypes.func.isRequired
+};
+
 EditWordlistEntryScreen.propTypes = {
   navigation: PropTypes.object.isRequired
+};
+
+Word.propTypes = {
+  setEditWordFormVisible: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
