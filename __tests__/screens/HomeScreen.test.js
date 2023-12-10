@@ -18,7 +18,7 @@ describe('HomeScreen', () => {
     beforeEach(() => {
       render(
         <NavigationContainer>
-          <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
+          <MockedProvider addTypename mocks={[myWordlistQueryMock]}>
             <HomeScreen navigation={mockNavigation} />
           </MockedProvider>
         </NavigationContainer>
@@ -107,7 +107,7 @@ describe('HomeScreen', () => {
 
     test('calls navigate() with CreateWordlistEntries', async () => {
       await waitFor(() => {
-        expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateWordlistEntries');
+        expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateWordlistEntries', { wordlistId: 'de728808-3df2-4dfc-adf9-5981ee5f795a' });
       });
     });
   });

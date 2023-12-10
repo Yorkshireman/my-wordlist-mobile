@@ -1,8 +1,8 @@
-import { AddCategories } from './AddCategories';
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useAsyncStorage } from '../hooks';
+import { useNavigation } from '@react-navigation/native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -13,7 +13,7 @@ export const Wordlist = () => {
   const { colors } = useTheme();
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
-  const [showAddCategories, setShowAddCategories] = useState(false);
+  const navigation = useNavigation();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
@@ -44,7 +44,7 @@ export const Wordlist = () => {
     return calculateLongestWordLength(data.myWordlist.entries);
   }, [data.myWordlist.entries]);
 
-  const wordFlexBasis = longestWordLength * 9;
+  const wordFlexBasis = longestWordLength * 10;
 
   return (
     <ScrollView>
@@ -55,16 +55,16 @@ export const Wordlist = () => {
               <Text variant={'bodyLarge'}>{text}</Text>
             </View>
             <View style={styles.addCategories.wrapper}>
-              <IconButton
-                icon='plus-circle-outline'
-                onPress={() => {
-                  setWordlistEntryId(id);
-                  setShowAddCategories(true);
-                }}
-                size={20}
-                style={styles.addCategories.icon}
-              />
               <Categories categories={categories} />
+            </View>
+            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
+              <IconButton
+                icon='note-edit-outline'
+                onPress={() => navigation.navigate('EditWordlistEntry', { id })}
+                size={16}
+                style={{ margin: 0 }}
+                testID='edit-wordlist-entry-icon'
+              />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
               <IconButton
@@ -80,12 +80,6 @@ export const Wordlist = () => {
           </View>
         );
       })}
-      {showAddCategories && <AddCategories
-        id={wordlistEntryId}
-        onDismiss={() => setShowAddCategories(false)}
-        setVisible={setShowAddCategories}
-        visible={showAddCategories}
-      />}
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);

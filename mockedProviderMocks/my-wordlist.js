@@ -24,8 +24,8 @@ export const myWordlistQueryMock = {
                 name: 'tech'
               }
             ],
-            createdAt: '2023-11-20T02:52:30Z',
-            id: 'ac6adf87-5b0c-433f-8efc-7e090c030aef',
+            createdAt: '2023-11-25T15:41:35Z',
+            id: 'dd284553-a78c-447f-baa3-832515e506d6',
             word: {
               __typename: 'Word',
               createdAt: '2023-10-29T19:11:14Z',
