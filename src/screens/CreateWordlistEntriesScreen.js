@@ -1,4 +1,4 @@
-import { CreateWordlistEntryForm } from '../components/CreateWordlistEntryForm';
+import { CreateWordlistEntryForm } from '../components';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { Keyboard, Platform, StyleSheet, View } from 'react-native';
