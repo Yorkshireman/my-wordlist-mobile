@@ -1,15 +1,17 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
-import PropTypes from 'prop-types';
+import { snackbarStateVar } from '../reactiveVars';
+import { useReactiveVar } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible }) => {
+export const CreateWordlistEntryForm = () => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
+  const snackbarState = useReactiveVar(snackbarStateVar);
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
@@ -35,8 +37,7 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible }) 
 
     setUnparsedCategoriesText('');
     setWordText('');
-    setSnackbarKey(prevKey => prevKey + 1);
-    setSnackbarVisible(true);
+    snackbarStateVar({ ...snackbarState, key: snackbarState.key + 1, visible: true });
   };
 
   return (
@@ -79,11 +80,6 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible }) 
       </Button>
     </>
   );
-};
-
-CreateWordlistEntryForm.propTypes = {
-  setSnackbarKey: PropTypes.func,
-  setSnackbarVisible: PropTypes.func
 };
 
 const styles = StyleSheet.create({
