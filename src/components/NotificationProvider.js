@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
+import { useSnackbar } from '../hooks';
 import { Keyboard, Platform, StyleSheet, View } from 'react-native';
 import { Snackbar, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 
 export const NotificationProvider = ({ children }) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const { hideSnackbar } = useSnackbar();
   const { colors: { primary } } = useTheme();
-  const snackbarState = useReactiveVar(snackbarStateVar);
+  const { duration, key, message, visible } = useReactiveVar(snackbarStateVar);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -27,8 +29,6 @@ export const NotificationProvider = ({ children }) => {
     };
   }, []);
 
-  const { duration, key, message, visible } = snackbarState;
-
   return (
     <>
       {children}
@@ -36,7 +36,7 @@ export const NotificationProvider = ({ children }) => {
         <Snackbar
           duration={duration}
           key={key}
-          onDismiss={() => snackbarStateVar({ ...snackbarState, visible: false })}
+          onDismiss={() => hideSnackbar()}
           style={{ backgroundColor: primary, marginBottom: keyboardHeight }}
           visible={visible}
         >

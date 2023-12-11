@@ -1,8 +1,7 @@
 import { ClearIcon } from './ClearIcon';
 import { parseCategories } from '../utils';
-import { snackbarStateVar } from '../reactiveVars';
-import { useReactiveVar } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
+import { useSnackbar } from '../hooks';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
@@ -11,11 +10,11 @@ import { useRef, useState } from 'react';
 export const CreateWordlistEntryForm = () => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const snackbarState = useReactiveVar(snackbarStateVar);
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
   const { params: { wordlistId } } = useRoute();
+  const { showSnackbar } = useSnackbar();
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId });
   useWordText(wordText, setDisabled, textInputRef);
@@ -37,7 +36,7 @@ export const CreateWordlistEntryForm = () => {
 
     setUnparsedCategoriesText('');
     setWordText('');
-    snackbarStateVar({ ...snackbarState, key: snackbarState.key + 1, visible: true });
+    showSnackbar('Word added!');
   };
 
   return (
