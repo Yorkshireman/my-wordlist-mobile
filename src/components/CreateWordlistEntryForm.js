@@ -21,13 +21,15 @@ export const CreateWordlistEntryForm = () => {
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+    const sanitisedWordText = wordText.trim().toLowerCase();
+
     wordlistEntriesCreate({
       variables: {
         wordlistEntries: [
           {
             categories,
             word: {
-              text: wordText.trim()
+              text: sanitisedWordText
             }
           }
         ]
@@ -35,8 +37,8 @@ export const CreateWordlistEntryForm = () => {
     });
 
     setUnparsedCategoriesText('');
+    showSnackbar(`"${sanitisedWordText}" added!`);
     setWordText('');
-    showSnackbar('Word added!');
   };
 
   return (
@@ -45,7 +47,7 @@ export const CreateWordlistEntryForm = () => {
         autoCapitalize='none'
         label='new word'
         mode='outlined'
-        onChangeText={text => setWordText(text)}
+        onChangeText={text => setWordText(text.toLowerCase())}
         ref={textInputRef}
         right={ClearIcon(() => setWordText(''), wordText.length)}
         testID='new-word-text-input-field'

@@ -18,6 +18,8 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const updateWord = () => {
+    const sanitisedWordInputValue = wordInputValue.trim().toLowerCase();
+
     wordlistEntryUpdate({
       optimisticResponse: {
         authToken: currentAuthToken,
@@ -28,10 +30,10 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
             word: {
               __typename: 'Word',
               createdAt: 'temp-createdAt',
-              id: `${wordInputValue.trim()}-temp-id`,
-              text: wordInputValue.trim()
+              id: `${sanitisedWordInputValue}-temp-id`,
+              text: sanitisedWordInputValue
             },
-            wordId: `${wordInputValue.trim()}-temp-id`
+            wordId: `${sanitisedWordInputValue}-temp-id`
           }
         }
       },
@@ -39,7 +41,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         id,
         wordlistEntryInput: {
           word: {
-            text: wordInputValue.trim()
+            text: sanitisedWordInputValue
           }
         }
       }
@@ -55,7 +57,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         dense
         maxLength={32}
         mode='outlined'
-        onChangeText={text => setWordInputValue(text)}
+        onChangeText={text => setWordInputValue(text.toLowerCase())}
         onSubmitEditing={() => {
           wordInputValue !== text && updateWord();
           setEditWordFormVisible(false);
