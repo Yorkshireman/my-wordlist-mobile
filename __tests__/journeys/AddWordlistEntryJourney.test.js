@@ -61,7 +61,7 @@ describe('Add Wordlist Entry journey', () => {
       });
 
       test('notification is displayed', async () => {
-        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+        await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
       describe('after pressing Close', () => {
@@ -92,7 +92,7 @@ describe('Add Wordlist Entry journey', () => {
       });
 
       test('notification is displayed', async () => {
-        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+        await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
       describe('after pressing Close', () => {
