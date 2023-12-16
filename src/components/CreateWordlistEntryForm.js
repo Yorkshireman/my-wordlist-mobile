@@ -47,7 +47,7 @@ export const CreateWordlistEntryForm = () => {
         autoCapitalize='none'
         label='new word'
         mode='outlined'
-        onChangeText={text => setWordText(text.toLowerCase())}
+        onChangeText={text => setWordText(sanitiseText(text))}
         ref={textInputRef}
         right={ClearIcon(() => setWordText(''), wordText.length)}
         testID='new-word-text-input-field'
