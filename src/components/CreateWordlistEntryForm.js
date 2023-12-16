@@ -1,8 +1,8 @@
 import { ClearIcon } from './ClearIcon';
-import { parseCategories } from '../utils';
 import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { parseCategories, sanitiseText } from '../utils';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
@@ -21,7 +21,7 @@ export const CreateWordlistEntryForm = () => {
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-    const sanitisedWordText = wordText.trim().toLowerCase();
+    const text = sanitiseText(wordText);
 
     wordlistEntriesCreate({
       variables: {
@@ -29,7 +29,7 @@ export const CreateWordlistEntryForm = () => {
           {
             categories,
             word: {
-              text: sanitisedWordText
+              text
             }
           }
         ]
@@ -37,7 +37,7 @@ export const CreateWordlistEntryForm = () => {
     });
 
     setUnparsedCategoriesText('');
-    showSnackbar(`"${sanitisedWordText}" added!`);
+    showSnackbar(`"${text}" added!`);
     setWordText('');
   };
 
