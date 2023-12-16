@@ -15,7 +15,7 @@ export const wordlistEntriesCreateWithCategories = {
             }
           ],
           word: {
-            text: 'chair'.trim()
+            text: 'chair'
           }
         }
       ]

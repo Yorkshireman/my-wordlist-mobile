@@ -1,6 +1,7 @@
 import { ClearIcon } from './ClearIcon';
 import { MY_WORDLIST } from '../graphql-queries';
 import PropTypes from 'prop-types';
+import { sanitiseText } from '../utils';
 import { TextInput } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
@@ -18,7 +19,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const updateWord = () => {
-    const sanitisedWordInputValue = wordInputValue.trim().toLowerCase();
+    const sanitisedWordInputValue = sanitiseText(wordInputValue);
 
     wordlistEntryUpdate({
       optimisticResponse: {
@@ -57,7 +58,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         dense
         maxLength={32}
         mode='outlined'
-        onChangeText={text => setWordInputValue(text.toLowerCase())}
+        onChangeText={text => setWordInputValue(sanitiseText(text))}
         onSubmitEditing={() => {
           wordInputValue !== text && updateWord();
           setEditWordFormVisible(false);
