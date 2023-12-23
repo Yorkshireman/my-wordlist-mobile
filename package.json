@@ -1,6 +1,9 @@
 {
   "name": "my-wordlist-mobile",
   "version": "1.0.0",
+  "engines": {
+    "node": "19.8.1"
+  },
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "android": "expo start --android",
