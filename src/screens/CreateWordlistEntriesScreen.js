@@ -11,7 +11,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }) => {
         Add Word
       </Text>
       <Text onPress={() => navigation.navigate('Home')} style={styles.close}>
-        Close
+        Back
       </Text>
       <CreateWordlistEntryForm />
     </View>
