@@ -91,6 +91,7 @@ export const LogInScreen = ({ navigation }) => {
         value={password}
       />
       <HelperText style={styles.helperText} type="error" visible={signInError}>
+        {/* eslint-disable-next-line max-len */}
         Sorry, something went wrong. Please ensure your email and password are correct and try again.
       </HelperText>
       <Button

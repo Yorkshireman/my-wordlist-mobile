@@ -7,7 +7,11 @@ import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible }) => {
+export const CreateWordlistEntryForm = (
+  {
+    setSnackbarKey,
+    setSnackbarVisible
+  }) => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const textInputRef = useRef();
@@ -15,7 +19,12 @@ export const CreateWordlistEntryForm = ({ setSnackbarKey, setSnackbarVisible }) 
   useInputRef(textInputRef);
   const { params: { wordlistId } } = useRoute();
   const [wordText, setWordText] = useState('');
-  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId });
+  const wordlistEntriesCreate = useWordlistEntriesCreate({
+    currentAuthToken,
+    unparsedCategoriesText,
+    wordText,
+    wordlistId
+  });
   useWordText(wordText, setDisabled, textInputRef);
 
   const onSubmit = () => {
