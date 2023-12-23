@@ -6,4 +6,5 @@ export { Error } from './Error';
 export { EyeIcon } from './EyeIcon';
 export { Loading } from './Loading';
 export { NavigationBar } from './NavigationBar';
+export { NotificationProvider } from './NotificationProvider';
 export { Wordlist } from './Wordlist';

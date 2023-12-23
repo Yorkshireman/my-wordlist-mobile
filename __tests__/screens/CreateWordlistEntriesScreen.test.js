@@ -50,8 +50,8 @@ describe('CreateWordlistEntriesScreen', () => {
     await waitFor(() => expect(screen.getByText('Add Word')).toBeOnTheScreen());
   });
 
-  test('displays Close text', async () => {
-    await waitFor(() => expect(screen.getByText('Close')).toBeOnTheScreen());
+  test('displays Back text', async () => {
+    await waitFor(() => expect(screen.getByText('Back')).toBeOnTheScreen());
   });
 
   test('displays new word input field', async () => {
@@ -80,9 +80,9 @@ describe('CreateWordlistEntriesScreen', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Add' })).toBeDisabled());
   });
 
-  describe('Close text when pressed', () => {
+  describe('Back text when pressed', () => {
     beforeEach(async () => {
-      const closeText = await waitFor(() => screen.getByText('Close'));
+      const closeText = await waitFor(() => screen.getByText('Back'));
       fireEvent.press(closeText);
     });
 

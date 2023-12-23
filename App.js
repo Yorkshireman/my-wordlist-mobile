@@ -6,6 +6,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { loadDevMessages } from '@apollo/client/dev';
 import { MY_WORDLIST_GRAPHQL_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
+import { NotificationProvider } from './src/components';
 import { removeTypename } from './src/utils/removeTypename';
 import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -73,24 +74,26 @@ export default function App() {
       <ErrorBoundary FallbackComponent={Error}>
         <ApolloProvider client={client}>
           <PaperProvider theme={theme}>
-            <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  header: props => <NavigationBar {...props} />
-                }}
-              >
-                <Stack.Group>
-                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                  <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
-                  <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
-                </Stack.Group>
-                <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
-                  <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" />
-                  <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
-                </Stack.Group>
-              </Stack.Navigator>
-              <StatusBar style="auto" />
-            </NavigationContainer>
+            <NotificationProvider>
+              <NavigationContainer>
+                <Stack.Navigator
+                  screenOptions={{
+                    header: props => <NavigationBar {...props} />
+                  }}
+                >
+                  <Stack.Group>
+                    <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+                    <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
+                    <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
+                    <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
+                  </Stack.Group>
+                  <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
+                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
+                  </Stack.Group>
+                </Stack.Navigator>
+                <StatusBar style="auto" />
+              </NavigationContainer>
+            </NotificationProvider>
           </PaperProvider>
         </ApolloProvider>
       </ErrorBoundary>

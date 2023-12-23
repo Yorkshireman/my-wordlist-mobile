@@ -1,8 +1,8 @@
-import { parseCategories } from '../utils';
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
+import { parseCategories, sanitiseText } from '../utils';
 
 const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   return {
@@ -19,7 +19,7 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
             __typename: 'Word',
             createdAt: 'temp-createdAt',
             id: 'temp-id',
-            text: wordText.trim()
+            text: sanitiseText(wordText)
           },
           wordId: 'temp-wordId',
           wordlistId

@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
+import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { CreateWordlistEntriesScreen, HomeScreen } from '../../src/screens';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
@@ -27,12 +28,14 @@ describe('Add Wordlist Entry journey', () => {
       render(
         <PaperProvider>
           <MockedProvider addTypename={true} mocks={[myWordlistQueryMock, mutationMock]}>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
-              </Stack.Navigator>
-            </NavigationContainer>
+            <NotificationProvider>
+              <NavigationContainer>
+                <Stack.Navigator>
+                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+                  <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </NotificationProvider>
           </MockedProvider>
         </PaperProvider>
       );
@@ -58,13 +61,13 @@ describe('Add Wordlist Entry journey', () => {
       });
 
       test('notification is displayed', async () => {
-        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+        await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
-      describe('after pressing Close', () => {
+      describe('after pressing Back', () => {
         beforeEach(async () => {
           await waitFor(() => {
-            fireEvent.press(screen.getByText('Close'));
+            fireEvent.press(screen.getByText('Back'));
           });
         });
 
@@ -89,13 +92,13 @@ describe('Add Wordlist Entry journey', () => {
       });
 
       test('notification is displayed', async () => {
-        await waitFor(() => expect(screen.getByText('Word added!')).toBeOnTheScreen());
+        await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
-      describe('after pressing Close', () => {
+      describe('after pressing Back', () => {
         beforeEach(async () => {
           await waitFor(() => {
-            fireEvent.press(screen.getByText('Close'));
+            fireEvent.press(screen.getByText('Back'));
           });
         });
 

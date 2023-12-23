@@ -1,23 +1,20 @@
 import { ClearIcon } from './ClearIcon';
-import { parseCategories } from '../utils';
-import PropTypes from 'prop-types';
 import { useRoute } from '@react-navigation/native';
+import { useSnackbar } from '../hooks';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
+import { parseCategories, sanitiseText } from '../utils';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
 import { useRef, useState } from 'react';
 
-export const CreateWordlistEntryForm = (
-  {
-    setSnackbarKey,
-    setSnackbarVisible
-  }) => {
+export const CreateWordlistEntryForm = () => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   useInputRef(textInputRef);
   const { params: { wordlistId } } = useRoute();
+  const { showSnackbar } = useSnackbar();
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({
     currentAuthToken,
@@ -29,13 +26,15 @@ export const CreateWordlistEntryForm = (
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
+    const text = sanitiseText(wordText);
+
     wordlistEntriesCreate({
       variables: {
         wordlistEntries: [
           {
             categories,
             word: {
-              text: wordText.trim()
+              text
             }
           }
         ]
@@ -43,9 +42,8 @@ export const CreateWordlistEntryForm = (
     });
 
     setUnparsedCategoriesText('');
+    showSnackbar(`"${text}" added!`);
     setWordText('');
-    setSnackbarKey(prevKey => prevKey + 1);
-    setSnackbarVisible(true);
   };
 
   return (
@@ -54,7 +52,7 @@ export const CreateWordlistEntryForm = (
         autoCapitalize='none'
         label='new word'
         mode='outlined'
-        onChangeText={text => setWordText(text)}
+        onChangeText={text => setWordText(sanitiseText(text))}
         ref={textInputRef}
         right={ClearIcon(() => setWordText(''), wordText.length)}
         testID='new-word-text-input-field'
@@ -88,11 +86,6 @@ export const CreateWordlistEntryForm = (
       </Button>
     </>
   );
-};
-
-CreateWordlistEntryForm.propTypes = {
-  setSnackbarKey: PropTypes.func,
-  setSnackbarVisible: PropTypes.func
 };
 
 const styles = StyleSheet.create({
