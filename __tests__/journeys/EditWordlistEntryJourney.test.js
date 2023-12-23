@@ -189,7 +189,7 @@ describe('Edit Wordlist Entry journey', () => {
       });
     });
 
-    describe('after tapping back to the homescreen', () => {
+    describe('after tapping "Close" text', () => {
       beforeEach(async () => {
         await waitFor(() => {
           fireEvent.press(screen.getByText('Close'));
@@ -246,7 +246,7 @@ describe('Edit Wordlist Entry journey', () => {
       });
     });
 
-    describe('after tapping Close icon', () => {
+    describe('after tapping "Close" text', () => {
       beforeEach(async () => {
         await waitFor(() => {
           fireEvent.press(screen.getByText('Close'));
