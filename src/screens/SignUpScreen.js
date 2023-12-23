@@ -34,7 +34,9 @@ export const SignUpScreen = ({ navigation }) => {
 
   const eyeIcon = isConfirmPasswordField => {
     const onPress = () =>
-      isConfirmPasswordField ? setConfirmPasswordVisible(!confirmPasswordVisible) : setPasswordVisible(!passwordVisible);
+      isConfirmPasswordField ?
+        setConfirmPasswordVisible(!confirmPasswordVisible) :
+        setPasswordVisible(!passwordVisible);
 
     return EyeIcon(onPress, isConfirmPasswordField ? confirmPasswordVisible : passwordVisible);
   };

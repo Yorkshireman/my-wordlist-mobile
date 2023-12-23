@@ -16,7 +16,12 @@ export const CreateWordlistEntryForm = () => {
   const { params: { wordlistId } } = useRoute();
   const { showSnackbar } = useSnackbar();
   const [wordText, setWordText] = useState('');
-  const wordlistEntriesCreate = useWordlistEntriesCreate({ currentAuthToken, unparsedCategoriesText, wordText, wordlistId });
+  const wordlistEntriesCreate = useWordlistEntriesCreate({
+    currentAuthToken,
+    unparsedCategoriesText,
+    wordText,
+    wordlistId
+  });
   useWordText(wordText, setDisabled, textInputRef);
 
   const onSubmit = () => {

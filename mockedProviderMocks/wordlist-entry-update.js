@@ -1,6 +1,11 @@
 import { WORDLIST_ENTRY_UPDATE } from '../src/graphql-queries';
 
-export const wordlistEntryUpdate = (requestCategories, responseCategories, requestWord, responseWord) => ({
+export const wordlistEntryUpdate = (
+  requestCategories,
+  responseCategories,
+  requestWord,
+  responseWord
+) => ({
   request: {
     query: WORDLIST_ENTRY_UPDATE,
     variables: {

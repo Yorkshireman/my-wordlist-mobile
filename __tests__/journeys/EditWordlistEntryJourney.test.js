@@ -45,7 +45,10 @@ describe('Edit Wordlist Entry journey', () => {
           <MockedProvider
             addTypename
             cache={cache}
-            mocks={[myWordlistQueryMock, wordlistEntryUpdate(requestCategories, responseCategories, requestWord, responseWord)]}
+            mocks={[
+              myWordlistQueryMock,
+              wordlistEntryUpdate(requestCategories, responseCategories, requestWord, responseWord)
+            ]}
           >
             <NavigationContainer>
               <Stack.Navigator>

@@ -29,7 +29,14 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   };
 };
 
-export const useWordlistEntriesCreate = ({ currentAuthToken, unparsedCategoriesText, wordlistId, wordText }) => {
+export const useWordlistEntriesCreate = (
+  {
+    currentAuthToken,
+    unparsedCategoriesText,
+    wordlistId,
+    wordText
+  }
+) => {
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
