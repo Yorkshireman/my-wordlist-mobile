@@ -1,6 +1,5 @@
 export { useAsyncStorage } from './useAsyncStorage';
 export { useAuthToken } from './useAuthToken';
-export { useInputRef } from './useInputRef';
 export { useSnackbar } from './useSnackbar';
 export { useWordlistEntriesCreate } from './useWordlistEntriesCreate';
 export { useWordlistEntryId } from './useWordlistEntryId';

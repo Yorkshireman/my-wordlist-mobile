@@ -1,18 +1,16 @@
 import { ClearIcon } from './ClearIcon';
 import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
+import { useState } from 'react';
 import { Button, HelperText, IconButton, Text, TextInput } from 'react-native-paper';
 import { parseCategories, sanitiseText } from '../utils';
 import { StyleSheet, View } from 'react-native';
-import { useAsyncStorage, useInputRef, useWordlistEntriesCreate, useWordText } from '../hooks';
-import { useRef, useState } from 'react';
+import { useAsyncStorage, useWordlistEntriesCreate, useWordText } from '../hooks';
 
 export const CreateWordlistEntryForm = () => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
-  const textInputRef = useRef();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  useInputRef(textInputRef);
   const { params: { wordlistId } } = useRoute();
   const { showSnackbar } = useSnackbar();
   const [wordText, setWordText] = useState('');
@@ -22,7 +20,7 @@ export const CreateWordlistEntryForm = () => {
     wordText,
     wordlistId
   });
-  useWordText(wordText, setDisabled, textInputRef);
+  useWordText(wordText, setDisabled);
 
   const onSubmit = () => {
     const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
@@ -50,10 +48,10 @@ export const CreateWordlistEntryForm = () => {
     <>
       <TextInput
         autoCapitalize='none'
+        autoFocus
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(sanitiseText(text))}
-        ref={textInputRef}
         right={ClearIcon(() => setWordText(''), wordText.length)}
         testID='new-word-text-input-field'
         textTransform='lowercase'
