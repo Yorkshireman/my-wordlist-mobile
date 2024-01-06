@@ -1,6 +1,5 @@
 import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
-import React from 'react';
 import sharedStyles from '../styles';
 import { SIGN_IN_URL } from '@env';
 import { storeAuthToken } from '../utils';
@@ -8,15 +7,28 @@ import { useApolloClient } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+
+const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
+  useEffect(() => {
+    if (email && password) {
+      setSubmitButtonIsDisabled(false);
+    } else {
+      setSubmitButtonIsDisabled(true);
+    }
+  });
+};
 
 export const LogInScreen = ({ navigation }) => {
   const client = useApolloClient();
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [signInError, setSignInError] = useState(false);
+  useInputValues(email, password, setSubmitButtonIsDisabled);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,6 +81,7 @@ export const LogInScreen = ({ navigation }) => {
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
+        aria-label='email'
         autoCapitalize='none'
         autoComplete='email'
         error={signInError}
@@ -80,6 +93,7 @@ export const LogInScreen = ({ navigation }) => {
         value={email}
       />
       <TextInput
+        aria-label='password'
         autoCapitalize='none'
         autoComplete='current-password'
         error={signInError}
@@ -98,7 +112,7 @@ export const LogInScreen = ({ navigation }) => {
       </HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
-        disabled
+        disabled={submitButtonIsDisabled}
         icon='send'
         loading={loading}
         mode='contained'
