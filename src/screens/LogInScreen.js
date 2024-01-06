@@ -98,6 +98,7 @@ export const LogInScreen = ({ navigation }) => {
       </HelperText>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
+        disabled
         icon='send'
         loading={loading}
         mode='contained'
