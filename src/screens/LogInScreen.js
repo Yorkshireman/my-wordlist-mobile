@@ -72,22 +72,24 @@ export const LogInScreen = ({ navigation }) => {
         autoCapitalize='none'
         autoComplete='email'
         error={signInError}
-        label='email'
         mode='outlined'
         onChangeText={setEmail}
+        placeholder='email'
         style={styles.input}
+        testID='login-email-input-field'
         value={email}
       />
       <TextInput
         autoCapitalize='none'
         autoComplete='current-password'
         error={signInError}
-        label='password'
         mode='outlined'
         onChangeText={setPassword}
+        placeholder='password'
         right={EyeIcon(() => setPasswordVisible(!passwordVisible), passwordVisible)}
         secureTextEntry={!passwordVisible}
         style={styles.input}
+        testID='login-password-input-field'
         value={password}
       />
       <HelperText style={styles.helperText} type="error" visible={signInError}>
