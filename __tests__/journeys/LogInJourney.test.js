@@ -145,4 +145,46 @@ describe('LogInScreen', () => {
       });
     });
   });
+
+  describe('when sign-in request fails', () => {
+    beforeEach(async () => {
+      signIn.mockImplementation(({ setSignInError }) => setSignInError(true));
+      const user = userEvent.setup();
+      const emailInput = await waitFor(() => screen.getByLabelText('email'));
+      const passwordInput = await waitFor(() => screen.getByLabelText('password'));
+      const submitButton = await waitFor(() => screen.getByRole('button', { name: 'Log in' }));
+      await user.type(emailInput, 'test@test.co');
+      await user.type(passwordInput, 'password');
+      await user.press(submitButton);
+    });
+
+    test('sign-in error message is displayed', async () => {
+      const expectedText = 'Sorry, something went wrong. Please ensure your email and password are correct and try again.';
+      await waitFor(() => expect(screen.getByText(expectedText)).toBeVisible());
+    });
+
+    test('email validation message is not visible', async () => {
+      await waitFor(() => expect(screen.queryByText('Please enter a valid email address')).not.toBeVisible());
+    });
+
+    describe('if user then changes email to an invalid one and attempts to re-submit', () => {
+      beforeEach(async () => {
+        const user = userEvent.setup();
+        const emailInput = await waitFor(() => screen.getByLabelText('email'));
+        const submitButton = await waitFor(() => screen.getByRole('button', { name: 'Log in' }));
+        await user.clear(emailInput);
+        await user.type(emailInput, 'invalid.email');
+        await user.press(submitButton);
+      });
+
+      test('email validation message appears', async () => {
+        await waitFor(() => expect(screen.getByText('Please enter a valid email address')).toBeVisible());
+      });
+
+      test('sign-in error message is not visible', async () => {
+        const expectedText = 'Sorry, something went wrong. Please ensure your email and password are correct and try again.';
+        await waitFor(() => expect(screen.queryByText(expectedText)).not.toBeVisible());
+      });
+    });
+  });
 });
