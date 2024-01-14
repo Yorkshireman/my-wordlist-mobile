@@ -2,7 +2,13 @@ import * as React from 'react';
 import { LogInScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
+import { signIn } from '../../src/utils';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
+
+jest.mock('../../src/utils', () => ({
+  ...jest.requireActual('../../src/utils'),
+  signIn: jest.fn()
+}));
 
 jest.useFakeTimers();
 
@@ -62,6 +68,10 @@ describe('LogInScreen', () => {
       test('a suitable validation message appears', async () => {
         await waitFor(() => expect(screen.getByText('Please enter a valid email address')).toBeVisible());
       });
+
+      test('does not call signIn()', () => {
+        expect(signIn).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -88,6 +98,10 @@ describe('LogInScreen', () => {
       test('a suitable validation message appears', async () => {
         await waitFor(() => expect(screen.getByText('Please enter a valid email address')).toBeVisible());
       });
+
+      test('does not call signIn()', () => {
+        expect(signIn).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -113,6 +127,21 @@ describe('LogInScreen', () => {
 
       test('validation message is not visible', async () => {
         await waitFor(() => expect(screen.queryByText('Please enter a valid email address')).not.toBeVisible());
+      });
+
+      test('calls signIn()', () => {
+        expect(signIn).toHaveBeenCalledTimes(1);
+      });
+
+      test('calls signIn() with expected params', () => {
+        expect(signIn).toHaveBeenCalledWith({
+          client: expect.anything(),
+          email: 'test@test.com',
+          navigation: expect.anything(),
+          password: 'password',
+          setLoading: expect.anything(),
+          setSignInError: expect.anything()
+        });
       });
     });
   });

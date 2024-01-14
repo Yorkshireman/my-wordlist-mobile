@@ -1,12 +1,11 @@
 import { EyeIcon } from '../components';
 import { PropTypes } from 'prop-types';
 import sharedStyles from '../styles';
-import { SIGN_IN_URL } from '@env';
 import { useApolloClient } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
-import { isInvalidEmail, storeAuthToken } from '../utils';
+import { isInvalidEmail, signIn } from '../utils';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -41,48 +40,12 @@ export const LogInScreen = ({ navigation }) => {
     }, [])
   );
 
-  const signIn = () => {
-    setLoading(true);
-    return fetch(SIGN_IN_URL, {
-      body: JSON.stringify({
-        user: {
-          email: email.trim(),
-          password: password.trim()
-        }
-      }),
-      headers: {
-        'Content-Type': 'application/vnd.api+json'
-      },
-      method: 'POST'
-    })
-      .then(response => {
-        if (!response.ok) {
-          const status = response.status;
-          return response.json().then(resBody => {
-            const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
-            throw new Error(`Signin request HTTP error! Status: ${status}, errors: ${errors}`);
-          });
-        }
-
-        return response.json();
-      })
-      .then(({ data: { token }}) => storeAuthToken(token))
-      // couldn't get client.clearStore() to work on sign-out in NavigationBar.js
-      .then(() => client.cache.reset())
-      .then(() => navigation.navigate('Home'))
-      .catch(e => {
-        console.error(e);
-        setSignInError(true);
-      })
-      .finally(() => setLoading(false));
-  };
-
   const onSubmit = () => {
     if (isInvalidEmail(email)) {
       return setValidationError(true);
     }
 
-    signIn(email, password);
+    signIn({ client, email, navigation, password, setLoading, setSignInError });
   };
 
   return (
