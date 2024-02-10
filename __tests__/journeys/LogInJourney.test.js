@@ -102,6 +102,21 @@ describe('LogInScreen', () => {
       test('does not call signIn()', () => {
         expect(signIn).not.toHaveBeenCalled();
       });
+
+      describe('if user then submits a valid email and a password', () => {
+        beforeEach(async () => {
+          const user = userEvent.setup();
+          const emailInput = await waitFor(() => screen.getByLabelText('email'));
+          await user.clear(emailInput);
+          await user.type(emailInput, 'email@test.com');
+          const submitButton = screen.getByRole('button', { name: 'Log in' });
+          await user.press(submitButton);
+        });
+
+        test('validation message disappears', async () => {
+          await waitFor(() => expect(screen.queryByText('Please enter a valid email address')).not.toBeVisible());
+        });
+      });
     });
   });
 

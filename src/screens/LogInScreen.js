@@ -42,6 +42,7 @@ export const LogInScreen = ({ navigation }) => {
 
   const onSubmit = () => {
     setSignInError(false);
+    setValidationError(false);
 
     if (isInvalidEmail(email)) {
       return setValidationError(true);
