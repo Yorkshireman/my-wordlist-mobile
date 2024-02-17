@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .js --ignore-pattern './node_modules'",
     "start": "expo start",
     "test": "jest",
+    "watch": "jest --watch",
     "web": "expo start --web"
   },
   "dependencies": {
