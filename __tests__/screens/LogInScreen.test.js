@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LogInScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
-import { render, screen, waitFor } from '@testing-library/react-native';
+import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
 
 jest.useFakeTimers();
 
@@ -49,5 +49,18 @@ describe('LogInScreen', () => {
 
   test('displays navigate to sign up text', async () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'New user? Sign up' })).toBeOnTheScreen());
+  });
+
+  describe('if user taps the sign-up button', () => {
+    beforeEach(async () => {
+      const signUpButton = await waitFor(() => screen.getByRole('button', { name: 'New user? Sign up' }));
+      const user = userEvent.setup();
+      await user.press(signUpButton);
+    });
+
+    test('navigation() is called with expected params', () => {
+      expect(mockNavigation.navigate).toHaveBeenCalledTimes(1);
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('SignUp');
+    });
   });
 });

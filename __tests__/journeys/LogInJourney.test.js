@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { LogInScreen } from '../../src/screens';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
 import { signIn } from '../../src/utils';
+import { LogInScreen, SignUpScreen } from '../../src/screens';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
 
 jest.mock('../../src/utils', () => ({
@@ -12,16 +13,18 @@ jest.mock('../../src/utils', () => ({
 
 jest.useFakeTimers();
 
-const mockNavigation = { navigate: jest.fn() };
-
 describe('LogInScreen', () => {
   beforeEach(() => {
+    const Stack = createNativeStackNavigator();
     render(
-      <NavigationContainer>
-        <MockedProvider>
-          <LogInScreen navigation={mockNavigation} />
-        </MockedProvider>
-      </NavigationContainer>
+      <MockedProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
+            <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </MockedProvider>
     );
   });
 
@@ -200,6 +203,18 @@ describe('LogInScreen', () => {
         const expectedText = 'Sorry, something went wrong. Please ensure your email and password are correct and try again.';
         await waitFor(() => expect(screen.queryByText(expectedText)).not.toBeVisible());
       });
+    });
+  });
+
+  describe('if user taps the sign-up button', () => {
+    beforeEach(async () => {
+      const signUpButton = await waitFor(() => screen.getByRole('button', { name: 'New user? Sign up' }));
+      const user = userEvent.setup();
+      await user.press(signUpButton);
+    });
+
+    test('user is taken to the SignUp screen', async () => {
+      await waitFor(() => expect(screen.getByRole('button', { name: 'Sign up' })).toBeVisible());
     });
   });
 });
