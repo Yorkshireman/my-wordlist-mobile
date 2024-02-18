@@ -1,12 +1,12 @@
 import { PropTypes } from 'prop-types';
 import { Chip, useTheme } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 export const Categories = ({ categories }) => {
   const { colors } = useTheme();
 
   return (
-    <View style={styles.categoriesContainer}>
+    <ScrollView horizontal>
       {categories.map(({ id, name}) => {
         return (
           <Chip
@@ -19,7 +19,7 @@ export const Categories = ({ categories }) => {
           </Chip>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -28,15 +28,9 @@ Categories.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  categoriesContainer: {
-    columnGap: 1,
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: 2
-  },
   category: {
     alignSelf: 'center',
-    height: 32
+    height: 32,
+    marginRight: 1
   }
 });
