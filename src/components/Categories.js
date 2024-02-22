@@ -1,25 +1,34 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { PropTypes } from 'prop-types';
 import { Chip, useTheme } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 export const Categories = ({ categories }) => {
   const { colors } = useTheme();
 
   return (
-    <View style={styles.categoriesContainer}>
-      {categories.map(({ id, name}) => {
-        return (
-          <Chip
-            compact
-            key={id}
-            style={{ ...styles.category, backgroundColor: colors.primary }}
-            textStyle={{ color: 'white' }}
-          >
-            {name}
-          </Chip>
-        );
-      })}
-    </View>
+    <>
+      <ScrollView horizontal>
+        {categories.map(({ id, name}) => {
+          return (
+            <Chip
+              compact
+              key={id}
+              style={{ ...styles.category, backgroundColor: colors.primary }}
+              textStyle={{ color: 'white' }}
+            >
+              {name}
+            </Chip>
+          );
+        })}
+      </ScrollView>
+      <LinearGradient
+        colors={['transparent', 'rgb(242, 242, 242)']}
+        end={{ x: 1, y: 0 }}
+        start={{ x: 0.7, y: 0 }}
+        style={styles.gradient}
+      />
+    </>
   );
 };
 
@@ -28,15 +37,16 @@ Categories.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  categoriesContainer: {
-    columnGap: 1,
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: 2
-  },
   category: {
     alignSelf: 'center',
-    height: 32
+    height: 32,
+    marginRight: 1
+  },
+  gradient: {
+    height: '100%',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: 25
   }
 });
