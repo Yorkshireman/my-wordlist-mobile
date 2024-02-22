@@ -10,8 +10,8 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 // the tests working with the jest-expo preset: https://docs.expo.dev/develop/unit-testing
 // This might solve the problem. Otherwise, more elaborate mocks might be needed, or it
 // might be viable in some situations to just stub the component and leave a hole in the
-// unit testing coverage (it might be tenable to rely on manual testing such features, or
-// potentially some sort of UI testing tool could be employed - "Detox"?).
+// unit testing coverage (it might be tenable to rely on manually testing such features, or
+// potentially some sort of UI testing tool could be employed eg "Detox"?).
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: 'LinearGradient'
 }));
