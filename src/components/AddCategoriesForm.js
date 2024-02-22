@@ -50,6 +50,7 @@ export const AddCategoriesForm = () => {
         aria-label='categories'
         autoCapitalize='none'
         dense
+        label='add category'
         maxLength={32}
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
