@@ -9,14 +9,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 
-export const EditWordForm = ({ setEditWordFormVisible }) => {
+export const EditWordForm = ({ setEditWordFormVisible, setError }) => {
   const currentAuthToken = useAsyncStorage();
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
   const { params: { id } } = useRoute();
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { word: { text } } = wordlistEntry;
   const [wordInputValue, setWordInputValue] = useState(text);
-  const wordlistEntryUpdate = useWordlistEntryUpdate();
+  const wordlistEntryUpdate = useWordlistEntryUpdate(setError);
 
   const updateWord = () => {
     const sanitisedWordInputValue = sanitiseText(wordInputValue);

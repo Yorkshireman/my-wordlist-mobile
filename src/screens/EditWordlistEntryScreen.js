@@ -52,6 +52,7 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
+  const [error, setError] = useState(null);
   const { params: { id } } = useRoute();
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
@@ -82,13 +83,15 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
       }
     });
   };
-
+  if (error) {
+    console.log('ERROR!', error);
+  }
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
       <Text onPress={() => navigate('Home')} style={styles.close}>Close</Text>
       {editWordFormVisible ?
-        <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
+        <EditWordForm setEditWordFormVisible={setEditWordFormVisible} setError={setError} />
         :
         <Word setEditWordFormVisible={setEditWordFormVisible} text={text} />
       }
