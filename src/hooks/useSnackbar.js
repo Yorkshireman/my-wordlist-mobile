@@ -4,7 +4,7 @@ import { useReactiveVar } from '@apollo/client';
 export const useSnackbar = () => {
   const snackbarState = useReactiveVar(snackbarStateVar);
 
-  const showSnackbar = (message, duration = 4000) => {
+  const showSnackbar = (message, duration = 5000) => {
     snackbarStateVar({
       ...snackbarState,
       duration,

@@ -5,18 +5,18 @@ import { sanitiseText } from '../utils';
 import { TextInput } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 
-export const EditWordForm = ({ setEditWordFormVisible, setError }) => {
+export const EditWordForm = ({ setEditWordFormVisible }) => {
   const currentAuthToken = useAsyncStorage();
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
   const { params: { id } } = useRoute();
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { word: { text } } = wordlistEntry;
   const [wordInputValue, setWordInputValue] = useState(text);
-  const wordlistEntryUpdate = useWordlistEntryUpdate(setError);
+  const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const updateWord = () => {
     const sanitisedWordInputValue = sanitiseText(wordInputValue);

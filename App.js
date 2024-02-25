@@ -86,9 +86,7 @@ export default function App() {
                     <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
                     <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
                     <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
-                  </Stack.Group>
-                  <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
-                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
+                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' options={{ headerShown: false }} />
                   </Stack.Group>
                 </Stack.Navigator>
                 <StatusBar style="auto" />
