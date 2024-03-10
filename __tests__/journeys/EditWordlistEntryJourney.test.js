@@ -182,6 +182,12 @@ describe('Edit Wordlist Entry journey', () => {
         expect(screen.getByText('Please enter a word.')).toBeOnTheScreen();
       });
     });
+
+    test('notification message is not displayed', async () => {
+      await waitFor(() => {
+        expect(screen.queryByText('Sorry, something went wrong updating your word. Please try again.')).toBeNull();
+      });
+    });
   });
 
   describe('after submitting some categories', () => {
