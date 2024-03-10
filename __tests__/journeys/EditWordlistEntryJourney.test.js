@@ -1,9 +1,11 @@
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GraphQLError } from 'graphql';
 import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
+import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { EditWordlistEntryScreen, HomeScreen } from '../../src/screens';
 import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
@@ -12,6 +14,7 @@ import { myWordlistQueryMock, wordlistEntryUpdate } from '../../mockedProviderMo
 jest.useFakeTimers();
 
 describe('Edit Wordlist Entry journey', () => {
+  let error;
   let requestCategories;
   let responseCategories;
   let requestWord;
@@ -47,15 +50,23 @@ describe('Edit Wordlist Entry journey', () => {
             cache={cache}
             mocks={[
               myWordlistQueryMock,
-              wordlistEntryUpdate(requestCategories, responseCategories, requestWord, responseWord)
+              wordlistEntryUpdate(
+                requestCategories,
+                responseCategories,
+                requestWord,
+                responseWord,
+                error
+              )
             ]}
           >
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                <Stack.Screen component={EditWordlistEntryScreen} name="EditWordlistEntry" options={{ headerShown: false }} />
-              </Stack.Navigator>
-            </NavigationContainer>
+            <NotificationProvider>
+              <NavigationContainer>
+                <Stack.Navigator>
+                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
+                  <Stack.Screen component={EditWordlistEntryScreen} name="EditWordlistEntry" options={{ headerShown: false }} />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </NotificationProvider>
           </MockedProvider>
         </PaperProvider>
       );
@@ -126,6 +137,49 @@ describe('Edit Wordlist Entry journey', () => {
     test.each(['noun', 'tech'])('"%s" category is on the screen', async category => {
       await waitFor(() => {
         expect(screen.getByText(category)).toBeOnTheScreen();
+      });
+    });
+
+    describe('if update mutation query had returned errors', () => {
+      let consoleSpy;
+      beforeAll(() => {
+        error = true;
+        consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      });
+
+      afterAll(() => {
+        consoleSpy.mockRestore();
+        error = undefined;
+      });
+
+      test('an error message is displayed', async () => {
+        await waitFor(() => {
+          expect(screen.getByText('Sorry, something went wrong updating your word. Please try again.')).toBeOnTheScreen();
+        });
+      });
+
+      test('console.error() is called once with the error', async () => {
+        await waitFor(() => {
+          expect(consoleSpy).toHaveBeenCalledTimes(1);
+          expect(consoleSpy).toHaveBeenCalledWith(new GraphQLError('Error!'));
+        });
+      });
+    });
+  });
+
+  describe.skip('when attempting to submit an empty word', () => {
+    beforeEach(async () => {
+      const editWordButton = await waitFor(() => screen.getByTestId('edit-word-button'));
+      const user = userEvent.setup();
+      await user.press(editWordButton);
+      const wordInput = await waitFor(() => screen.getByLabelText('word'));
+      await user.clear(wordInput);
+      fireEvent(wordInput, 'onSubmitEditing');
+    });
+
+    test('an error message is displayed', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('Please enter a word.')).toBeOnTheScreen();
       });
     });
   });
