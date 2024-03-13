@@ -78,7 +78,10 @@ describe('Edit Wordlist Entry journey', () => {
     });
   });
 
-  afterEach(() => jest.clearAllMocks());
+  afterEach(async () => {
+    await waitFor(() => jest.runAllTimers()); // ensures any snackbar notifications have timed out
+    jest.clearAllMocks();
+  });
 
   describe('after submitting a word change', () => {
     beforeAll(() => {
@@ -167,7 +170,7 @@ describe('Edit Wordlist Entry journey', () => {
     });
   });
 
-  describe.skip('when attempting to submit an empty word', () => {
+  describe('when attempting to submit an empty word', () => {
     beforeEach(async () => {
       const editWordButton = await waitFor(() => screen.getByTestId('edit-word-button'));
       const user = userEvent.setup();
@@ -185,7 +188,7 @@ describe('Edit Wordlist Entry journey', () => {
 
     test('notification message is not displayed', async () => {
       await waitFor(() => {
-        expect(screen.queryByText('Sorry, something went wrong updating your word. Please try again.')).toBeNull();
+        expect(screen.queryByText('Sorry, something went wrong updating your word. Please try again.')).not.toBeOnTheScreen();
       });
     });
   });

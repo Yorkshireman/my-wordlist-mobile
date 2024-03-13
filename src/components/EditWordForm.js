@@ -2,10 +2,10 @@ import { ClearIcon } from './ClearIcon';
 import { MY_WORDLIST } from '../graphql-queries';
 import PropTypes from 'prop-types';
 import { sanitiseText } from '../utils';
-import { TextInput } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
+import { HelperText, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 
@@ -15,6 +15,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
   const { params: { id } } = useRoute();
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { word: { text } } = wordlistEntry;
+  const [validationError, setValidationError] = useState();
   const [wordInputValue, setWordInputValue] = useState(text);
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
@@ -60,6 +61,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         mode='outlined'
         onChangeText={text => setWordInputValue(sanitiseText(text))}
         onSubmitEditing={() => {
+          if (!wordInputValue) return setValidationError('Please enter a word.');
           wordInputValue !== text && updateWord();
           setEditWordFormVisible(false);
         }}
@@ -68,6 +70,12 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         textTransform='lowercase'
         value={wordInputValue}
       />
+      {validationError ?
+        <HelperText style={styles.helperText} type="error">
+          {validationError}
+        </HelperText>
+        : null
+      }
     </View>
   );
 };
@@ -77,6 +85,10 @@ EditWordForm.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  helperText: {
+    bottom: 12,
+    position: 'relative'
+  },
   wordInputWrapper: {
     marginBottom: 16
   }
