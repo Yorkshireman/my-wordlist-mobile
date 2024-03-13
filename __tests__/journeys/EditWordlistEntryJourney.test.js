@@ -191,6 +191,20 @@ describe('Edit Wordlist Entry journey', () => {
         expect(screen.queryByText('Sorry, something went wrong updating your word. Please try again.')).not.toBeOnTheScreen();
       });
     });
+
+    describe('when a letter is then typed into the input field', () => {
+      beforeEach(async () => {
+        const user = userEvent.setup();
+        const wordInput = await waitFor(() => screen.getByLabelText('word'));
+        await user.type(wordInput, 'a');
+      });
+
+      test('error message disappears', async () => {
+        await waitFor(() => {
+          expect(screen.queryByText('Please enter a word.')).not.toBeOnTheScreen();
+        });
+      });
+    });
   });
 
   describe('after submitting some categories', () => {

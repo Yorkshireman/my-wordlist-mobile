@@ -4,20 +4,29 @@ import PropTypes from 'prop-types';
 import { sanitiseText } from '../utils';
 import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
-import { useState } from 'react';
+import { View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
+import { useEffect, useRef, useState } from 'react';
 
 export const EditWordForm = ({ setEditWordFormVisible }) => {
   const currentAuthToken = useAsyncStorage();
   const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
   const { params: { id } } = useRoute();
+  const ref = useRef();
   const wordlistEntry = entries.find(entry => entry.id === id);
   const { word: { text } } = wordlistEntry;
   const [validationError, setValidationError] = useState();
   const [wordInputValue, setWordInputValue] = useState(text);
   const wordlistEntryUpdate = useWordlistEntryUpdate();
+
+  useEffect(() => {
+    if (validationError) {
+      setTimeout(() => {
+        ref.current.focus();
+      }, 0);
+    }
+  }, [validationError]);
 
   const updateWord = () => {
     const sanitisedWordInputValue = sanitiseText(wordInputValue);
@@ -51,27 +60,32 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
   };
 
   return (
-    <View style={styles.wordInputWrapper}>
+    <View style={validationError ? null : { marginBottom: 16 }}>
       <TextInput
         aria-label='word'
         autoCapitalize='none'
         autoFocus
         dense
+        error={validationError}
         maxLength={32}
         mode='outlined'
-        onChangeText={text => setWordInputValue(sanitiseText(text))}
+        onChangeText={text => {
+          text && setValidationError(null);
+          setWordInputValue(sanitiseText(text));
+        }}
         onSubmitEditing={() => {
           if (!wordInputValue) return setValidationError('Please enter a word.');
           wordInputValue !== text && updateWord();
           setEditWordFormVisible(false);
         }}
+        ref={ref}
         right={ClearIcon(() => setWordInputValue(''), wordInputValue.length)}
         spellCheck={false}
         textTransform='lowercase'
         value={wordInputValue}
       />
       {validationError ?
-        <HelperText style={styles.helperText} type="error">
+        <HelperText type="error">
           {validationError}
         </HelperText>
         : null
@@ -83,13 +97,3 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
 EditWordForm.propTypes = {
   setEditWordFormVisible: PropTypes.func.isRequired
 };
-
-const styles = StyleSheet.create({
-  helperText: {
-    bottom: 12,
-    position: 'relative'
-  },
-  wordInputWrapper: {
-    marginBottom: 16
-  }
-});
