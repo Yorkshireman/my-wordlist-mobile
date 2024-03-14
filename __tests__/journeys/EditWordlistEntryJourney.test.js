@@ -281,6 +281,12 @@ describe('Edit Wordlist Entry journey', () => {
           expect(screen.getByText(category)).toBeOnTheScreen();
         });
       });
+
+      test('"Edit" is not on the screen', async () => {
+        await waitFor(() => {
+          expect(screen.queryByText('Edit')).toBeNull();
+        });
+      });
     });
   });
 
