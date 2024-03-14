@@ -11,29 +11,17 @@ export const Categories = ({ categories }) => {
   const [viewWidth, setViewWidth] = useState(0);
 
   useEffect(() => {
-    console.log({ scrollViewContentWidth });
-    console.log({ viewWidth});
-    if (scrollViewContentWidth > viewWidth) {
-      setShowGradient(true);
-    } else {
-      setShowGradient(false);
-    }
+    setShowGradient(scrollViewContentWidth > viewWidth);
   }, [scrollViewContentWidth, viewWidth]);
 
-  const handleScrollViewContentSizeChange = contentWidth => {
-    setScrollViewContentWidth(contentWidth);
-  };
-
-  const handleLayout = event => {
-    const { width } = event.nativeEvent.layout;
-    setViewWidth(width);
-  };
-
   return (
-    <View onLayout={handleLayout} style={{ width: '100%' }}>
+    <View
+      onLayout={({ nativeEvent: { layout: { width } } }) => setViewWidth(width)}
+      style={{ width: '100%' }}
+    >
       <ScrollView
         horizontal
-        onContentSizeChange={width => handleScrollViewContentSizeChange(width)}
+        onContentSizeChange={width => setScrollViewContentWidth(width)}
       >
         {categories.map(({ id, name}) => {
           return (
