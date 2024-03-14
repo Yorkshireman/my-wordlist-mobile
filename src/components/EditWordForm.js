@@ -74,7 +74,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
           setWordInputValue(sanitiseText(text));
         }}
         onSubmitEditing={() => {
-          if (!wordInputValue) return setValidationError('Please enter a word.');
+          if (!wordInputValue) return setValidationError('Please enter a word');
           wordInputValue !== text && updateWord();
           setEditWordFormVisible(false);
         }}

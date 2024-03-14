@@ -182,7 +182,7 @@ describe('Edit Wordlist Entry journey', () => {
 
     test('an error message is displayed', async () => {
       await waitFor(() => {
-        expect(screen.getByText('Please enter a word.')).toBeOnTheScreen();
+        expect(screen.getByText('Please enter a word')).toBeOnTheScreen();
       });
     });
 
@@ -201,7 +201,7 @@ describe('Edit Wordlist Entry journey', () => {
 
       test('error message disappears', async () => {
         await waitFor(() => {
-          expect(screen.queryByText('Please enter a word.')).not.toBeOnTheScreen();
+          expect(screen.queryByText('Please enter a word')).not.toBeOnTheScreen();
         });
       });
     });
