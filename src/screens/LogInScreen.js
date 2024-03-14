@@ -21,12 +21,12 @@ const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
 
 export const LogInScreen = ({ navigation }) => {
   const client = useApolloClient();
-  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [signInError, setSignInError] = useState(false);
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   const [validationError, setValidationError] = useState(false);
   useInputValues(email, password, setSubmitButtonIsDisabled);
 

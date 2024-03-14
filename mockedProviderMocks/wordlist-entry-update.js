@@ -1,10 +1,12 @@
+import { GraphQLError } from 'graphql';
 import { WORDLIST_ENTRY_UPDATE } from '../src/graphql-queries';
 
 export const wordlistEntryUpdate = (
   requestCategories,
   responseCategories,
   requestWord,
-  responseWord
+  responseWord,
+  error
 ) => ({
   request: {
     query: WORDLIST_ENTRY_UPDATE,
@@ -16,7 +18,7 @@ export const wordlistEntryUpdate = (
       }
     }
   },
-  result: {
+  result: error ? { data: {}, errors: [new GraphQLError('Error!')]} : {
     data: {
       authToken: 'auth-token-from-query-response',
       wordlistEntryUpdate: {

@@ -41,7 +41,7 @@ export const NavigationBar = ({ back, navigation, options, route }) => {
           visible={visible}
         >
           <Menu.Item
-            accessibilityLabel='sign out'
+            ariaLabel='sign out'
             leadingIcon='logout'
             onPress={() => {
               signOut(navigation);
