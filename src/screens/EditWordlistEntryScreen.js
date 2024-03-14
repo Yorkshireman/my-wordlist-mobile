@@ -7,7 +7,7 @@ import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
-import { Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, IconButton, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 const Categories = ({ categories, deleteCategory }) => {
@@ -86,7 +86,19 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
-      <Text onPress={() => navigate('Home')} style={styles.close}>Close</Text>
+      {editWordFormVisible ?
+        <Button
+          compact
+          mode="outlined"
+          onPress={() => setEditWordFormVisible(false)}
+          style={styles.cancel}
+          textColor="#1E1A1D"
+        >
+          Cancel
+        </Button>
+        :
+        <Text onPress={() => navigate('Home')} style={styles.close}>Close</Text>
+      }
       {editWordFormVisible ?
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
         :
@@ -113,6 +125,11 @@ Word.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  cancel: {
+    position: 'absolute',
+    right: 20,
+    top: 9
+  },
   categoryChipsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
