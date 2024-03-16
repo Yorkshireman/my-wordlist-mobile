@@ -11,7 +11,7 @@ export const Categories = ({ categories }) => {
   const [viewWidth, setViewWidth] = useState(0);
 
   useEffect(() => {
-    setShowGradient(scrollViewContentWidth > viewWidth);
+    setShowGradient(scrollViewContentWidth > (viewWidth + 3));
   }, [scrollViewContentWidth, viewWidth]);
 
   return (
