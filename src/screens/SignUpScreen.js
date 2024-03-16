@@ -2,12 +2,11 @@ import { EyeIcon } from '../components';
 import { MY_WORDLIST_CREATE } from '../graphql-queries/myWordlistCreate';
 import { PropTypes } from 'prop-types';
 import sharedStyles from '../styles';
-import { SIGN_UP_URL } from '@env';
-import { storeAuthToken } from '../utils';
-import { useState } from 'react';
+import { isInvalidEmail, signUp } from '../utils';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useApolloClient, useMutation } from '@apollo/client';
+import { useEffect, useState } from 'react';
 
 const ErrorText = ({ text }) => {
   return (
@@ -17,6 +16,16 @@ const ErrorText = ({ text }) => {
   );
 };
 
+const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
+  useEffect(() => {
+    if (email && password) {
+      setSubmitButtonIsDisabled(false);
+    } else {
+      setSubmitButtonIsDisabled(true);
+    }
+  });
+};
+
 export const SignUpScreen = ({ navigation }) => {
   const client = useApolloClient();
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,13 +33,15 @@ export const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [myWordlistCreate] = useMutation(MY_WORDLIST_CREATE, { onCompleted: () => {
     client.resetStore();
     setLoading(false);
     navigation.navigate('Home');
   }});
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
+  useInputValues(email, password, setSubmitButtonIsDisabled);
 
   const eyeIcon = isConfirmPasswordField => {
     const onPress = () =>
@@ -46,47 +57,18 @@ export const SignUpScreen = ({ navigation }) => {
       return setErrorMessage('passwords do not match');
     }
 
+    if (isInvalidEmail(email)) {
+      return setErrorMessage('Please enter a valid email address');
+    }
+
     setErrorMessage('');
-    signUp(email, navigation, password);
-  };
-
-  const signUp = () => {
-    setLoading(true);
-    return fetch(SIGN_UP_URL, {
-      body: JSON.stringify({
-        user: {
-          email: email.trim(),
-          password: password.trim()
-        }
-      }),
-      headers: {
-        'Content-Type': 'application/vnd.api+json'
-      },
-      method: 'POST'
-    })
-      .then(response => {
-        if (!response.ok) {
-          const status = response.status;
-          return response.json().then(resBody => {
-            const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
-            throw new Error(`Signup request HTTP error! Status: ${status}, errors: ${errors}`);
-          });
-        }
-
-        return response.json();
-      })
-      .then(({ data: { token }}) => storeAuthToken(token))
-      .then(() => myWordlistCreate())
-      .catch(e => {
-        console.error(e);
-        setErrorMessage('Sorry, something went wrong. Please ensure you have entered a valid email address and try again.');
-      })
-      .finally(() => setLoading(false));
+    signUp({ email, myWordlistCreate, password, setErrorMessage, setLoading });
   };
 
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
       <TextInput
+        aria-label='email'
         autoCapitalize='none'
         label='email'
         mode='outlined'
@@ -95,6 +77,7 @@ export const SignUpScreen = ({ navigation }) => {
         value={email}
       />
       <TextInput
+        aria-label='password'
         autoCapitalize='none'
         label='password'
         mode='outlined'
@@ -105,6 +88,7 @@ export const SignUpScreen = ({ navigation }) => {
         value={password}
       />
       <TextInput
+        aria-label='confirm password'
         autoCapitalize='none'
         label='confirm password'
         mode='outlined'
@@ -119,6 +103,7 @@ export const SignUpScreen = ({ navigation }) => {
       </>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
+        disabled={submitButtonIsDisabled}
         icon='send'
         loading={loading}
         mode='contained'
