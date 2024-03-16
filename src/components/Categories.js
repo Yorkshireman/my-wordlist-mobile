@@ -1,14 +1,28 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { PropTypes } from 'prop-types';
 import { Chip, useTheme } from 'react-native-paper';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 export const Categories = ({ categories }) => {
   const { colors } = useTheme();
+  const [scrollViewContentWidth, setScrollViewContentWidth] = useState(0);
+  const [showGradient, setShowGradient] = useState(false);
+  const [viewWidth, setViewWidth] = useState(0);
+
+  useEffect(() => {
+    setShowGradient(scrollViewContentWidth > (viewWidth + 3));
+  }, [scrollViewContentWidth, viewWidth]);
 
   return (
-    <>
-      <ScrollView horizontal>
+    <View
+      onLayout={({ nativeEvent: { layout: { width } } }) => setViewWidth(width)}
+      style={{ width: '100%' }}
+    >
+      <ScrollView
+        horizontal
+        onContentSizeChange={width => setScrollViewContentWidth(width)}
+      >
         {categories.map(({ id, name}) => {
           return (
             <Chip
@@ -22,13 +36,13 @@ export const Categories = ({ categories }) => {
           );
         })}
       </ScrollView>
-      <LinearGradient
+      {showGradient && <LinearGradient
         colors={['transparent', 'rgb(242, 242, 242)']}
         end={{ x: 1, y: 0 }}
         start={{ x: 0.7, y: 0 }}
         style={styles.gradient}
-      />
-    </>
+      />}
+    </View>
   );
 };
 
