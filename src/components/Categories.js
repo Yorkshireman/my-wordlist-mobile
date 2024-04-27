@@ -37,7 +37,7 @@ export const Categories = ({ categories }) => {
         })}
       </ScrollView>
       {showGradient && <LinearGradient
-        colors={['transparent', 'rgb(242, 242, 242)']}
+        colors={['#F2F2F200', '#F2F2F2']}
         end={{ x: 1, y: 0 }}
         start={{ x: 0.7, y: 0 }}
         style={styles.gradient}
