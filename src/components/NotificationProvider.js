@@ -13,19 +13,16 @@ export const NotificationProvider = ({ children }) => {
   const { duration, key, message, visible } = useReactiveVar(snackbarStateVar);
 
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
-      e => setKeyboardHeight(e.endCoordinates.height - 30)
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-      () => setKeyboardHeight(0)
-    );
+    let keyboardDidShowListener;
+    let keyboardDidHideListener;
+    if (Platform.OS === 'ios') {
+      keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', ({ endCoordinates }) => setKeyboardHeight(endCoordinates.height - 30));
+      keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () => setKeyboardHeight(0));
+    }
 
     return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
     };
   }, []);
 
