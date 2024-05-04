@@ -6,13 +6,15 @@ import { useEffect, useState } from 'react';
 
 export const Categories = ({ categories }) => {
   const { colors } = useTheme();
+  const [scrollOffset, setScrollOffset] = useState(0);
   const [scrollViewContentWidth, setScrollViewContentWidth] = useState(0);
   const [showGradient, setShowGradient] = useState(false);
   const [viewWidth, setViewWidth] = useState(0);
 
   useEffect(() => {
-    setShowGradient(scrollViewContentWidth > (viewWidth + 3));
-  }, [scrollViewContentWidth, viewWidth]);
+    const isEndOfContentVisible = scrollOffset + viewWidth >= scrollViewContentWidth;
+    setShowGradient(scrollViewContentWidth > viewWidth + 3 && !isEndOfContentVisible);
+  }, [scrollViewContentWidth, viewWidth, scrollOffset]);
 
   return (
     <View
@@ -22,6 +24,10 @@ export const Categories = ({ categories }) => {
       <ScrollView
         horizontal
         onContentSizeChange={width => setScrollViewContentWidth(width)}
+        onScroll={event => {
+          setScrollOffset(event.nativeEvent.contentOffset.x);
+        }}
+        scrollEventThrottle={16}
       >
         {categories.map(({ id, name}) => {
           return (
