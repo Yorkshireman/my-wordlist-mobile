@@ -6,7 +6,10 @@ module.exports = function(api) {
         plugins: ['react-native-paper/babel']
       }
     },
-    plugins: [['module:react-native-dotenv']],
+    plugins: [
+      ['module:react-native-dotenv'],
+      'react-native-reanimated/plugin'
+    ],
     presets: [
       'babel-preset-expo',
       '@babel/preset-flow'
