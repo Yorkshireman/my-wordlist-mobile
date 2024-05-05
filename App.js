@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler'; // according to the docs, this needs to be at the very top of the app entry point
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customColours as colors } from './src/utils';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
