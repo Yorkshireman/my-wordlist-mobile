@@ -1,8 +1,8 @@
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import { Text } from 'react-native-paper';
 import { useMemo } from 'react';
-import { View } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
+import { StyleSheet, View } from 'react-native';
 
 const MY_WORDLIST_CATEGORIES = gql`
   query MyWordlist {
@@ -24,15 +24,25 @@ export const Filters = () => {
   if (!categories) return null;
 
   return (
-    <View>
+    <View style={{ padding: 10 }}>
       <Text>Categories to include:</Text>
-      {
-        categories.map(({ id, name }) => {
-          return (
-            <Text key={id}>{name}</Text>
-          );
-        })
-      }
+      <View style={styles.categories}>
+        {
+          categories.map(({ id, name }) => {
+            return (
+              <Text key={id}>{name}</Text>
+            );
+          })
+        }
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 2
+  }
+});
