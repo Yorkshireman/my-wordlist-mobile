@@ -53,7 +53,7 @@ describe('Filtering', () => {
     });
 
     test('filters drawer is visible', async () => {
-      await waitFor(() => expect(screen.getByText('Hello')).toBeOnTheScreen());
+      await waitFor(() => expect(screen.getByText('Categories to include:')).toBeOnTheScreen());
     });
   });
 });
