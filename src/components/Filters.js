@@ -1,3 +1,4 @@
+import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import { Text } from 'react-native-paper';
 import { useMemo } from 'react';
 import { View } from 'react-native';
@@ -16,26 +17,9 @@ const MY_WORDLIST_CATEGORIES = gql`
   }
 `;
 
-const useUniqueCategories = entries => {
-  return useMemo(() => {
-    if (!entries) return null;
-
-    const wordlistEntriesCategories = entries.map(({ categories }) => {
-      return categories.map(({ id, name }) => ({ id, name }));
-    }).flat();
-
-    const uniqueCategories = wordlistEntriesCategories.reduce((acc, category) => {
-      if (acc.find(({ id }) => id === category.id)) return acc;
-      return [ ...acc, category ];
-    }, [wordlistEntriesCategories[0]]);
-
-    return uniqueCategories;
-  }, [entries]);
-};
-
 export const Filters = () => {
-  const { data } = useQuery(MY_WORDLIST_CATEGORIES);
-  const categories = useUniqueCategories(data?.myWordlist?.entries);
+  const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
+  const categories = useMemo(() => parseUniqueCategories(entries), [entries]);
 
   if (!categories) return null;
 
