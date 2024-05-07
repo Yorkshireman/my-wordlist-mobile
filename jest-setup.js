@@ -18,8 +18,14 @@ jest.mock('expo-linear-gradient', () => ({
 
 // Couldn't get the recommended approach working: https://reactnavigation.org/docs/testing#mocking-native-modules
 jest.mock('react-native-drawer-layout', () => {
-  const View = require('react-native').View;
   return {
-    Drawer: View
+    Drawer: ({ children, open, renderDrawerContent }) => {
+      return (
+        <>
+          {open && renderDrawerContent()}
+          {children}
+        </>
+      );
+    }
   };
 });
