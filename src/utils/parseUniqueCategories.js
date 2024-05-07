@@ -10,5 +10,5 @@ export const parseUniqueCategories = entries => {
       acc.push(category);
     }
     return acc;
-  }, []);
+  }, []).sort((a, b) => a.name > b.name ? 1 : -1);
 };
