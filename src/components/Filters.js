@@ -1,6 +1,6 @@
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
-import { Text } from 'react-native-paper';
 import { useMemo } from 'react';
+import { Button, Text } from 'react-native-paper';
 import { gql, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 
@@ -25,12 +25,12 @@ export const Filters = () => {
 
   return (
     <View style={{ padding: 10 }}>
-      <Text>Categories to include:</Text>
+      <Text style={{ marginBottom: 10 }} variant='titleMedium'>Select categories to include:</Text>
       <View style={styles.categories}>
         {
           categories.map(({ id, name }) => {
             return (
-              <Text key={id}>{name}</Text>
+              <Button compact disabled key={id} mode='contained-tonal'>{name}</Button>
             );
           })
         }
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   categories: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 2
+    gap: 3
   }
 });
