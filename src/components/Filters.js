@@ -1,4 +1,5 @@
 import { Text } from 'react-native-paper';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 
@@ -16,17 +17,20 @@ const MY_WORDLIST_CATEGORIES = gql`
 `;
 
 const useWordlistEntries = entries => {
-  if (!entries) return null;
-  const wordlistEntriesCategories = entries?.map(({ categories }) => {
-    return categories.map(({ id, name }) => ({ id, name }));
-  }).flat();
+  return useMemo(() => {
+    if (!entries) return null;
 
-  const uniqueCategories = wordlistEntriesCategories.reduce((acc, category) => {
-    if (acc.find(({ id }) => id === category.id)) return acc;
-    return [ ...acc, category ];
-  }, [wordlistEntriesCategories[0]]);
+    const wordlistEntriesCategories = entries.map(({ categories }) => {
+      return categories.map(({ id, name }) => ({ id, name }));
+    }).flat();
 
-  return uniqueCategories;
+    const uniqueCategories = wordlistEntriesCategories.reduce((acc, category) => {
+      if (acc.find(({ id }) => id === category.id)) return acc;
+      return [ ...acc, category ];
+    }, [wordlistEntriesCategories[0]]);
+
+    return uniqueCategories;
+  }, [entries]);
 };
 
 export const Filters = () => {
