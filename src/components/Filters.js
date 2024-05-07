@@ -16,7 +16,7 @@ const MY_WORDLIST_CATEGORIES = gql`
   }
 `;
 
-const useWordlistEntries = entries => {
+const useUniqueCategories = entries => {
   return useMemo(() => {
     if (!entries) return null;
 
@@ -35,8 +35,10 @@ const useWordlistEntries = entries => {
 
 export const Filters = () => {
   const { data } = useQuery(MY_WORDLIST_CATEGORIES);
-  const categories = useWordlistEntries(data?.myWordlist?.entries);
+  const categories = useUniqueCategories(data?.myWordlist?.entries);
+
   if (!categories) return null;
+
   return (
     <View>
       <Text>Categories to include:</Text>
