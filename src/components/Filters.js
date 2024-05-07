@@ -1,6 +1,6 @@
 import { Text } from 'react-native-paper';
+import { View } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
-import { StyleSheet, View } from 'react-native';
 
 const MY_WORDLIST_CATEGORIES = gql`
   query MyWordlist {
@@ -19,11 +19,12 @@ const useWordlistEntries = entries => {
   if (!entries) return null;
   const wordlistEntriesCategories = entries?.map(({ categories }) => {
     return categories.map(({ id, name }) => ({ id, name }));
-  });
+  }).flat();
 
-  const uniqueCategories = [
-    ...new Set(wordlistEntriesCategories.flat().map(({ name }) => name))
-  ];
+  const uniqueCategories = wordlistEntriesCategories.reduce((acc, category) => {
+    if (acc.find(({ id }) => id === category.id)) return acc;
+    return [ ...acc, category ];
+  }, [wordlistEntriesCategories[0]]);
 
   return uniqueCategories;
 };
@@ -34,10 +35,11 @@ export const Filters = () => {
   if (!categories) return null;
   return (
     <View>
+      <Text>Categories to include:</Text>
       {
-        categories.map(name => {
+        categories.map(({ id, name }) => {
           return (
-            <Text key={name}>{name}</Text>
+            <Text key={id}>{name}</Text>
           );
         })
       }
