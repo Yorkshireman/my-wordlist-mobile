@@ -1,5 +1,6 @@
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
+import { categoriesToIncludeVar } from '../reactiveVars';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useAsyncStorage } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
@@ -7,13 +8,33 @@ import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+
+const useFilters = data => {
+  const categoriesToInclude = useReactiveVar(categoriesToIncludeVar);
+
+  if (!categoriesToInclude.length) return data;
+
+  const filteredEntries = data.myWordlist.entries.filter(({ categories }) => {
+    if (categoriesToInclude.every(id => categories.map(({ id }) => id).includes(id))) return true;
+    return false;
+  });
+
+  return {
+    ...data,
+    myWordlist: {
+      ...data.myWordlist,
+      entries: filteredEntries
+    }
+  };
+};
 
 export const Wordlist = () => {
-  const { colors } = useTheme();
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
+  const filteredData = useFilters(data);
   const navigation = useNavigation();
+  const { colors: { secondaryContainer } } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
@@ -41,16 +62,16 @@ export const Wordlist = () => {
   const [wordlistEntryId, setWordlistEntryId] = useState();
 
   const longestWordLength = useMemo(() => {
-    return calculateLongestWordLength(data.myWordlist.entries);
-  }, [data.myWordlist.entries]);
+    return calculateLongestWordLength(filteredData.myWordlist.entries);
+  }, [filteredData.myWordlist.entries]);
 
   const wordFlexBasis = longestWordLength * 10;
 
   return (
     <ScrollView>
-      {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
+      {filteredData.myWordlist.entries.map(({ categories, id, word: { text } }) => {
         return (
-          <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
+          <View key={id} style={{ ...styles.entry, borderBottomColor: secondaryContainer }}>
             <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
               <Text variant={'bodyLarge'}>{text}</Text>
             </View>
