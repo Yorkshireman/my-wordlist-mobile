@@ -20,6 +20,9 @@ const useFilters = data => {
     return false;
   });
 
+  // if (!filteredEntries.length) categoriesToIncludeVar([]); // causes a bug
+  // // what to do if a filter is applied and then the only remaining wordlist entry is deleted?
+
   return {
     ...data,
     myWordlist: {
