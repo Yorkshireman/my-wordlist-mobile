@@ -27,10 +27,12 @@ export const Filters = () => {
   if (!categories) return null;
 
   const handleCategoryPress = categoryId => {
+    if (categoriesToInclude.includes(categoryId)) {
+      return categoriesToIncludeVar(categoriesToInclude.filter(id => id !== categoryId));
+    }
+
     return categoriesToIncludeVar([...categoriesToInclude, categoryId]);
   };
-
-  const isAnIncludedCategory = categoryId => categoriesToInclude.includes(categoryId);
 
   return (
     <View style={{ padding: 10 }}>
@@ -40,12 +42,12 @@ export const Filters = () => {
           categories.map(({ id, name }) => {
             return (
               <Button
-                buttonColor={isAnIncludedCategory(id) ? primary : 'rgb(211, 210, 211)'}
+                buttonColor={categoriesToInclude.includes(id) ? primary : 'rgb(211, 210, 211)'}
                 compact
                 key={id}
                 mode='contained'
                 onPress={() => handleCategoryPress(id)}
-                textColor={isAnIncludedCategory(id) ? onPrimary : 'rgb(142, 140, 142)'}
+                textColor={categoriesToInclude.includes(id) ? onPrimary : 'rgb(142, 140, 142)'}
               >
                 {name}
               </Button>
