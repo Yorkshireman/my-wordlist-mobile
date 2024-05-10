@@ -25,8 +25,12 @@ export const Filters = () => {
   const { colors: { onPrimary, primary } } = useTheme();
 
   useEffect(() => {
-    categoriesToIncludeVar(categoriesToInclude.filter(categoryId =>
-      categories.find(({ id }) => id === categoryId)));
+    const isIncludedCategoryInWordlist = categoryId => {
+      return categories.find(({ id }) => id === categoryId);
+    };
+
+    categoriesToIncludeVar(categoriesToInclude.filter(isIncludedCategoryInWordlist));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
