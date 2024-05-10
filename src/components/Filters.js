@@ -1,9 +1,9 @@
 import { categoriesToIncludeVar } from '../reactiveVars';
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
-import { useMemo } from 'react';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
+import { useEffect, useMemo } from 'react';
 
 const MY_WORDLIST_CATEGORIES = gql`
   query MyWordlist {
@@ -23,6 +23,12 @@ export const Filters = () => {
   const categories = useMemo(() => parseUniqueCategories(entries), [entries]);
   const categoriesToInclude = useReactiveVar(categoriesToIncludeVar);
   const { colors: { onPrimary, primary } } = useTheme();
+
+  useEffect(() => {
+    categoriesToIncludeVar(categoriesToInclude.filter(categoryId =>
+      categories.find(({ id }) => id === categoryId)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories]);
 
   if (!categories) return null;
 
