@@ -1,4 +1,4 @@
-import { categoriesToIncludeVar } from '../reactiveVars';
+import { categoriesSelectedVar } from '../reactiveVars';
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { gql, useQuery, useReactiveVar } from '@apollo/client';
@@ -21,7 +21,7 @@ const MY_WORDLIST_CATEGORIES = gql`
 export const Filters = () => {
   const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
   const categories = useMemo(() => parseUniqueCategories(entries), [entries]);
-  const categoriesToInclude = useReactiveVar(categoriesToIncludeVar);
+  const categoriesSelected = useReactiveVar(categoriesSelectedVar);
   const { colors: { onPrimary, primary } } = useTheme();
 
   useEffect(() => {
@@ -29,18 +29,18 @@ export const Filters = () => {
       return categories.some(({ id }) => id === categoryId);
     };
 
-    categoriesToIncludeVar(categoriesToInclude.filter(isIncludedCategoryInWordlist));
+    categoriesSelectedVar(categoriesSelected.filter(isIncludedCategoryInWordlist));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
   if (!categories) return null;
 
   const handleCategoryPress = categoryId => {
-    if (categoriesToInclude.includes(categoryId)) {
-      return categoriesToIncludeVar(categoriesToInclude.filter(id => id !== categoryId));
+    if (categoriesSelected.includes(categoryId)) {
+      return categoriesSelectedVar(categoriesSelected.filter(id => id !== categoryId));
     }
 
-    return categoriesToIncludeVar([...categoriesToInclude, categoryId]);
+    return categoriesSelectedVar([...categoriesSelected, categoryId]);
   };
 
   return (
@@ -51,12 +51,12 @@ export const Filters = () => {
           categories.map(({ id, name }) => {
             return (
               <Button
-                buttonColor={categoriesToInclude.includes(id) ? primary : 'rgb(211, 210, 211)'}
+                buttonColor={categoriesSelected.includes(id) ? primary : 'rgb(211, 210, 211)'}
                 compact
                 key={id}
                 mode='contained'
                 onPress={() => handleCategoryPress(id)}
-                textColor={categoriesToInclude.includes(id) ? onPrimary : 'rgb(142, 140, 142)'}
+                textColor={categoriesSelected.includes(id) ? onPrimary : 'rgb(142, 140, 142)'}
               >
                 {name}
               </Button>
