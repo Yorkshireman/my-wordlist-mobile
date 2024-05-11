@@ -1,6 +1,6 @@
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
-import { categoriesToIncludeVar } from '../reactiveVars';
+import { categoriesSelectedVar } from '../reactiveVars';
 import { DeleteConfirm } from './DeleteConfirm';
 import { useAsyncStorage } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
@@ -11,17 +11,14 @@ import { useMemo, useState } from 'react';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 
 const useFilters = data => {
-  const categoriesToInclude = useReactiveVar(categoriesToIncludeVar);
+  const categoriesSelected = useReactiveVar(categoriesSelectedVar);
 
-  if (!categoriesToInclude.length) return data;
+  if (!categoriesSelected.length) return data;
 
   const filteredEntries = data.myWordlist.entries.filter(({ categories }) => {
-    if (categoriesToInclude.every(id => categories.map(({ id }) => id).includes(id))) return true;
+    if (categoriesSelected.every(id => categories.map(({ id }) => id).includes(id))) return true;
     return false;
   });
-
-  // if (!filteredEntries.length) categoriesToIncludeVar([]); // causes a bug
-  // // what to do if a filter is applied and then the only remaining wordlist entry is deleted?
 
   return {
     ...data,
