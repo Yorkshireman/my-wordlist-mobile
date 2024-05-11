@@ -26,7 +26,7 @@ export const Filters = () => {
 
   useEffect(() => {
     const isIncludedCategoryInWordlist = categoryId => {
-      return categories.find(({ id }) => id === categoryId);
+      return categories.some(({ id }) => id === categoryId);
     };
 
     categoriesToIncludeVar(categoriesToInclude.filter(isIncludedCategoryInWordlist));
