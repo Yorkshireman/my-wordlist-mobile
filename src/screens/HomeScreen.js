@@ -27,7 +27,7 @@ export const HomeScreen = ({ navigation }) => {
       <>
         <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
           <IconButton
-            icon='filter'
+            icon='filter-outline'
             mode='contained'
             onPress={() => setOpen(prevOpen => !prevOpen)}
             style={{ margin: 0 }}
