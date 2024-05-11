@@ -30,7 +30,6 @@ export const Filters = () => {
     };
 
     categoriesToIncludeVar(categoriesToInclude.filter(isIncludedCategoryInWordlist));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories]);
 
