@@ -16,8 +16,8 @@ const useFilters = data => {
   if (!categoriesSelected.length) return data;
 
   const filteredEntries = data.myWordlist.entries.filter(({ categories }) => {
-    if (categoriesSelected.every(id => categories.map(({ id }) => id).includes(id))) return true;
-    return false;
+    const wordlistCategoriesIds = categories.map(({ id }) => id);
+    return categoriesSelected.every(id => wordlistCategoriesIds.includes(id));
   });
 
   return {
@@ -32,16 +32,17 @@ const useFilters = data => {
 export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
-  const filteredData = useFilters(data);
+  const { myWordlist: { entries }} = useFilters(data);
   const navigation = useNavigation();
   const { colors: { secondaryContainer } } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [wordlistEntryIdToDelete, setWordlistEntryIdToDelete] = useState();
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
       authToken: currentAuthToken,
       wordlistEntryDelete: {
         wordlistEntry: {
-          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryId)
+          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryIdToDelete)
         }
       }
     }),
@@ -59,17 +60,15 @@ export const Wordlist = () => {
     }
   });
 
-  const [wordlistEntryId, setWordlistEntryId] = useState();
-
   const longestWordLength = useMemo(() => {
-    return calculateLongestWordLength(filteredData.myWordlist.entries);
-  }, [filteredData.myWordlist.entries]);
+    return calculateLongestWordLength(entries);
+  }, [entries]);
 
   const wordFlexBasis = longestWordLength * 10;
 
   return (
     <ScrollView>
-      {filteredData.myWordlist.entries.map(({ categories, id, word: { text } }) => {
+      {entries.map(({ categories, id, word: { text } }) => {
         return (
           <View key={id} style={{ ...styles.entry, borderBottomColor: secondaryContainer }}>
             <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
@@ -91,7 +90,7 @@ export const Wordlist = () => {
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
-                  setWordlistEntryId(id);
+                  setWordlistEntryIdToDelete(id);
                   setShowDeleteConfirm(true);
                 }}
                 size={16}
@@ -104,9 +103,12 @@ export const Wordlist = () => {
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
-          wordlistEntryDelete({ variables: { id: wordlistEntryId }});
+          wordlistEntryDelete({ variables: { id: wordlistEntryIdToDelete }});
         }}
-        onDismiss={() => setShowDeleteConfirm(false)}
+        onDismiss={() => {
+          setShowDeleteConfirm(false);
+          setWordlistEntryIdToDelete(null);
+        }}
         visible={showDeleteConfirm}
       />
     </ScrollView>
