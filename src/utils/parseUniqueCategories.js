@@ -6,7 +6,7 @@ export const parseUniqueCategories = entries => {
   ).flat();
 
   return categories.reduce((acc, category) => {
-    if (!acc.find(({ id }) => id === category.id)) {
+    if (!acc.some(({ id }) => id === category.id)) {
       acc.push(category);
     }
     return acc;
