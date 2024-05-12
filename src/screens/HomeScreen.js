@@ -8,7 +8,7 @@ import { Filters, Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
-  const { data, loading } = useAuthToken(navigation);
+  const { data: { myWordlist } = {}, loading } = useAuthToken(navigation);
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,7 +23,7 @@ export const HomeScreen = ({ navigation }) => {
     >
       <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
         {loading && <Loading size='large' />}
-        {data?.myWordlist &&
+        {myWordlist &&
           <>
             <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
               <IconButton
@@ -37,7 +37,7 @@ export const HomeScreen = ({ navigation }) => {
             <Wordlist />
             <FAB
               icon='plus'
-              onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: data.myWordlist.id })}
+              onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: myWordlist.id })}
               style={styles.fab}
             />
           </>
