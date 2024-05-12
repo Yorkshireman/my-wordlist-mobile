@@ -2,6 +2,7 @@ export { useAsyncStorage } from './useAsyncStorage';
 export { useFetchWordlistData } from './useFetchWordlistData';
 export { useFilters } from './useFilters';
 export { useSnackbar } from './useSnackbar';
+export { useUpdateCategoriesSelectedVar } from './useUpdateCategoriesSelectedVar';
 export { useWordlistEntriesCreate } from './useWordlistEntriesCreate';
 export { useWordlistEntryId } from './useWordlistEntryId';
 export { useWordlistEntryUpdate } from './useWordlistEntryUpdate';
