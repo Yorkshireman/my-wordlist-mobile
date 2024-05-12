@@ -24,23 +24,23 @@ export const HomeScreen = ({ navigation }) => {
       <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
         {loading && <Loading size='large' />}
         {data?.myWordlist &&
-      <>
-        <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
-          <IconButton
-            icon='filter-outline'
-            mode='contained'
-            onPress={() => setOpen(prevOpen => !prevOpen)}
-            style={{ margin: 0 }}
-            testID='open-filters-button'
-          />
-        </View>
-        <Wordlist />
-        <FAB
-          icon='plus'
-          onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: data.myWordlist.id })}
-          style={styles.fab}
-        />
-      </>
+          <>
+            <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
+              <IconButton
+                icon='filter-outline'
+                mode='contained'
+                onPress={() => setOpen(prevOpen => !prevOpen)}
+                style={{ margin: 0 }}
+                testID='open-filters-button'
+              />
+            </View>
+            <Wordlist />
+            <FAB
+              icon='plus'
+              onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: data.myWordlist.id })}
+              style={styles.fab}
+            />
+          </>
         }
       </View>
     </Drawer>
