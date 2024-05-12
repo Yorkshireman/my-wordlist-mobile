@@ -1,33 +1,13 @@
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
-import { categoriesSelectedVar } from '../reactiveVars';
 import { DeleteConfirm } from './DeleteConfirm';
-import { useAsyncStorage } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useAsyncStorage, useFilters } from '../hooks';
 import { useMemo, useState } from 'react';
-import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-
-const useFilters = data => {
-  const categoriesSelected = useReactiveVar(categoriesSelectedVar);
-
-  if (!categoriesSelected.length) return data;
-
-  const filteredEntries = data.myWordlist.entries.filter(({ categories }) => {
-    const wordlistCategoriesIds = categories.map(({ id }) => id);
-    return categoriesSelected.every(id => wordlistCategoriesIds.includes(id));
-  });
-
-  return {
-    ...data,
-    myWordlist: {
-      ...data.myWordlist,
-      entries: filteredEntries
-    }
-  };
-};
+import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
