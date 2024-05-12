@@ -19,21 +19,21 @@ const MY_WORDLIST_CATEGORIES = gql`
 `;
 
 export const Filters = () => {
-  const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
-  const categories = useMemo(() => parseUniqueCategories(entries), [entries]);
   const categoriesSelected = useReactiveVar(categoriesSelectedVar);
+  const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
   const { colors: { onPrimary, primary } } = useTheme();
+  const wordlistCategories = useMemo(() => parseUniqueCategories(entries), [entries]);
 
   useEffect(() => {
     const isIncludedCategoryInWordlist = categoryId => {
-      return categories.some(({ id }) => id === categoryId);
+      return wordlistCategories.some(({ id }) => id === categoryId);
     };
 
     categoriesSelectedVar(categoriesSelected.filter(isIncludedCategoryInWordlist));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categories]);
+  }, [wordlistCategories]);
 
-  if (!categories) return null;
+  if (!wordlistCategories) return null;
 
   const handleCategoryPress = categoryId => {
     if (categoriesSelected.includes(categoryId)) {
@@ -48,7 +48,7 @@ export const Filters = () => {
       <Text style={{ marginBottom: 10 }} variant='titleMedium'>Select categories to include:</Text>
       <View style={styles.categories}>
         {
-          categories.map(({ id, name }) => {
+          wordlistCategories.map(({ id, name }) => {
             return (
               <Button
                 buttonColor={categoriesSelected.includes(id) ? primary : 'rgb(211, 210, 211)'}
