@@ -29,9 +29,11 @@ export const Filters = () => {
       return wordlistCategories.some(({ id }) => id === categoryId);
     };
 
-    categoriesSelectedVar(categoriesSelected.filter(isIncludedCategoryInWordlist));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wordlistCategories]);
+    const filteredCategoriesSelected = categoriesSelected.filter(isIncludedCategoryInWordlist);
+    if (filteredCategoriesSelected.sort().toString() !== categoriesSelected.sort().toString()) {
+      categoriesSelectedVar(filteredCategoriesSelected);
+    }
+  }, [categoriesSelected, wordlistCategories]);
 
   if (!wordlistCategories) return null;
 
