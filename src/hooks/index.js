@@ -1,5 +1,5 @@
 export { useAsyncStorage } from './useAsyncStorage';
-export { useAuthToken } from './useAuthToken';
+export { useFetchWordlistData } from './useFetchWordlistData';
 export { useFilters } from './useFilters';
 export { useSnackbar } from './useSnackbar';
 export { useWordlistEntriesCreate } from './useWordlistEntriesCreate';
