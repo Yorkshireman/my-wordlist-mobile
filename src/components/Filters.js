@@ -1,39 +1,18 @@
 import { categoriesSelectedVar } from '../reactiveVars';
+import { MY_WORDLIST_CATEGORIES } from '../graphql-queries';
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
+import { useMemo } from 'react';
+import { useUpdateCategoriesSelectedVar } from '../hooks/useUpdateCategoriesSelectedVar';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { gql, useQuery, useReactiveVar } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
-import { useEffect, useMemo } from 'react';
-
-const MY_WORDLIST_CATEGORIES = gql`
-  query MyWordlist {
-    myWordlist {
-      entries {
-        categories {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
+import { useQuery, useReactiveVar } from '@apollo/client';
 
 export const Filters = () => {
   const categoriesSelected = useReactiveVar(categoriesSelectedVar);
   const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
   const { colors: { onPrimary, primary } } = useTheme();
   const wordlistCategories = useMemo(() => parseUniqueCategories(entries), [entries]);
-
-  useEffect(() => {
-    const isIncludedCategoryInWordlist = categoryId => {
-      return wordlistCategories.some(({ id }) => id === categoryId);
-    };
-
-    const filteredCategoriesSelected = categoriesSelected.filter(isIncludedCategoryInWordlist);
-    if (filteredCategoriesSelected.sort().toString() !== categoriesSelected.sort().toString()) {
-      categoriesSelectedVar(filteredCategoriesSelected);
-    }
-  }, [categoriesSelected, wordlistCategories]);
+  useUpdateCategoriesSelectedVar(wordlistCategories);
 
   if (!wordlistCategories) return null;
 
