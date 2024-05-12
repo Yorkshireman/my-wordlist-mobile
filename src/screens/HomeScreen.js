@@ -1,14 +1,14 @@
 import { Drawer } from 'react-native-drawer-layout';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
-import { useAuthToken } from '../hooks';
+import { useFetchWordlistData } from '../hooks';
 import { useState } from 'react';
 import { FAB, IconButton } from 'react-native-paper';
 import { Filters, Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
-  const { data: { myWordlist } = {}, loading } = useAuthToken(navigation);
+  const { data: { myWordlist } = {}, loading } = useFetchWordlistData(navigation);
   const [open, setOpen] = useState(false);
 
   return (
