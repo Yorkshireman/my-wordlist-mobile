@@ -1,20 +1,20 @@
-import { categoriesSelectedVar } from '../reactiveVars';
+import { selectedCategoriesVar } from '../reactiveVars';
 import { useEffect } from 'react';
 import { useReactiveVar } from '@apollo/client';
 
 // if wordlist categories have changed in such a way that renders any selected categories redundant,
-// remove them from the categoriesSelectedVar
+// remove them from the selectedCategoriesVar
 export const useUpdateCategoriesSelectedVar = wordlistCategories => {
-  const categoriesSelected = useReactiveVar(categoriesSelectedVar);
+  const selectedCategories = useReactiveVar(selectedCategoriesVar);
 
   useEffect(() => {
     const isIncludedCategoryInWordlist = categoryId => {
       return wordlistCategories.some(({ id }) => id === categoryId);
     };
 
-    const nonOrphanedSelectedCategories = categoriesSelected.filter(isIncludedCategoryInWordlist);
-    if (nonOrphanedSelectedCategories.sort().toString() !== categoriesSelected.sort().toString()) {
-      categoriesSelectedVar(nonOrphanedSelectedCategories);
+    const nonOrphanedSelectedCategories = selectedCategories.filter(isIncludedCategoryInWordlist);
+    if (nonOrphanedSelectedCategories.sort().toString() !== selectedCategories.sort().toString()) {
+      selectedCategoriesVar(nonOrphanedSelectedCategories);
     }
-  }, [categoriesSelected, wordlistCategories]);
+  }, [selectedCategories, wordlistCategories]);
 };
