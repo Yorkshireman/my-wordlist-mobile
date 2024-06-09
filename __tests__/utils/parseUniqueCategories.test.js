@@ -8,10 +8,10 @@ describe('parseUniqueCategories()', () => {
   });
 
   test('returns null when passed undefined', () => {
-    expect(parseUniqueCategories()).toEqual(null);
+    expect(parseUniqueCategories()).toBeNull();
   });
 
   test('returns null when passed an empty array', () => {
-    expect(parseUniqueCategories()).toEqual(null);
+    expect(parseUniqueCategories()).toBeNull();
   });
 });
