@@ -3,8 +3,7 @@ import { parseUniqueCategories } from '../../src/utils/parseUniqueCategories';
 
 describe('parseUniqueCategories()', () => {
   test('leaves only unique categories with ids, in alphabetical order', () => {
-    const result = parseUniqueCategories(entries);
-    expect(result).toMatchSnapshot();
+    expect(parseUniqueCategories(entries)).toMatchSnapshot();
   });
 
   test('returns null when passed undefined', () => {
