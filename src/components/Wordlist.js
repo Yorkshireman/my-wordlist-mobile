@@ -1,26 +1,28 @@
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
-import { useAsyncStorage } from '../hooks';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useAsyncStorage, useFilters } from '../hooks';
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
-  const { colors } = useTheme();
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
+  const { myWordlist: { entries }} = useFilters(data);
   const navigation = useNavigation();
+  const { colors: { secondaryContainer } } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [wordlistEntryIdToDelete, setWordlistEntryIdToDelete] = useState();
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
       authToken: currentAuthToken,
       wordlistEntryDelete: {
         wordlistEntry: {
-          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryId)
+          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryIdToDelete)
         }
       }
     }),
@@ -38,19 +40,17 @@ export const Wordlist = () => {
     }
   });
 
-  const [wordlistEntryId, setWordlistEntryId] = useState();
-
   const longestWordLength = useMemo(() => {
-    return calculateLongestWordLength(data.myWordlist.entries);
-  }, [data.myWordlist.entries]);
+    return calculateLongestWordLength(entries);
+  }, [entries]);
 
   const wordFlexBasis = longestWordLength * 10;
 
   return (
     <ScrollView>
-      {data.myWordlist.entries.map(({ categories, id, word: { text } }) => {
+      {entries.map(({ categories, id, word: { text } }) => {
         return (
-          <View key={id} style={{ ...styles.entry, borderBottomColor: colors.secondaryContainer }}>
+          <View key={id} style={{ ...styles.entry, borderBottomColor: secondaryContainer }}>
             <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
               <Text variant={'bodyLarge'}>{text}</Text>
             </View>
@@ -70,7 +70,7 @@ export const Wordlist = () => {
               <IconButton
                 icon='trash-can-outline'
                 onPress={() => {
-                  setWordlistEntryId(id);
+                  setWordlistEntryIdToDelete(id);
                   setShowDeleteConfirm(true);
                 }}
                 size={16}
@@ -83,9 +83,12 @@ export const Wordlist = () => {
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
-          wordlistEntryDelete({ variables: { id: wordlistEntryId }});
+          wordlistEntryDelete({ variables: { id: wordlistEntryIdToDelete }});
         }}
-        onDismiss={() => setShowDeleteConfirm(false)}
+        onDismiss={() => {
+          setShowDeleteConfirm(false);
+          setWordlistEntryIdToDelete(null);
+        }}
         visible={showDeleteConfirm}
       />
     </ScrollView>

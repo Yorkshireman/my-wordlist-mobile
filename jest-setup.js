@@ -15,3 +15,18 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: 'LinearGradient'
 }));
+
+// Couldn't get the recommended approach working: https://reactnavigation.org/docs/testing#mocking-native-modules
+jest.mock('react-native-drawer-layout', () => {
+  return {
+    /* eslint-disable-next-line react/prop-types */
+    Drawer: ({ children, open, renderDrawerContent }) => {
+      return (
+        <>
+          {open && renderDrawerContent()}
+          {children}
+        </>
+      );
+    }
+  };
+});
