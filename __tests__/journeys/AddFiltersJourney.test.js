@@ -42,7 +42,7 @@ describe('Filtering', () => {
   afterEach(() => jest.clearAllMocks());
 
   test('filters is not initially visible', async () => {
-    await waitFor(() => expect(screen.queryByText('Hello')).not.toBeOnTheScreen());
+    await waitFor(() => expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen());
   });
 
   describe('after tapping open filters button', () => {
