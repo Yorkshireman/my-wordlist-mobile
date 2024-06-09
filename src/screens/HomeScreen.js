@@ -17,7 +17,6 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <Drawer
       drawerPosition='right'
-      drawerStyle={{ backgroundColor: 'rgba(242, 242, 242, 0.95)' }}
       drawerType='front'
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}

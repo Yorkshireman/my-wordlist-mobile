@@ -1,4 +1,5 @@
 import { categoriesSelectedVar } from '../reactiveVars';
+import { LinearGradient } from 'expo-linear-gradient';
 import { MY_WORDLIST_CATEGORIES } from '../graphql-queries';
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import { useMemo } from 'react';
@@ -10,7 +11,14 @@ import { useQuery, useReactiveVar } from '@apollo/client';
 export const Filters = () => {
   const categoriesSelected = useReactiveVar(categoriesSelectedVar);
   const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
-  const { colors: { onPrimary, primary } } = useTheme();
+  const {
+    colors: {
+      inversePrimary,
+      onSurfaceVariant,
+      primary,
+      secondaryContainer
+    }
+  } = useTheme();
   const wordlistCategories = useMemo(() => parseUniqueCategories(entries), [entries]);
   useUpdateCategoriesSelectedVar(wordlistCategories);
 
@@ -25,19 +33,23 @@ export const Filters = () => {
   };
 
   return (
-    <View style={{ padding: 10 }}>
+    <View style={{ height: '100%', padding: 10 }}>
+      <LinearGradient
+        colors={[secondaryContainer, 'white']}
+        style={styles.background}
+      />
       <Text style={{ marginBottom: 10 }} variant='titleMedium'>Select categories to include:</Text>
       <View style={styles.categories}>
         {
           wordlistCategories.map(({ id, name }) => {
             return (
               <Button
-                buttonColor={categoriesSelected.includes(id) ? primary : 'rgb(211, 210, 211)'}
+                buttonColor={categoriesSelected.includes(id) ? primary : inversePrimary}
                 compact
                 key={id}
                 mode='contained'
                 onPress={() => handleCategoryPress(id)}
-                textColor={categoriesSelected.includes(id) ? onPrimary : 'rgb(142, 140, 142)'}
+                textColor={categoriesSelected.includes(id) ? 'white' : onSurfaceVariant}
               >
                 {name}
               </Button>
@@ -50,6 +62,13 @@ export const Filters = () => {
 };
 
 const styles = StyleSheet.create({
+  background: {
+    height: '100%',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0
+  },
   categories: {
     flexDirection: 'row',
     flexWrap: 'wrap',
