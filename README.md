@@ -135,3 +135,15 @@ SIGN_IN_URL=http://localhost:3001/signin
 SIGN_UP_URL=http://localhost:3001/signup
 ```
 `npm run ios`
+
+### For Android Simulator
+Hardcode the following values into the code instead of relying on the values being pulled from `.env.development`:
+`MY_WORDLIST_GRAPHQL_URL`: `'http://10.0.2.2:3000/graphql'`
+`SIGN_IN_URL`: `'http://10.0.2.2:8081/signin'`
+`SIGN_UP_URL`: `'http://10.0.2.2:8081/signup'`
+
+* Run `authentication-server` with `r s -p 8081`
+* Run `my_wordlist_graphql` with `r s`
+* `npm run android`
+
+It's currently a mystery as to why it works this way and not from relying on the `.env.development` file with exactly the same values.
