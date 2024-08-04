@@ -112,3 +112,26 @@ sequenceDiagram
     Client -->> User: render user's Wordlist
   end
 ```
+
+## To run whole stack locally
+
+* Run `authentication-server` on port `3001` (`r s -p 3001`)
+* Run `my_wordlist_graphql` on port `3000` (`r s -p 3000`)
+
+## For Web
+`.env.development`:
+```
+MY_WORDLIST_GRAPHQL_URL=http://localhost:3000/graphql
+SIGN_IN_URL=http://localhost:3001/signin
+SIGN_UP_URL=http://localhost:3001/signup
+```
+`npm run web`
+
+### For iOS Simulator
+`.env.development`:
+```
+MY_WORDLIST_GRAPHQL_URL=http://localhost:3000/graphql
+SIGN_IN_URL=http://localhost:3001/signin
+SIGN_UP_URL=http://localhost:3001/signup
+```
+`npm run ios`
