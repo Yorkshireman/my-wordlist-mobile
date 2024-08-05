@@ -33,7 +33,7 @@ export const Filters = () => {
   };
 
   return (
-    <View style={{ height: '100%', padding: 10 }}>
+    <View style={{ height: '100%', padding: 10 }} testID='filters-container'>
       <LinearGradient
         colors={[secondaryContainer, 'white']}
         style={styles.background}

@@ -7,7 +7,7 @@ import { myWordlistQueryMock } from '../../mockedProviderMocks';
 import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 
 jest.useFakeTimers();
 
@@ -55,7 +55,20 @@ describe('Filtering', () => {
     test('filters drawer is visible', async () => {
       await waitFor(() => expect(screen.getByText('Select categories to include:')).toBeOnTheScreen());
     });
-  });
 
-  // more tests
+    test.each(['adverb', 'adjective', 'anatomy', 'noun', 'tech', 'transport'])('category "%s" is visible within the filters container', async category => {
+      await waitFor(() => {
+        const filtersContainer = screen.getByTestId('filters-container');
+        expect(within(filtersContainer).getByText(category)).toBeVisible();
+      });
+    });
+
+    describe('when onClose() event is fired from the component with the filters-container test-id', () => {
+      test('filters drawer is closed', async () => {
+        const filtersContainer = screen.getByTestId('filters-container');
+        fireEvent(filtersContainer, 'onClose');
+        await waitFor(() => expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen());
+      });
+    });
+  });
 });
