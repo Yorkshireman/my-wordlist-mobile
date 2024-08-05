@@ -1,26 +1,51 @@
-import { FAB } from 'react-native-paper';
+import { Drawer } from 'react-native-drawer-layout';
 import PropTypes from 'prop-types';
+import { selectedCategoriesVar } from '../reactiveVars';
 import sharedStyles from '../styles';
-import { useAuthToken } from '../hooks';
-import { Loading, Wordlist } from '../components';
+import { useFetchWordlistData } from '../hooks';
+import { useReactiveVar } from '@apollo/client';
+import { useState } from 'react';
+import { FAB, IconButton } from 'react-native-paper';
+import { Filters, Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
-  const { data, loading } = useAuthToken(navigation);
+  const selectedCategories = useReactiveVar(selectedCategoriesVar);
+  const { data: { myWordlist } = {}, loading } = useFetchWordlistData(navigation);
+  const [open, setOpen] = useState(false);
 
   return (
-    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
-      {loading && <Loading size='large' />}
-      {data?.myWordlist &&
-      <>
-        <Wordlist />
-        <FAB
-          icon='plus'
-          onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: data.myWordlist.id })}
-          style={styles.fab}
-        />
-      </>}
-    </View>
+    <Drawer
+      drawerPosition='right'
+      drawerType='front'
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      renderDrawerContent={() => <Filters />}
+    >
+      <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
+        {loading && <Loading size='large' />}
+        {myWordlist &&
+          <>
+            <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
+              <IconButton
+                icon={selectedCategories.length ? 'filter-check' : 'filter-outline'}
+                mode='contained'
+                onPress={() => setOpen(prevOpen => !prevOpen)}
+                style={{ margin: 0 }}
+                testID='open-filters-button'
+              />
+            </View>
+            <Wordlist />
+            <FAB
+              icon='plus'
+              onPress={() => navigation.navigate('CreateWordlistEntries', { wordlistId: myWordlist.id })}
+              style={styles.fab}
+            />
+          </>
+        }
+      </View>
+    </Drawer>
   );
 };
 

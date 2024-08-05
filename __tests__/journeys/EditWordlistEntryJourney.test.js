@@ -74,7 +74,7 @@ describe('Edit Wordlist Entry journey', () => {
 
     await waitFor(() => {
       const user = userEvent.setup();
-      user.press(screen.getByTestId('edit-wordlist-entry-icon'));
+      user.press(screen.getAllByTestId('edit-wordlist-entry-icon')[3]);
     });
   });
 
