@@ -2,10 +2,10 @@ import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
-import { myWordlistQueryMock } from '../../mockedProviderMocks/my-wordlist';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { myWordlistQueryMock, myWordlistQueryMockWithOneEntry } from '../../mockedProviderMocks/my-wordlist';
 
 jest.useFakeTimers();
 
@@ -39,8 +39,7 @@ describe('HomeScreen', () => {
   });
 
   describe('when auth token is in storage', () => {
-    const { categories } = myWordlistQueryMock.result.data.myWordlist.entries[0];
-
+    const { categories } = myWordlistQueryMockWithOneEntry.result.data.myWordlist.entries[0];
     beforeEach(async () => {
       AsyncStorage.getItem.mockImplementation(key => {
         if (key === 'myWordlistAuthToken') {
@@ -54,7 +53,7 @@ describe('HomeScreen', () => {
         render(
           <PaperProvider>
             <NavigationContainer>
-              <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
+              <MockedProvider addTypename={true} mocks={[myWordlistQueryMockWithOneEntry]}>
                 <HomeScreen navigation={mockNavigation} />
               </MockedProvider>
             </NavigationContainer>
@@ -69,7 +68,7 @@ describe('HomeScreen', () => {
 
     test('word is displayed', async () => {
       await waitFor(() => {
-        expect(screen.getByText('phone')).toBeOnTheScreen();
+        expect(screen.getByText('constructive')).toBeOnTheScreen();
       });
     });
 
@@ -107,7 +106,7 @@ describe('HomeScreen', () => {
 
     test('calls navigate() with CreateWordlistEntries', async () => {
       await waitFor(() => {
-        expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateWordlistEntries', { wordlistId: 'de728808-3df2-4dfc-adf9-5981ee5f795a' });
+        expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateWordlistEntries', { wordlistId: 'c722b3ef-c762-4245-a0fa-fb452c4539cf' });
       });
     });
   });

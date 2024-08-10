@@ -50,7 +50,11 @@ export const Wordlist = () => {
     <ScrollView>
       {entries.map(({ categories, id, word: { text } }) => {
         return (
-          <View key={id} style={{ ...styles.entry, borderBottomColor: secondaryContainer }}>
+          <View
+            key={id}
+            style={{ ...styles.entry, borderBottomColor: secondaryContainer }}
+            testID={id}
+          >
             <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
               <Text variant={'bodyLarge'}>{text}</Text>
             </View>

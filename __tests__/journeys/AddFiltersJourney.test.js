@@ -7,11 +7,13 @@ import { myWordlistQueryMock } from '../../mockedProviderMocks';
 import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { parseUniqueCategories } from '../../src/utils/parseUniqueCategories';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 
 jest.useFakeTimers();
 
 describe('Filtering', () => {
+  const { entries } = myWordlistQueryMock.result.data.myWordlist;
   beforeEach(async () => {
     AsyncStorage.getItem.mockImplementation(key => {
       if (key === 'myWordlistAuthToken') {
@@ -46,6 +48,8 @@ describe('Filtering', () => {
   });
 
   describe('after tapping open filters button', () => {
+    const wordlistUniqueCategories = parseUniqueCategories(entries).map(({ name }) => name);
+
     beforeEach(async () => {
       await waitFor(() => {
         fireEvent.press(screen.getByTestId('open-filters-button'));
@@ -56,7 +60,7 @@ describe('Filtering', () => {
       await waitFor(() => expect(screen.getByText('Select categories to include:')).toBeOnTheScreen());
     });
 
-    test.each(['adverb', 'adjective', 'anatomy', 'noun', 'tech', 'transport'])('category "%s" is visible within the filters container', async category => {
+    test.each(wordlistUniqueCategories)('category "%s" is visible within the filters container', async category => {
       await waitFor(() => {
         const filtersContainer = screen.getByTestId('filters-container');
         expect(within(filtersContainer).getByText(category)).toBeVisible();
@@ -76,13 +80,20 @@ describe('Filtering', () => {
         isTransportCategorySelected = true;
       });
 
-      test('word "transport" is visible', async () => {
+      test('word "train" is visible', async () => {
+        await waitFor(() => {
+          expect(screen.getByText('train')).toBeVisible();
+        });
+      });
+
+      test('word "motorway" is visible', async () => {
         await waitFor(() => {
           expect(screen.getByText('motorway')).toBeVisible();
         });
       });
 
-      test.each(['funnily', 'arterial', 'phone'])('word "%s" is not visible', async word => {
+      const expectedWordsNotVisible = entries.map(({ word }) => word.text).filter(word => !['train', 'motorway'].includes(word));
+      test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
         await waitFor(() => {
           expect(screen.queryByText(word)).not.toBeVisible();
         });

@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { EditWordlistEntryScreen, HomeScreen } from '../../src/screens';
-import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, userEvent, waitFor, within } from '@testing-library/react-native';
 import { myWordlistQueryMock, wordlistEntryUpdate } from '../../mockedProviderMocks';
 
 jest.useFakeTimers();
@@ -86,14 +86,14 @@ describe('Edit Wordlist Entry journey', () => {
   describe('after submitting a word change', () => {
     beforeAll(() => {
       requestWord = {
-        text: 'phones'
+        text: 'pendulums'
       };
 
       responseWord = {
         __typename: 'Word',
-        createdAt: '2023-12-03T18:48:10Z',
-        id: 'f476c9b9-2417-4bdf-b3d0-3bf9c6ec4429',
-        text: 'phones'
+        createdAt: '2024-08-10T21:07:50Z',
+        id: 'f54a6c29-3f99-4278-805e-3f2fe2af83f4',
+        text: 'pendulums'
       };
 
       responseCategories = [
@@ -101,11 +101,6 @@ describe('Edit Wordlist Entry journey', () => {
           __typename: 'Category',
           id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
           name: 'noun'
-        },
-        {
-          __typename: 'Category',
-          id: 'f7302234-57b4-4234-b9c7-5483a84e6bf7',
-          name: 'tech'
         }
       ];
     });
@@ -126,7 +121,7 @@ describe('Edit Wordlist Entry journey', () => {
     });
 
     test('the updated word is on the screen', async () => {
-      await waitFor(() => expect(screen.getByText('phones')).toBeOnTheScreen());
+      await waitFor(() => expect(screen.getByText('pendulums')).toBeOnTheScreen());
     });
 
     test('the edit word button is on the screen', async () => {
@@ -137,9 +132,9 @@ describe('Edit Wordlist Entry journey', () => {
       await waitFor(() => expect(screen.queryByLabelText('word')).toBeNull());
     });
 
-    test.each(['noun', 'tech'])('"%s" category is on the screen', async category => {
+    test('"noun" category is on the screen', async () => {
       await waitFor(() => {
-        expect(screen.getByText(category)).toBeOnTheScreen();
+        expect(screen.getByText('noun')).toBeOnTheScreen();
       });
     });
 
@@ -216,11 +211,6 @@ describe('Edit Wordlist Entry journey', () => {
           name: 'noun'
         },
         {
-          __typename: 'Category',
-          id: 'f7302234-57b4-4234-b9c7-5483a84e6bf7',
-          name: 'tech'
-        },
-        {
           name: 'verb'
         },
         {
@@ -233,11 +223,6 @@ describe('Edit Wordlist Entry journey', () => {
           __typename: 'Category',
           id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
           name: 'noun'
-        },
-        {
-          __typename: 'Category',
-          id: 'f7302234-57b4-4234-b9c7-5483a84e6bf7',
-          name: 'tech'
         },
         {
           __typename: 'Category',
@@ -263,7 +248,7 @@ describe('Edit Wordlist Entry journey', () => {
       await user.type(categoriesInput, 'verb, industry', { submitEditing: true });
     });
 
-    test.each(['verb', 'industry', 'noun', 'tech'])('"%s" category is on the screen', async category => {
+    test.each(['verb', 'industry', 'noun'])('"%s" category is on the screen', async category => {
       await waitFor(() => {
         expect(screen.getByText(category)).toBeOnTheScreen();
       });
@@ -276,9 +261,10 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test.each(['verb', 'industry', 'noun', 'tech'])('"%s" category is on the screen', async category => {
+      test.each(['verb', 'noun', 'industry'])('"%s" category is on the screen next to the "phone" wordlist entry', async category => {
         await waitFor(() => {
-          expect(screen.getByText(category)).toBeOnTheScreen();
+          const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
+          expect(within(wordlistEntry).getByText(category)).toBeOnTheScreen();
         });
       });
 
@@ -292,21 +278,8 @@ describe('Edit Wordlist Entry journey', () => {
 
   describe('after deleting a category', () => {
     beforeAll(() => {
-      requestCategories = [
-        {
-          __typename: 'Category',
-          id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
-          name: 'noun'
-        }
-      ];
-
-      responseCategories = [
-        {
-          __typename: 'Category',
-          id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
-          name: 'noun'
-        }
-      ];
+      requestCategories = [];
+      responseCategories = [];
     });
 
     afterAll(() => {
@@ -316,19 +289,13 @@ describe('Edit Wordlist Entry journey', () => {
 
     beforeEach(async () => {
       await waitFor(async () => {
-        fireEvent.press(screen.getByLabelText('delete-tech-category'));
+        fireEvent.press(screen.getByLabelText('delete-noun-category'));
       });
     });
 
-    test('"noun" category is on the screen', async () => {
+    test('"noun" category is not on the screen', async () => {
       await waitFor(() => {
-        expect(screen.getByText('noun')).toBeOnTheScreen();
-      });
-    });
-
-    test('"tech" category is not on the screen', async () => {
-      await waitFor(() => {
-        expect(screen.queryByText('tech')).toBeNull();
+        expect(screen.queryByText('noun')).toBeNull();
       });
     });
 
@@ -339,15 +306,10 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test('"noun" category is on the screen', async () => {
+      test('"noun" category is not visible in "pendulum" wordlist entry', async () => {
         await waitFor(() => {
-          expect(screen.getByText('noun')).toBeOnTheScreen();
-        });
-      });
-
-      test('"tech" category is not on the screen', async () => {
-        await waitFor(() => {
-          expect(screen.queryByText('tech')).toBeNull();
+          const pendulumWordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
+          expect(within(pendulumWordlistEntry).queryByText('noun')).toBeNull();
         });
       });
     });
