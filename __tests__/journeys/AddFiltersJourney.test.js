@@ -63,6 +63,32 @@ describe('Filtering', () => {
       });
     });
 
+    describe('after selecting "transport" category', () => {
+      let isTransportCategorySelected;
+      beforeEach(async () => {
+        if (isTransportCategorySelected) return;
+        await waitFor(() => {
+          fireEvent.press(
+            within(screen.getByTestId('filters-container'))
+              .getByRole('button', { name: 'transport' })
+          );
+        });
+        isTransportCategorySelected = true;
+      });
+
+      test('word "transport" is visible', async () => {
+        await waitFor(() => {
+          expect(screen.getByText('motorway')).toBeVisible();
+        });
+      });
+
+      test.each(['funnily', 'arterial', 'phone'])('word "%s" is not visible', async word => {
+        await waitFor(() => {
+          expect(screen.queryByText(word)).not.toBeVisible();
+        });
+      });
+    });
+
     describe('when onClose() event is fired from the component with the filters-container test-id', () => {
       test('filters drawer is closed', async () => {
         const filtersContainer = screen.getByTestId('filters-container');
