@@ -67,35 +67,88 @@ describe('Filtering', () => {
       });
     });
 
-    describe('after selecting "transport" category', () => {
-      let isTransportCategorySelected;
+    describe('after selecting "adjective" category', () => {
+      const expectedVisibleWords = ['constructive', 'arterial', 'honourable', 'admirable', 'disorderly', 'foolish', 'understated'];
+      let isAdjectiveCategorySelected;
       beforeEach(async () => {
-        if (isTransportCategorySelected) return;
+        if (isAdjectiveCategorySelected) return;
         await waitFor(() => {
           fireEvent.press(
             within(screen.getByTestId('filters-container'))
-              .getByRole('button', { name: 'transport' })
+              .getByRole('button', { name: 'adjective' })
           );
         });
-        isTransportCategorySelected = true;
+        isAdjectiveCategorySelected = true;
       });
 
-      test('word "train" is visible', async () => {
+      test.each(expectedVisibleWords)('word "%s" is visible', async word => {
         await waitFor(() => {
-          expect(screen.getByText('train')).toBeVisible();
+          expect(screen.getByText(word)).toBeVisible();
         });
       });
 
-      test('word "motorway" is visible', async () => {
-        await waitFor(() => {
-          expect(screen.getByText('motorway')).toBeVisible();
-        });
-      });
-
-      const expectedWordsNotVisible = entries.map(({ word }) => word.text).filter(word => !['train', 'motorway'].includes(word));
+      const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+        .filter(word => !expectedVisibleWords.includes(word));
       test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
         await waitFor(() => {
           expect(screen.queryByText(word)).not.toBeVisible();
+        });
+      });
+    });
+
+    describe('after selecting "anatomy" category', () => {
+      let isAnatomyCategorySelected;
+      beforeEach(async () => {
+        if (isAnatomyCategorySelected) return;
+        await waitFor(() => {
+          fireEvent.press(
+            within(screen.getByTestId('filters-container'))
+              .getByRole('button', { name: 'anatomy' })
+          );
+        });
+        isAnatomyCategorySelected = true;
+      });
+
+      test('"arterial" is visible', async () => {
+        await waitFor(() => {
+          expect(screen.getByText('arterial')).toBeVisible();
+        });
+      });
+
+      const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+        .filter(word => word !== 'arterial');
+      test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
+        await waitFor(() => {
+          expect(screen.queryByText(word)).not.toBeVisible();
+        });
+      });
+
+      describe('after deselecting "anatomy" category', () => {
+        let anatomyIsDeselected;
+        const expectedVisibleWords = ['constructive', 'arterial', 'honourable', 'admirable', 'disorderly', 'foolish', 'understated'];
+        beforeEach(async () => {
+          if (anatomyIsDeselected) return;
+          await waitFor(() => {
+            fireEvent.press(
+              within(screen.getByTestId('filters-container'))
+                .getByRole('button', { name: 'anatomy' })
+            );
+          });
+          anatomyIsDeselected = true;
+        });
+
+        test.each(expectedVisibleWords)('word "%s" is visible', async word => {
+          await waitFor(() => {
+            expect(screen.getByText(word)).toBeVisible();
+          });
+        });
+
+        const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+          .filter(word => !expectedVisibleWords.includes(word));
+        test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
+          await waitFor(() => {
+            expect(screen.queryByText(word)).not.toBeVisible();
+          });
         });
       });
     });
