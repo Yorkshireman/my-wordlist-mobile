@@ -1,6 +1,6 @@
 import { makeVar } from '@apollo/client';
 
-export const selectedCategoriesVar = makeVar([]);
+export const selectedCategoriesIdsVar = makeVar([]);
 
 export const snackbarStateVar = makeVar({
   duration: 5000,

@@ -1,14 +1,14 @@
-import { selectedCategoriesVar } from '../reactiveVars';
+import { selectedCategoriesIdsVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
 
 export const useFilters = data => {
-  const selectedCategories = useReactiveVar(selectedCategoriesVar);
+  const selectedCategoriesIds = useReactiveVar(selectedCategoriesIdsVar);
 
-  if (!selectedCategories.length) return data;
+  if (!selectedCategoriesIds.length) return data;
 
   const filteredEntries = data.myWordlist.entries.filter(({ categories }) => {
     const wordlistCategoriesIds = categories.map(({ id }) => id);
-    return selectedCategories.every(id => wordlistCategoriesIds.includes(id));
+    return selectedCategoriesIds.every(id => wordlistCategoriesIds.includes(id));
   });
 
   return {

@@ -1,9 +1,9 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { MY_WORDLIST_CATEGORIES } from '../graphql-queries';
 import { parseUniqueCategories } from '../utils/parseUniqueCategories';
-import { selectedCategoriesVar } from '../reactiveVars';
+import { selectedCategoriesIdsVar } from '../reactiveVars';
 import { useMemo } from 'react';
-import { useUpdateCategoriesSelectedVar } from '../hooks/useUpdateCategoriesSelectedVar';
+import { useUpdateCategoriesSelectedIdsVar } from '../hooks/useUpdateCategoriesSelectedIdsVar';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { useQuery, useReactiveVar } from '@apollo/client';
@@ -18,19 +18,19 @@ export const Filters = () => {
       secondaryContainer
     }
   } = useTheme();
-  const selectedCategories = useReactiveVar(selectedCategoriesVar);
+  const selectedCategoriesIds = useReactiveVar(selectedCategoriesIdsVar);
   const wordlistCategories = useMemo(() => parseUniqueCategories(entries), [entries]);
-  useUpdateCategoriesSelectedVar(wordlistCategories);
+  useUpdateCategoriesSelectedIdsVar(wordlistCategories);
 
   if (!wordlistCategories) return null;
 
   const handleCategoryPress = categoryId => {
-    const alreadySelected = selectedCategories.includes(categoryId);
+    const alreadySelected = selectedCategoriesIds.includes(categoryId);
     if (alreadySelected) {
-      return selectedCategoriesVar(selectedCategories.filter(id => id !== categoryId));
+      return selectedCategoriesIdsVar(selectedCategoriesIds.filter(id => id !== categoryId));
     }
 
-    return selectedCategoriesVar([...selectedCategories, categoryId]);
+    return selectedCategoriesIdsVar([...selectedCategoriesIds, categoryId]);
   };
 
   return (
@@ -45,12 +45,12 @@ export const Filters = () => {
           wordlistCategories.map(({ id, name }) => {
             return (
               <Button
-                buttonColor={selectedCategories.includes(id) ? primary : inversePrimary}
+                buttonColor={selectedCategoriesIds.includes(id) ? primary : inversePrimary}
                 compact
                 key={id}
                 mode='contained'
                 onPress={() => handleCategoryPress(id)}
-                textColor={selectedCategories.includes(id) ? 'white' : onSurfaceVariant}
+                textColor={selectedCategoriesIds.includes(id) ? 'white' : onSurfaceVariant}
               >
                 {name}
               </Button>

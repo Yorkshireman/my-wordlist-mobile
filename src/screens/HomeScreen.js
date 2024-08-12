@@ -1,6 +1,6 @@
 import { Drawer } from 'react-native-drawer-layout';
 import PropTypes from 'prop-types';
-import { selectedCategoriesVar } from '../reactiveVars';
+import { selectedCategoriesIdsVar } from '../reactiveVars';
 import sharedStyles from '../styles';
 import { useFetchWordlistData } from '../hooks';
 import { useReactiveVar } from '@apollo/client';
@@ -10,7 +10,7 @@ import { Filters, Loading, Wordlist } from '../components';
 import { StyleSheet, View } from 'react-native';
 
 export const HomeScreen = ({ navigation }) => {
-  const selectedCategories = useReactiveVar(selectedCategoriesVar);
+  const selectedCategoriesIds = useReactiveVar(selectedCategoriesIdsVar);
   const { data: { myWordlist } = {}, loading } = useFetchWordlistData(navigation);
   const [open, setOpen] = useState(false);
 
@@ -29,7 +29,7 @@ export const HomeScreen = ({ navigation }) => {
           <>
             <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
               <IconButton
-                icon={selectedCategories.length ? 'filter-check' : 'filter-outline'}
+                icon={selectedCategoriesIds.length ? 'filter-check' : 'filter-outline'}
                 mode='contained'
                 onPress={() => setOpen(prevOpen => !prevOpen)}
                 style={{ margin: 0 }}
