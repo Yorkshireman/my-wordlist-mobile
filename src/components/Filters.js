@@ -25,7 +25,8 @@ export const Filters = () => {
   if (!wordlistCategories) return null;
 
   const handleCategoryPress = categoryId => {
-    if (selectedCategories.includes(categoryId)) {
+    const alreadySelected = selectedCategories.includes(categoryId);
+    if (alreadySelected) {
       return selectedCategoriesVar(selectedCategories.filter(id => id !== categoryId));
     }
 
