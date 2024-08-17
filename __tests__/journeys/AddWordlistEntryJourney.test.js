@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { CreateWordlistEntriesScreen, HomeScreen } from '../../src/screens';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { myWordlistQueryMock, wordlistEntriesCreateWithCategories, wordlistEntriesCreateWithNoCategories } from '../../mockedProviderMocks';
 
 jest.useFakeTimers();
@@ -107,7 +107,12 @@ describe('Add Wordlist Entry journey', () => {
         });
 
         test.each(['household', 'phrasal verb'])('category, \'%s\', is displayed', async category => {
-          await waitFor(() => expect(screen.getByText(category)).toBeOnTheScreen());
+          const newWordlistEntryTestId = 'e876ed91-9c98-4107-aa21-07d8bd27e91d';
+          await waitFor(() => {
+            expect(
+              within(screen.getByTestId(newWordlistEntryTestId)).getByText(category)
+            ).toBeOnTheScreen();
+          });
         });
       });
     });

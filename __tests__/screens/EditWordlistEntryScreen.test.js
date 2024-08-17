@@ -15,7 +15,7 @@ jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useRoute: () => ({
     params: {
-      id: 'dd284553-a78c-447f-baa3-832515e506d6'
+      id: '0a23cd3b-2f6f-451a-9e82-82ef2a2b08b0'
     }
   })
 }));
@@ -70,6 +70,7 @@ describe('EditWordlistEntryScreen', () => {
 
   test('displays categories', async () => {
     await waitFor(() => expect(screen.getByText('noun')).toBeOnTheScreen());
-    await waitFor(() => expect(screen.getByText('tech')).toBeOnTheScreen());
+    await waitFor(() => expect(screen.getByText('household')).toBeOnTheScreen());
+    await waitFor(() => expect(screen.getByText('verb')).toBeOnTheScreen());
   });
 });

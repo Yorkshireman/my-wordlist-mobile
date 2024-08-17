@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useLazyQuery } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 
-export const useAuthToken = navigation => {
+export const useFetchWordlistData = navigation => {
   const [authToken, setAuthToken] = useState(null);
   const [getWordlist, { data, error, loading }] = useLazyQuery(MY_WORDLIST);
 
