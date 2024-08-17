@@ -49,15 +49,19 @@ describe('Filtering', () => {
 
   describe('after tapping open filters button', () => {
     const wordlistUniqueCategories = parseUniqueCategories(entries).map(({ name }) => name);
-
     beforeEach(async () => {
       await waitFor(() => {
-        fireEvent.press(screen.getByTestId('open-filters-button'));
+        fireEvent.press(screen.getByLabelText('open-filters-button'));
       });
     });
 
     test('filters drawer is visible', async () => {
       await waitFor(() => expect(screen.getByText('Select categories to include:')).toBeOnTheScreen());
+    });
+
+    test('open-filters button is unchecked', async () => {
+      await waitFor(() => expect(screen.getByTestId('open-filters-button-unchecked')).toBeOnTheScreen());
+      await waitFor(() => expect(screen.queryByTestId('open-filters-button-checked')).toBeNull());
     });
 
     test.each(wordlistUniqueCategories)('category "%s" is visible within the filters container', async category => {
@@ -93,6 +97,11 @@ describe('Filtering', () => {
         await waitFor(() => {
           expect(screen.queryByText(word)).not.toBeVisible();
         });
+      });
+
+      test('open-filters button is checked', async () => {
+        await waitFor(() => expect(screen.getByTestId('open-filters-button-checked')).toBeOnTheScreen());
+        await waitFor(() => expect(screen.queryByTestId('open-filters-button-unchecked')).toBeNull());
       });
     });
 
@@ -148,6 +157,63 @@ describe('Filtering', () => {
         test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
           await waitFor(() => {
             expect(screen.queryByText(word)).not.toBeVisible();
+          });
+        });
+      });
+    });
+
+    describe('after selecting enough filters to mean no words should be shown', () => {
+      let areCategoriesSelected;
+      beforeEach(async () => {
+        if (areCategoriesSelected) return;
+        await waitFor(() => {
+          fireEvent.press(
+            within(screen.getByTestId('filters-container'))
+              .getByRole('button', { name: 'anatomy' })
+          );
+
+          fireEvent.press(
+            within(screen.getByTestId('filters-container'))
+              .getByRole('button', { name: 'food' })
+          );
+        });
+        areCategoriesSelected = true;
+      });
+
+      test('no words are visible', async () => {
+        await waitFor(() => {
+          expect(screen.queryByRole('entry')).toBeNull();
+        });
+      });
+
+      test('a helpful message is shown', async () => {
+        await waitFor(() => {
+          expect(screen.getByText(':-O You might want to adjust your filters ;-)')).toBeVisible();
+        });
+      });
+
+      describe('after deselecting "food" category', () => {
+        let foodIsDeselected;
+        beforeEach(async () => {
+          if (foodIsDeselected) return;
+          await waitFor(() => {
+            fireEvent.press(
+              within(screen.getByTestId('filters-container'))
+                .getByRole('button', { name: 'food' })
+            );
+          });
+          foodIsDeselected = true;
+        });
+
+        test('some wordlist entries are rendered', async () => {
+          await waitFor(() => {
+            expect(screen.queryByLabelText('wordlist-entry')).not.toBeNull();
+          });
+        });
+
+        test('the helpful message is not shown', async () => {
+          await waitFor(() => {
+            expect(screen.queryByText(':-O You might want to adjust your filters ;-)')).toBeNull();
           });
         });
       });

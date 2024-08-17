@@ -29,11 +29,12 @@ export const HomeScreen = ({ navigation }) => {
           <>
             <View style={{ alignItems: 'flex-end', paddingBottom: 10 }}>
               <IconButton
+                aria-label='open-filters-button'
                 icon={selectedCategoriesIds.length ? 'filter-check' : 'filter-outline'}
                 mode='contained'
                 onPress={() => setOpen(prevOpen => !prevOpen)}
                 style={{ margin: 0 }}
-                testID='open-filters-button'
+                testID={`open-filters-button-${selectedCategoriesIds.length ? 'checked' : 'unchecked'}`}
               />
             </View>
             <Wordlist />

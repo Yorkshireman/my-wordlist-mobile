@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@apollo/client';
 export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
   const { data } = useQuery(MY_WORDLIST);
-  const { myWordlist: { entries }} = useFilters(data);
+  const { anyFiltersApplied, myWordlist: { entries }} = useFilters(data);
   const navigation = useNavigation();
   const { colors: { secondaryContainer } } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -48,42 +48,50 @@ export const Wordlist = () => {
 
   return (
     <ScrollView>
-      {entries.map(({ categories, id, word: { text } }) => {
-        return (
-          <View
-            key={id}
-            style={{ ...styles.entry, borderBottomColor: secondaryContainer }}
-            testID={id}
-          >
-            <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
-              <Text variant={'bodyLarge'}>{text}</Text>
+      {anyFiltersApplied && !entries.length
+        ?
+        <Text style={{ marginTop: 16, textAlign: 'center' }}>
+          :-O You might want to adjust your filters ;-)
+        </Text>
+        :
+        entries.map(({ categories, id, word: { text } }) => {
+          return (
+            <View
+              aria-label='wordlist-entry'
+              key={id}
+              style={{ ...styles.entry, borderBottomColor: secondaryContainer }}
+              testID={id}
+            >
+              <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
+                <Text variant={'bodyLarge'}>{text}</Text>
+              </View>
+              <View style={styles.addCategories.wrapper}>
+                <Categories categories={categories} />
+              </View>
+              <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
+                <IconButton
+                  icon='note-edit-outline'
+                  onPress={() => navigation.navigate('EditWordlistEntry', { id })}
+                  size={16}
+                  style={{ margin: 0 }}
+                  testID='edit-wordlist-entry-icon'
+                />
+              </View>
+              <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
+                <IconButton
+                  icon='trash-can-outline'
+                  onPress={() => {
+                    setWordlistEntryIdToDelete(id);
+                    setShowDeleteConfirm(true);
+                  }}
+                  size={16}
+                  style={{ margin: 0 }}
+                />
+              </View>
             </View>
-            <View style={styles.addCategories.wrapper}>
-              <Categories categories={categories} />
-            </View>
-            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
-              <IconButton
-                icon='note-edit-outline'
-                onPress={() => navigation.navigate('EditWordlistEntry', { id })}
-                size={16}
-                style={{ margin: 0 }}
-                testID='edit-wordlist-entry-icon'
-              />
-            </View>
-            <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
-              <IconButton
-                icon='trash-can-outline'
-                onPress={() => {
-                  setWordlistEntryIdToDelete(id);
-                  setShowDeleteConfirm(true);
-                }}
-                size={16}
-                style={{ margin: 0 }}
-              />
-            </View>
-          </View>
-        );
-      })}
+          );
+        })
+      }
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
