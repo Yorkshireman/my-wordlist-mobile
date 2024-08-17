@@ -188,7 +188,7 @@ describe('Filtering', () => {
 
       test('a helpful message is shown', async () => {
         await waitFor(() => {
-          expect(screen.getByText(':-O You might want to adjust your filters ;-)')).toBeVisible();
+          expect(screen.getByText('You might want to adjust your filters :-)')).toBeVisible();
         });
       });
 
@@ -213,7 +213,7 @@ describe('Filtering', () => {
 
         test('the helpful message is not shown', async () => {
           await waitFor(() => {
-            expect(screen.queryByText(':-O You might want to adjust your filters ;-)')).toBeNull();
+            expect(screen.queryByText('You might want to adjust your filters :-)')).toBeNull();
           });
         });
       });

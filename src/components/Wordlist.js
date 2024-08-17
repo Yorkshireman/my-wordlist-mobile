@@ -51,7 +51,7 @@ export const Wordlist = () => {
       {anyFiltersApplied && !entries.length
         ?
         <Text style={{ marginTop: 16, textAlign: 'center' }}>
-          :-O You might want to adjust your filters ;-)
+          You might want to adjust your filters :-)
         </Text>
         :
         entries.map(({ categories, id, word: { text } }) => {
