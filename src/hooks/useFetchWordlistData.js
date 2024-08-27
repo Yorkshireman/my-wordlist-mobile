@@ -48,10 +48,10 @@ export const useFetchWordlistData = navigation => {
       } catch(e) {
         console.error(e);
       }
-    }
+    };
 
     fetchWordlistData();
-  }, [getWordlist, authToken]);
+  }, [authToken, getWordlist, navigation]);
 
   useEffect(() => {
     if (error?.networkError?.statusCode === 401) {
