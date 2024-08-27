@@ -36,7 +36,21 @@ export const useFetchWordlistData = navigation => {
       return;
     }
 
-    getWordlist();
+    const fetchWordlistData = async () => {
+      try {
+        const { data } = await getWordlist();
+        if (!data.myWordlist) {
+          await AsyncStorage.removeItem('myWordlistAuthToken');
+          return navigation.navigate('LogIn');
+        }
+
+        return data;
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    fetchWordlistData();
   }, [getWordlist, authToken]);
 
   useEffect(() => {
