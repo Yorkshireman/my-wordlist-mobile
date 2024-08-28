@@ -1,25 +1,30 @@
 import { EyeIcon } from '../components';
-import { PropTypes } from 'prop-types';
+import type { LogInScreenProps } from '../../types';
+import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useApolloClient } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { isInvalidEmail, signIn } from '../utils';
-import React, { useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
+const useInputValues = (
+  email: string,
+  password: string,
+  setSubmitButtonIsDisabled: Dispatch<SetStateAction<boolean>>
+) => {
   useEffect(() => {
     if (email && password) {
       setSubmitButtonIsDisabled(false);
     } else {
       setSubmitButtonIsDisabled(true);
     }
-  });
+  }, [email, password, setSubmitButtonIsDisabled]);
 };
 
-export const LogInScreen = ({ navigation }) => {
+export const LogInScreen = ({ navigation }: LogInScreenProps) => {
   const client = useApolloClient();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -79,18 +84,18 @@ export const LogInScreen = ({ navigation }) => {
         testID='login-password-input-field'
         value={password}
       />
-      {signInError ?
-        <HelperText style={styles.helperText} type="error">
+      {signInError ? (
+        <HelperText style={styles.helperText} type='error'>
           {/* eslint-disable-next-line max-len */}
-          Sorry, something went wrong. Please ensure your email and password are correct and try again.
-        </HelperText> : null
-      }
-      {validationError ?
-        <HelperText style={styles.helperText} type="error">
+          Sorry, something went wrong. Please ensure your email and password are correct and try
+          again.
+        </HelperText>
+      ) : null}
+      {validationError ? (
+        <HelperText style={styles.helperText} type='error'>
           Please enter a valid email address
         </HelperText>
-        : null
-      }
+      ) : null}
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
         disabled={submitButtonIsDisabled}

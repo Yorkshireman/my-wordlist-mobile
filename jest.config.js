@@ -96,7 +96,7 @@ const config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub
   // out resources with a single module
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered
@@ -167,7 +167,7 @@ const config = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    '**/__tests__/**/*.test.[jt]s?(x)',
+    '**/__tests__/**/*.test.[jt]s?(x)'
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
@@ -194,8 +194,8 @@ const config = {
   transformIgnorePatterns: [
     // "/node_modules/",
     // "\\.pnp\\.[^\\/]+$"
-    'node_modules/(?!(react-native|@react-native|react-native-error-boundary|@react-native/js-polyfills|expo-status-bar|react-native-vector-icons)/)',
-  ],
+    'node_modules/(?!(react-native|@react-native|react-native-error-boundary|@react-native/js-polyfills|expo-status-bar|react-native-vector-icons)/)'
+  ]
 
   // An array of regexp pattern strings that are matched against all modules before the module
   // loader will automatically return a mock for them

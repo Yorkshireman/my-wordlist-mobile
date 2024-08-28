@@ -28,6 +28,7 @@ import {
 } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
+import { RootStackParamList } from './types';
 
 if (__DEV__) {
   console.log('Running in dev mode.');
@@ -75,7 +76,7 @@ const client = new ApolloClient({
   link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink]),
 });
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const theme = {
   ...DefaultTheme,

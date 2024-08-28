@@ -1,6 +1,5 @@
 import { ApolloClient } from '@apollo/client';
-import { NavigationProp } from '@react-navigation/native';
-import { RouteStackParamList } from '../../types';
+import type { LogInScreenProps } from '../../types';
 import { SIGN_IN_URL } from '@env';
 import { storeAuthToken } from './storeAuthToken';
 import { Dispatch, SetStateAction } from 'react';
@@ -15,7 +14,7 @@ export const signIn = ({
 }: {
   client: ApolloClient<any>;
   email: string;
-  navigation: NavigationProp<RouteStackParamList>;
+  navigation: LogInScreenProps['navigation'];
   password: string;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSignInError: Dispatch<SetStateAction<boolean>>;
@@ -35,10 +34,10 @@ export const signIn = ({
       },
       method: 'POST',
     })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           const status = response.status;
-          return response.json().then((resBody) => {
+          return response.json().then(resBody => {
             const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
             throw new Error(`Signin request HTTP error! Status: ${status}, errors: ${errors}`);
           });
@@ -50,7 +49,7 @@ export const signIn = ({
       // couldn't get client.clearStore() to work on sign-out in NavigationBar.js
       .then(() => client.cache.reset())
       .then(() => navigation.navigate('Home'))
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
         setSignInError(true);
       })
