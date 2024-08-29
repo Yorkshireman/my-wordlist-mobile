@@ -22,7 +22,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      renderDrawerContent={() => <Filters />}
+      renderDrawerContent={() => myWordlist && <Filters />}
     >
       <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
         {loading && <Loading size='large' />}
@@ -56,7 +56,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 };
 
 HomeScreen.propTypes = {
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     margin: 16,
     position: 'absolute',
-    right: 0,
-  },
+    right: 0
+  }
 });

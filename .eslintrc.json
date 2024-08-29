@@ -5,7 +5,12 @@
     "jest/globals": true,
     "react-native/react-native": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-hooks/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "overrides": [
     {
       "files": ["**/*.test.js"],
@@ -16,11 +21,13 @@
       "extends": ["plugin:jest/recommended"]
     }
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": ["jest", "react", "react-native"],
+  "plugins": ["jest", "react", "react-native", "@typescript-eslint"],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "comma-dangle": ["error", "never"],

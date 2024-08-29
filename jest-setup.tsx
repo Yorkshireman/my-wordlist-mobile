@@ -1,7 +1,6 @@
-import { Component, ReactNode } from 'react';
-
 // Import built-in Jest matchers
 import '@testing-library/react-native/extend-expect';
+import { Component, ReactNode } from 'react';
 
 // Silence the warning: Animated: `useNativeDriver` is not supported because
 // the native animated module is missing
@@ -15,7 +14,7 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 // unit testing coverage (it might be tenable to rely on manually testing such features, or
 // potentially some sort of UI testing tool could be employed eg "Detox"?).
 jest.mock('expo-linear-gradient', () => ({
-  LinearGradient: 'LinearGradient',
+  LinearGradient: 'LinearGradient'
 }));
 
 // Couldn't get the recommended approach working: https://reactnavigation.org/docs/testing#mocking-native-modules
@@ -25,7 +24,7 @@ jest.mock('react-native-drawer-layout', () => {
     Drawer: ({
       children,
       open,
-      renderDrawerContent,
+      renderDrawerContent
     }: {
       children: ReactNode;
       open: boolean;
@@ -37,6 +36,6 @@ jest.mock('react-native-drawer-layout', () => {
           {children}
         </>
       );
-    },
+    }
   };
 });

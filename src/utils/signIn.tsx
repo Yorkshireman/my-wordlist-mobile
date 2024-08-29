@@ -10,7 +10,7 @@ export const signIn = ({
   navigation,
   password,
   setLoading,
-  setSignInError,
+  setSignInError
 }: {
   client: ApolloClient<any>;
   email: string;
@@ -26,13 +26,13 @@ export const signIn = ({
       body: JSON.stringify({
         user: {
           email: email.trim(),
-          password: password.trim(),
-        },
+          password: password.trim()
+        }
       }),
       headers: {
-        'Content-Type': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json'
       },
-      method: 'POST',
+      method: 'POST'
     })
       .then(response => {
         if (!response.ok) {

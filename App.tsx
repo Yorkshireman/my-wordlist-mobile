@@ -9,6 +9,7 @@ import { MY_WORDLIST_GRAPHQL_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from './src/components';
 import { removeTypename } from './src/utils/removeTypename';
+import type { RootStackParamList } from './types';
 import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -17,18 +18,17 @@ import {
   ApolloProvider,
   fromPromise,
   HttpLink,
-  InMemoryCache,
+  InMemoryCache
 } from '@apollo/client';
 import {
   CreateWordlistEntriesScreen,
   EditWordlistEntryScreen,
   HomeScreen,
   LogInScreen,
-  SignUpScreen,
+  SignUpScreen
 } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
-import { RootStackParamList } from './types';
 
 if (__DEV__) {
   console.log('Running in dev mode.');
@@ -40,8 +40,8 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
-        authorization: authToken,
-      },
+        authorization: authToken
+      }
     }));
 
     return forward(operation);
@@ -66,21 +66,21 @@ const client = new ApolloClient({
       WordlistEntry: {
         fields: {
           categories: {
-            merge: (_, incoming) => incoming,
-          },
-        },
-      },
-    },
+            merge: (_, incoming) => incoming
+          }
+        }
+      }
+    }
   }),
   connectToDevTools: true,
-  link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink]),
+  link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink])
 });
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const theme = {
   ...DefaultTheme,
-  colors,
+  colors
 };
 
 export default function App() {
@@ -93,7 +93,7 @@ export default function App() {
               <NavigationContainer>
                 <Stack.Navigator
                   screenOptions={{
-                    header: props => <NavigationBar {...props} />,
+                    header: props => <NavigationBar {...props} />
                   }}
                 >
                   <Stack.Group>
