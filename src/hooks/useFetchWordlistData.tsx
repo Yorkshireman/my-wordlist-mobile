@@ -3,7 +3,7 @@ import type { HomeScreenProps } from '../../types';
 import { MY_WORDLIST } from '../graphql-queries';
 import { useFocusEffect } from '@react-navigation/native';
 import { ServerError, useLazyQuery } from '@apollo/client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export const useFetchWordlistData = (navigation: HomeScreenProps['navigation']) => {
   const [getWordlist, { data, error, loading }] = useLazyQuery(MY_WORDLIST);

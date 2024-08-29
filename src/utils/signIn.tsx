@@ -1,7 +1,7 @@
-import { ApolloClient } from '@apollo/client';
 import type { LogInScreenProps } from '../../types';
 import { SIGN_IN_URL } from '@env';
 import { storeAuthToken } from './storeAuthToken';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { Dispatch, SetStateAction } from 'react';
 
 export const signIn = ({
@@ -12,7 +12,7 @@ export const signIn = ({
   setLoading,
   setSignInError
 }: {
-  client: ApolloClient<any>;
+  client: ApolloClient<NormalizedCacheObject>;
   email: string;
   navigation: LogInScreenProps['navigation'];
   password: string;
@@ -34,13 +34,12 @@ export const signIn = ({
       },
       method: 'POST'
     })
-      .then(response => {
+      .then(async response => {
         if (!response.ok) {
           const status = response.status;
-          return response.json().then(resBody => {
-            const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
-            throw new Error(`Signin request HTTP error! Status: ${status}, errors: ${errors}`);
-          });
+          const resBody = await response.json();
+          const errors = resBody.errors.length ? JSON.stringify(resBody.errors) : null;
+          throw new Error(`Signin request HTTP error! Status: ${status}, errors: ${errors}`);
         }
 
         return response.json();

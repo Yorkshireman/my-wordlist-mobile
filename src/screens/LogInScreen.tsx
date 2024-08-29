@@ -2,9 +2,9 @@ import { EyeIcon } from '../components';
 import type { LogInScreenProps } from '../../types';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
-import { useApolloClient } from '@apollo/client';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
+import { ApolloClient, NormalizedCacheObject, useApolloClient } from '@apollo/client';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { isInvalidEmail, signIn } from '../utils';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
@@ -25,7 +25,7 @@ const useInputValues = (
 };
 
 export const LogInScreen = ({ navigation }: LogInScreenProps) => {
-  const client = useApolloClient();
+  const client = useApolloClient() as ApolloClient<NormalizedCacheObject>;
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
