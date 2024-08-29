@@ -1,14 +1,15 @@
 import { EyeIcon } from '../components';
 import { MY_WORDLIST_CREATE } from '../graphql-queries/myWordlistCreate';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
+import type { SignUpScreenProps } from '../../types';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { isInvalidEmail, signUp } from '../utils';
 import { StyleSheet, View } from 'react-native';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
-const ErrorText = ({ text }) => {
+const ErrorText = ({ text }: { text: string }) => {
   return (
     <HelperText style={styles.helperText} type='error'>
       {text}
@@ -16,7 +17,11 @@ const ErrorText = ({ text }) => {
   );
 };
 
-const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
+const useInputValues = (
+  email: string,
+  password: string,
+  setSubmitButtonIsDisabled: (arg0: boolean) => void
+) => {
   useEffect(() => {
     if (email && password) {
       setSubmitButtonIsDisabled(false);
@@ -26,28 +31,30 @@ const useInputValues = (email, password, setSubmitButtonIsDisabled) => {
   });
 };
 
-export const SignUpScreen = ({ navigation }) => {
+export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   const client = useApolloClient();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [myWordlistCreate] = useMutation(MY_WORDLIST_CREATE, { onCompleted: () => {
-    client.resetStore();
-    setLoading(false);
-    navigation.navigate('Home');
-  }});
+  const [myWordlistCreate] = useMutation(MY_WORDLIST_CREATE, {
+    onCompleted: () => {
+      client.resetStore();
+      setLoading(false);
+      navigation.navigate('Home');
+    }
+  });
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(true);
   useInputValues(email, password, setSubmitButtonIsDisabled);
 
-  const eyeIcon = isConfirmPasswordField => {
+  const eyeIcon = (isConfirmPasswordField: boolean) => {
     const onPress = () =>
-      isConfirmPasswordField ?
-        setConfirmPasswordVisible(!confirmPasswordVisible) :
-        setPasswordVisible(!passwordVisible);
+      isConfirmPasswordField
+        ? setConfirmPasswordVisible(!confirmPasswordVisible)
+        : setPasswordVisible(!passwordVisible);
 
     return EyeIcon(onPress, isConfirmPasswordField ? confirmPasswordVisible : passwordVisible);
   };
@@ -82,7 +89,7 @@ export const SignUpScreen = ({ navigation }) => {
         label='password'
         mode='outlined'
         onChangeText={setPassword}
-        right={eyeIcon()}
+        right={eyeIcon(false)}
         secureTextEntry={!passwordVisible}
         style={styles.input}
         value={password}
@@ -98,9 +105,7 @@ export const SignUpScreen = ({ navigation }) => {
         style={styles.input}
         value={confirmPassword}
       />
-      <>
-        {errorMessage && <ErrorText text={errorMessage} />}
-      </>
+      <>{errorMessage && <ErrorText text={errorMessage} />}</>
       <Button
         contentStyle={{ flexDirection: 'row-reverse' }}
         disabled={submitButtonIsDisabled}

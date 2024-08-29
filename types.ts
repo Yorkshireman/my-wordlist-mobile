@@ -10,3 +10,4 @@ export type RootStackParamList = {
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
+export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
