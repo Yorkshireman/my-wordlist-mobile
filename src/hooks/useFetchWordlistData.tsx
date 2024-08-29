@@ -6,15 +6,7 @@ import { ServerError, useLazyQuery } from '@apollo/client';
 import { useCallback, useEffect, useState } from 'react';
 
 export const useFetchWordlistData = (navigation: HomeScreenProps['navigation']) => {
-  // const [authToken, setAuthToken] = useState<string | null>();
   const [getWordlist, { data, error, loading }] = useLazyQuery(MY_WORDLIST);
-
-  // useEffect(() => {
-  //   if (!authToken || data || error || loading) return;
-
-  //   console.log('Fetching wordlist data.');
-  //   getWordlist();
-  // }, [authToken, data, error, getWordlist, loading]);
 
   useFocusEffect(
     useCallback(() => {
