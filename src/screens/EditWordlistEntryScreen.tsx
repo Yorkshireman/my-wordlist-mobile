@@ -1,5 +1,4 @@
 import { MY_WORDLIST } from '../graphql-queries';
-import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
@@ -8,11 +7,18 @@ import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
-import { EditWordlistEntryScreenRouteParams, EditWordlistEntryScreenProps } from '../../types';
+import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
+import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
 import { QueryResult, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 
-const Categories = ({ categories, deleteCategory }) => {
+const Categories = ({
+  categories,
+  deleteCategory
+}: {
+  categories: Category[];
+  deleteCategory: (id: string) => void;
+}) => {
   return (
     <View style={styles.categoryChipsWrapper}>
       {categories.map(({ id, name }) => {
@@ -32,7 +38,13 @@ const Categories = ({ categories, deleteCategory }) => {
   );
 };
 
-const Word = ({ setEditWordFormVisible, text }) => {
+const Word = ({
+  setEditWordFormVisible,
+  text
+}: {
+  setEditWordFormVisible: (arg0: boolean) => void;
+  text: string;
+}) => {
   return (
     <View style={styles.wordWrapper}>
       <View style={{ justifyContent: 'center' }}>
@@ -65,8 +77,10 @@ export const EditWordlistEntryScreen = ({
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   if (!data || !data.myWordlist) return null;
-  const entries = data.myWordlist.entries!; // remove the ! once I've updated server schema to make entries non-nullable
-  const wordlistEntry = entries.find(entry => entry.id === id) as WordlistEntry; // On the Edit screen, we can assume that the entry exists
+  // remove the ! once I've updated server schema to make entries non-nullable
+  const entries = data.myWordlist.entries!;
+  // On the Edit screen, we can assume that the entry exists
+  const wordlistEntry = entries.find(entry => entry.id === id) as WordlistEntry;
 
   const {
     categories,
