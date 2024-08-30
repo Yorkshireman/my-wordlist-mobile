@@ -9,10 +9,16 @@ export type RootStackParamList = {
   SignUp: undefined;
 };
 
+export type CreateWordlistEntriesScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'CreateWordlistEntries'
+>;
+
 export type EditWordlistEntryScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'EditWordlistEntry'
 >;
+
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;

@@ -4,12 +4,12 @@ import sharedStyles from '../styles';
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
-export const CreateWordlistEntriesScreen = ({ navigation }) => {
+import { CreateWordlistEntriesScreenProps } from '../../types';
+
+export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntriesScreenProps) => {
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
-      <Text style={styles.title}>
-        Add Word
-      </Text>
+      <Text style={styles.title}>Add Word</Text>
       <Text onPress={() => navigation.navigate('Home')} style={styles.close}>
         Back
       </Text>
