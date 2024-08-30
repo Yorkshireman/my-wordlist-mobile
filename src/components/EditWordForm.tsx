@@ -4,7 +4,7 @@ import { MY_WORDLIST } from '../graphql-queries';
 import { sanitiseText } from '../utils';
 import { useRoute } from '@react-navigation/native';
 import { HelperText, TextInput } from 'react-native-paper';
-import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
+import { MyWordlist, WordlistEntry, WordlistEntryFieldsFragment } from '../__generated__/graphql';
 import { QueryResult, useQuery } from '@apollo/client';
 import { TextInput as RNTextInput, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
@@ -42,22 +42,23 @@ export const EditWordForm = ({
 
   const updateWord = () => {
     const sanitisedWordInputValue = sanitiseText(wordInputValue);
+    const tempWordlistEntry: WordlistEntryFieldsFragment = {
+      ...wordlistEntry,
+      word: {
+        __typename: 'Word',
+        createdAt: 'temp-createdAt',
+        id: `${sanitisedWordInputValue}-temp-id`,
+        text: sanitisedWordInputValue
+      },
+      wordId: `${sanitisedWordInputValue}-temp-id`
+    };
 
     wordlistEntryUpdate({
       optimisticResponse: {
         authToken: currentAuthToken,
         wordlistEntryUpdate: {
           __typename: 'WordlistEntryUpdatePayload',
-          wordlistEntry: {
-            ...wordlistEntry,
-            word: {
-              __typename: 'Word',
-              createdAt: 'temp-createdAt',
-              id: `${sanitisedWordInputValue}-temp-id`,
-              text: sanitisedWordInputValue
-            },
-            wordId: `${sanitisedWordInputValue}-temp-id`
-          }
+          wordlistEntry: tempWordlistEntry
         }
       },
       variables: {

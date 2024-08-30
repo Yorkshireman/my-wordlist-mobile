@@ -90,17 +90,19 @@ export const EditWordlistEntryScreen = ({
   const deleteCategory = (selectedCategoryId: string) => {
     const categoriesMinusSelected = categories
       .filter(({ id }) => id !== selectedCategoryId)
-      .map(cat => ({ __typename: 'Category', ...cat }));
+      .map(cat => ({ __typename: 'Category' as const, ...cat }));
+
+    const tempWordlistEntry = {
+      ...wordlistEntry,
+      categories: categoriesMinusSelected
+    };
 
     wordlistEntryUpdate({
       optimisticResponse: {
         authToken: currentAuthToken,
         wordlistEntryUpdate: {
           __typename: 'WordlistEntryUpdatePayload',
-          wordlistEntry: {
-            ...wordlistEntry,
-            categories: categoriesMinusSelected
-          }
+          wordlistEntry: tempWordlistEntry
         }
       },
       variables: {
