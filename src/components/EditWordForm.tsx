@@ -4,9 +4,9 @@ import { MY_WORDLIST } from '../graphql-queries';
 import { sanitiseText } from '../utils';
 import { useRoute } from '@react-navigation/native';
 import { HelperText, TextInput } from 'react-native-paper';
-import { TextInput as RNTextInput, View } from 'react-native';
 import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { QueryResult, useQuery } from '@apollo/client';
+import { TextInput as RNTextInput, View } from 'react-native';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 import { useEffect, useRef, useState } from 'react';
 
@@ -23,9 +23,7 @@ export const EditWordForm = ({
 
   const ref = useRef<RNTextInput>(null);
 
-  if (!data || !data.myWordlist) return null;
-
-  const wordlistEntry = data.myWordlist.entries!.find(entry => entry.id === id) as WordlistEntry;
+  const wordlistEntry = data?.myWordlist.entries!.find(entry => entry.id === id) as WordlistEntry;
   const {
     word: { text }
   } = wordlistEntry;

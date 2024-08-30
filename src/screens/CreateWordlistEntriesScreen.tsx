@@ -1,10 +1,9 @@
+import { CreateWordlistEntriesScreenProps } from '../../types';
 import { CreateWordlistEntryForm } from '../components';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-
-import { CreateWordlistEntriesScreenProps } from '../../types';
 
 export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntriesScreenProps) => {
   return (
