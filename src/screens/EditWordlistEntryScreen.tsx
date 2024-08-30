@@ -1,13 +1,15 @@
 import { MY_WORDLIST } from '../graphql-queries';
+import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
-import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { EditWordlistEntryScreenRouteParams, EditWordlistEntryScreenProps } from '../../types';
+import { QueryResult, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
 
 const Categories = ({ categories, deleteCategory }) => {
@@ -17,7 +19,8 @@ const Categories = ({ categories, deleteCategory }) => {
         return (
           <Chip
             closeIconAccessibilityLabel={`delete-${name}-category`}
-            compact key={id}
+            compact
+            key={id}
             onClose={() => deleteCategory(id)}
             style={styles.chip}
           >
@@ -48,17 +51,29 @@ const Word = ({ setEditWordFormVisible, text }) => {
   );
 };
 
-export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
+export const EditWordlistEntryScreen = ({
+  navigation: { navigate }
+}: EditWordlistEntryScreenProps) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
-  const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
-  const { params: { id } } = useRoute();
+  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+
+  const {
+    params: { id }
+  } = useRoute<EditWordlistEntryScreenRouteParams>();
+
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
-  const wordlistEntry = entries.find(entry => entry.id === id);
-  const { categories, word: { text } } = wordlistEntry;
+  if (!data || !data.myWordlist) return null;
+  const entries = data.myWordlist.entries!; // remove the ! once I've updated server schema to make entries non-nullable
+  const wordlistEntry = entries.find(entry => entry.id === id) as WordlistEntry; // On the Edit screen, we can assume that the entry exists
 
-  const deleteCategory = selectedCategoryId => {
+  const {
+    categories,
+    word: { text }
+  } = wordlistEntry;
+
+  const deleteCategory = (selectedCategoryId: string) => {
     const categoriesMinusSelected = categories
       .filter(({ id }) => id !== selectedCategoryId)
       .map(cat => ({ __typename: 'Category', ...cat }));
@@ -86,24 +101,26 @@ export const EditWordlistEntryScreen = ({ navigation: { navigate } }) => {
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Edit</Text>
-      {editWordFormVisible ?
+      {editWordFormVisible ? (
         <Button
           compact
-          mode="outlined"
+          mode='outlined'
           onPress={() => setEditWordFormVisible(false)}
           style={styles.cancel}
-          textColor="#1E1A1D"
+          textColor='#1E1A1D'
         >
           Cancel
         </Button>
-        :
-        <Text onPress={() => navigate('Home')} style={styles.close}>Close</Text>
-      }
-      {editWordFormVisible ?
+      ) : (
+        <Text onPress={() => navigate('Home')} style={styles.close}>
+          Close
+        </Text>
+      )}
+      {editWordFormVisible ? (
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
-        :
+      ) : (
         <Word setEditWordFormVisible={setEditWordFormVisible} text={text} />
-      }
+      )}
       <AddCategoriesForm />
       <Categories categories={categories} deleteCategory={deleteCategory} />
     </View>
