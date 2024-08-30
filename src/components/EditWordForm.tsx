@@ -1,29 +1,43 @@
 import { ClearIcon } from './ClearIcon';
+import { EditWordFormRouteParams } from '../../types';
 import { MY_WORDLIST } from '../graphql-queries';
-import PropTypes from 'prop-types';
 import { sanitiseText } from '../utils';
-import { useQuery } from '@apollo/client';
 import { useRoute } from '@react-navigation/native';
-import { View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
+import { TextInput as RNTextInput, View } from 'react-native';
+import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
+import { QueryResult, useQuery } from '@apollo/client';
 import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 import { useEffect, useRef, useState } from 'react';
 
-export const EditWordForm = ({ setEditWordFormVisible }) => {
+export const EditWordForm = ({
+  setEditWordFormVisible
+}: {
+  setEditWordFormVisible: (arg0: boolean) => void;
+}) => {
   const currentAuthToken = useAsyncStorage();
-  const { data: { myWordlist: { entries } } } = useQuery(MY_WORDLIST);
-  const { params: { id } } = useRoute();
-  const ref = useRef();
-  const wordlistEntry = entries.find(entry => entry.id === id);
-  const { word: { text } } = wordlistEntry;
-  const [validationError, setValidationError] = useState();
-  const [wordInputValue, setWordInputValue] = useState(text);
+  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  const {
+    params: { id }
+  } = useRoute<EditWordFormRouteParams>();
+
+  const ref = useRef<RNTextInput>(null);
+
+  if (!data || !data.myWordlist) return null;
+
+  const wordlistEntry = data.myWordlist.entries!.find(entry => entry.id === id) as WordlistEntry;
+  const {
+    word: { text }
+  } = wordlistEntry;
+
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [wordInputValue, setWordInputValue] = useState<string>(text);
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   useEffect(() => {
     if (validationError) {
       setTimeout(() => {
-        ref.current.focus();
+        ref.current?.focus();
       }, 0);
     }
   }, [validationError]);
@@ -66,7 +80,7 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         autoCapitalize='none'
         autoFocus
         dense
-        error={validationError}
+        error={Boolean(validationError)}
         maxLength={32}
         mode='outlined'
         onChangeText={text => {
@@ -81,19 +95,9 @@ export const EditWordForm = ({ setEditWordFormVisible }) => {
         ref={ref}
         right={ClearIcon(() => setWordInputValue(''), wordInputValue.length)}
         spellCheck={false}
-        textTransform='lowercase'
         value={wordInputValue}
       />
-      {validationError ?
-        <HelperText type="error">
-          {validationError}
-        </HelperText>
-        : null
-      }
+      {validationError ? <HelperText type='error'>{validationError}</HelperText> : null}
     </View>
   );
-};
-
-EditWordForm.propTypes = {
-  setEditWordFormVisible: PropTypes.func.isRequired
 };

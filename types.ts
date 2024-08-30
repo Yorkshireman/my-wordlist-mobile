@@ -19,6 +19,7 @@ export type EditWordlistEntryScreenProps = NativeStackScreenProps<
   'EditWordlistEntry'
 >;
 
+export type EditWordFormRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
