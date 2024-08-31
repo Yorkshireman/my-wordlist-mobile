@@ -24,3 +24,10 @@ export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, '
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+
+export type UseWordlistEntriesCreateProps = {
+  currentAuthToken: string;
+  unparsedCategoriesText: string;
+  wordlistId: string;
+  wordText: string;
+};

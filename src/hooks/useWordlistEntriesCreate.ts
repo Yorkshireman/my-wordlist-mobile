@@ -1,10 +1,24 @@
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
+import { UseWordlistEntriesCreateProps } from '../../types';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
+import { WordlistEntry } from '../__generated__/graphql';
 import { parseCategories, sanitiseText } from '../utils';
 
-const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
+type BuildOptimisticResponseType = {
+  currentAuthToken: string;
+  wordlistEntries: {
+    categories: WordlistEntry['categories'];
+    wordlistId: WordlistEntry['wordlistId'];
+    wordText: string;
+  }[];
+};
+
+const buildOptimisticResponse = ({
+  currentAuthToken,
+  wordlistEntries
+}: BuildOptimisticResponseType) => {
   return {
     authToken: currentAuthToken,
     wordlistEntriesCreate: {
@@ -12,7 +26,10 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
       wordlistEntries: wordlistEntries.map(({ categories, wordlistId, wordText }) => {
         return {
           __typename: 'WordlistEntry',
-          categories: categories.map(cat => ({ id: `${cat.name}-category-temp-id`, name: cat.name })),
+          categories: categories.map(cat => ({
+            id: `${cat.name}-category-temp-id`,
+            name: cat.name
+          })),
           createdAt: 'temp-createdAt',
           id: `${wordText}-temp-id`,
           word: {
@@ -29,14 +46,12 @@ const buildOptimisticResponse = ({ currentAuthToken, wordlistEntries }) => {
   };
 };
 
-export const useWordlistEntriesCreate = (
-  {
-    currentAuthToken,
-    unparsedCategoriesText,
-    wordlistId,
-    wordText
-  }
-) => {
+export const useWordlistEntriesCreate = ({
+  currentAuthToken,
+  unparsedCategoriesText,
+  wordlistId,
+  wordText
+}: UseWordlistEntriesCreateProps) => {
   const [wordlistEntriesCreate] = useMutation(WORDLIST_ENTRIES_CREATE, {
     onCompleted: ({ authToken }) => {
       storeAuthToken(authToken);
@@ -46,11 +61,18 @@ export const useWordlistEntriesCreate = (
       const wordlistEntries = [{ categories, wordText, wordlistId }];
       return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
     },
-    update(cache, { data: { wordlistEntriesCreate: { wordlistEntries } } }) {
+    update(
+      cache,
+      {
+        data: {
+          wordlistEntriesCreate: { wordlistEntries }
+        }
+      }
+    ) {
       cache.modify({
         fields: {
           entries(existingEntryRefs = []) {
-            const newEntryRefs = wordlistEntries.map(wordlistEntry => {
+            const newEntryRefs = wordlistEntries.map((wordlistEntry: WordlistEntry) => {
               return cache.writeFragment({
                 data: wordlistEntry,
                 fragment: WORDLIST_ENTRY
