@@ -1,59 +1,71 @@
 import { calculateLongestWordLength } from '../utils';
 import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
-import { useNavigation } from '@react-navigation/native';
+import { MyWordlist } from '../__generated__/graphql';
+import { RootStackParamList } from '../../types';
 import { IconButton, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { QueryResult, Reference, StoreObject, useMutation, useQuery } from '@apollo/client';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useAsyncStorage, useFilters } from '../hooks';
 import { useMemo, useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
 
 export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
-  const { data } = useQuery(MY_WORDLIST);
-  const { anyFiltersApplied, myWordlist: { entries }} = useFilters(data);
-  const navigation = useNavigation();
-  const { colors: { secondaryContainer } } = useTheme();
+  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  const { anyFiltersApplied, myWordlist } = useFilters(data);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {
+    colors: { secondaryContainer }
+  } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [wordlistEntryIdToDelete, setWordlistEntryIdToDelete] = useState();
+  const [wordlistEntryIdToDelete, setWordlistEntryIdToDelete] = useState<string | null>();
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
       authToken: currentAuthToken,
       wordlistEntryDelete: {
         wordlistEntry: {
-          ...data.myWordlist.entries.find(({ id }) => id === wordlistEntryIdToDelete)
+          ...data?.myWordlist?.entries?.find(({ id }) => id === wordlistEntryIdToDelete)
         }
       }
     }),
-    update(cache, { data: { wordlistEntryDelete: { wordlistEntry: { id, wordlistId } } } }) {
+    update(
+      cache,
+      {
+        data: {
+          wordlistEntryDelete: {
+            wordlistEntry: { id, wordlistId }
+          }
+        }
+      }
+    ) {
       cache.modify({
         fields: {
-          entries(existingEntryRefs, { readField }) {
-            return existingEntryRefs.filter(
-              entryRef => id !== readField('id', entryRef)
-            );
+          entries(existingEntryRefs: readonly (Reference | StoreObject)[], { readField }) {
+            return existingEntryRefs.filter(entryRef => id !== readField('id', entryRef));
           }
         },
-        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId})
+        id: cache.identify({ __typename: 'MyWordlist', id: wordlistId })
       });
     }
   });
 
   const longestWordLength = useMemo(() => {
+    const entries = myWordlist?.entries || [];
     return calculateLongestWordLength(entries);
-  }, [entries]);
+  }, [myWordlist?.entries]);
 
+  const entries = myWordlist?.entries || [];
   const wordFlexBasis = longestWordLength * 10;
 
   return (
     <ScrollView>
-      {anyFiltersApplied && !entries.length
-        ?
+      {anyFiltersApplied && !entries.length ? (
         <Text style={{ marginTop: 16, textAlign: 'center' }}>
           You might want to adjust your filters :-)
         </Text>
-        :
+      ) : (
         entries.map(({ categories, id, word: { text } }) => {
           return (
             <View
@@ -65,7 +77,7 @@ export const Wordlist = () => {
               <View style={{ ...styles.word, flexBasis: wordFlexBasis }}>
                 <Text variant={'bodyLarge'}>{text}</Text>
               </View>
-              <View style={styles.addCategories.wrapper}>
+              <View style={styles.addCategoriesWrapper}>
                 <Categories categories={categories} />
               </View>
               <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
@@ -91,11 +103,11 @@ export const Wordlist = () => {
             </View>
           );
         })
-      }
+      )}
       <DeleteConfirm
         confirm={() => {
           setShowDeleteConfirm(false);
-          wordlistEntryDelete({ variables: { id: wordlistEntryIdToDelete }});
+          wordlistEntryDelete({ variables: { id: wordlistEntryIdToDelete } });
         }}
         onDismiss={() => {
           setShowDeleteConfirm(false);
@@ -108,19 +120,10 @@ export const Wordlist = () => {
 };
 
 const styles = StyleSheet.create({
-  addCategories: {
-    icon: {
-      alignItems: 'flex-end',
-      height: '100%',
-      margin: 0,
-      marginRight: 3,
-      width: 20
-    },
-    wrapper: {
-      columnGap: 2,
-      flex: 1,
-      flexDirection: 'row'
-    }
+  addCategoriesWrapper: {
+    columnGap: 2,
+    flex: 1,
+    flexDirection: 'row'
   },
   entry: {
     borderBottomWidth: 1,

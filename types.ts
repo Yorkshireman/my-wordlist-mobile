@@ -1,3 +1,4 @@
+import { MyWordlist } from './src/__generated__/graphql';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 
@@ -31,6 +32,11 @@ export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, '
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+
+export type UseFiltersReturnType = {
+  anyFiltersApplied: boolean;
+  myWordlist?: MyWordlist;
+};
 
 export type UseWordlistEntriesCreateProps = {
   currentAuthToken: AuthToken;

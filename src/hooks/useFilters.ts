@@ -1,11 +1,14 @@
 import { MyWordlist } from '../__generated__/graphql';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
+import { UseFiltersReturnType } from '../../types';
 import { useReactiveVar } from '@apollo/client';
 
-export const useFilters = (data: { myWordlist: MyWordlist }) => {
+export const useFilters = (data?: { myWordlist: MyWordlist }): UseFiltersReturnType => {
   const selectedCategoriesIds = useReactiveVar(selectedCategoriesIdsVar);
+  const anyFiltersApplied = Boolean(selectedCategoriesIds.length);
 
-  if (!selectedCategoriesIds.length) return data;
+  if (!data) return { anyFiltersApplied };
+  if (!selectedCategoriesIds.length) return { anyFiltersApplied, ...data };
 
   const entries = data.myWordlist.entries || [];
 
@@ -15,8 +18,6 @@ export const useFilters = (data: { myWordlist: MyWordlist }) => {
         const wordlistCategoriesIds = categories.map(({ id }) => id);
         return selectedCategoriesIds.every(id => wordlistCategoriesIds.includes(id));
       });
-
-  const anyFiltersApplied = Boolean(selectedCategoriesIds.length);
 
   return {
     anyFiltersApplied,
