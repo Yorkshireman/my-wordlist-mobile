@@ -58,18 +58,10 @@ describe('CreateWordlistEntriesScreen', () => {
     await waitFor(() => expect(screen.getByTestId('new-word-text-input-field')).toBeOnTheScreen());
   });
 
-  test('new word input field has textTransform lowercase prop', async () => {
-    const input = await waitFor(() => screen.getByTestId('new-word-text-input-field'));
-    expect(input.props).toHaveProperty('textTransform', 'lowercase');
-  });
-
   test('displays categories input field', async () => {
-    await waitFor(() => expect(screen.getByTestId('categories-text-input-field')).toBeOnTheScreen());
-  });
-
-  test('categories input field has textTransform lowercase prop', async () => {
-    const input = await waitFor(() => screen.getByTestId('categories-text-input-field'));
-    expect(input.props).toHaveProperty('textTransform', 'lowercase');
+    await waitFor(() =>
+      expect(screen.getByTestId('categories-text-input-field')).toBeOnTheScreen()
+    );
   });
 
   test('displays submit button', async () => {

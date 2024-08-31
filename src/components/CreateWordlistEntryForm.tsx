@@ -1,4 +1,5 @@
 import { ClearIcon } from './ClearIcon';
+import { CreateWordlistEntryFormRouteParams } from '../../types';
 import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
 import { useState } from 'react';
@@ -11,7 +12,10 @@ export const CreateWordlistEntryForm = () => {
   const currentAuthToken = useAsyncStorage();
   const [disabled, setDisabled] = useState(true);
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  const { params: { wordlistId } } = useRoute();
+  const {
+    params: { wordlistId }
+  } = useRoute<CreateWordlistEntryFormRouteParams>();
+
   const { showSnackbar } = useSnackbar();
   const [wordText, setWordText] = useState('');
   const wordlistEntriesCreate = useWordlistEntriesCreate({
@@ -20,6 +24,7 @@ export const CreateWordlistEntryForm = () => {
     wordText,
     wordlistId
   });
+
   useWordText(wordText, setDisabled);
 
   const onSubmit = () => {
@@ -54,7 +59,6 @@ export const CreateWordlistEntryForm = () => {
         onChangeText={text => setWordText(sanitiseText(text))}
         right={ClearIcon(() => setWordText(''), wordText.length)}
         testID='new-word-text-input-field'
-        textTransform='lowercase'
         value={wordText}
       />
       <TextInput
@@ -64,12 +68,11 @@ export const CreateWordlistEntryForm = () => {
         onChangeText={text => setUnparsedCategoriesText(text)}
         right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
         testID='categories-text-input-field'
-        textTransform='lowercase'
         value={unparsedCategoriesText}
       />
       <View style={styles.helperTextWrapper}>
         <IconButton icon='information-outline' size={16} style={styles.helperTextIcon} />
-        <HelperText style={styles.helperText} variant='bodySmall'>
+        <HelperText style={styles.helperText} type='info' variant='bodySmall'>
           <Text>separate categories with a comma</Text>
         </HelperText>
       </View>

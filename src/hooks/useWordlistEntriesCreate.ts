@@ -1,13 +1,13 @@
 import { storeAuthToken } from '../utils';
 import { useMutation } from '@apollo/client';
-import { UseWordlistEntriesCreateProps } from '../../types';
 import { WORDLIST_ENTRIES_CREATE } from '../graphql-queries';
 import { WORDLIST_ENTRY } from '../fragments/wordlistEntry';
 import { WordlistEntry } from '../__generated__/graphql';
+import { AuthToken, UseWordlistEntriesCreateProps } from '../../types';
 import { parseCategories, sanitiseText } from '../utils';
 
 type BuildOptimisticResponseType = {
-  currentAuthToken: string;
+  currentAuthToken: AuthToken;
   wordlistEntries: {
     categories: WordlistEntry['categories'];
     wordlistId: WordlistEntry['wordlistId'];

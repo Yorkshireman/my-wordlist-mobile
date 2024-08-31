@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthToken } from '../../types';
 import { useEffect, useState } from 'react';
 
-export const useAsyncStorage = () => {
-  const [token, setToken] = useState<string | null>(null);
+export const useAsyncStorage = (): AuthToken => {
+  const [token, setToken] = useState<AuthToken>(null);
 
   useEffect(() => {
     const getCurrentAuthToken = async () => {

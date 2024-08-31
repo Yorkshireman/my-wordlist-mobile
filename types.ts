@@ -1,6 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 
+export type AuthToken = string | null;
+
 export type RootStackParamList = {
   CreateWordlistEntries: { wordlistId: string };
   EditWordlistEntry: { id: string };
@@ -19,6 +21,11 @@ export type EditWordlistEntryScreenProps = NativeStackScreenProps<
   'EditWordlistEntry'
 >;
 
+export type CreateWordlistEntryFormRouteParams = RouteProp<
+  RootStackParamList,
+  'CreateWordlistEntries'
+>;
+
 export type EditWordFormRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -26,7 +33,7 @@ export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 export type UseWordlistEntriesCreateProps = {
-  currentAuthToken: string;
+  currentAuthToken: AuthToken;
   unparsedCategoriesText: string;
   wordlistId: string;
   wordText: string;
