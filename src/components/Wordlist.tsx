@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react';
 export const Wordlist = () => {
   const currentAuthToken = useAsyncStorage();
   const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  // change useFilters to return entries?
   const { anyFiltersApplied, myWordlist } = useFilters(data);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const {

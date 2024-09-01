@@ -1,4 +1,4 @@
-export const sanitiseText = str => {
+export const sanitiseText = (str: string) => {
   if (str === undefined) {
     throw new Error('sanitiseText(): str parameter is undefined.');
   }

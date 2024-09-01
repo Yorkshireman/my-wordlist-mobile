@@ -58,7 +58,15 @@ export const useWordlistEntriesCreate = ({
     },
     optimisticResponse: () => {
       const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-      const wordlistEntries = [{ categories, wordText, wordlistId }];
+      const dateNow = new Date().toISOString();
+      const optimisticCategories = categories.map(cat => ({
+        createdAt: dateNow,
+        id: `${cat.name}-category-temp-id`,
+        name: cat.name,
+        updatedAt: dateNow
+      }));
+
+      const wordlistEntries = [{ categories: optimisticCategories, wordText, wordlistId }];
       return buildOptimisticResponse({ currentAuthToken, wordlistEntries });
     },
     update(
