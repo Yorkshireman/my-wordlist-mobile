@@ -92,7 +92,7 @@ export const EditWordForm = ({
           setEditWordFormVisible(false);
         }}
         ref={ref}
-        right={ClearIcon(() => setWordInputValue(''), wordInputValue.length)}
+        right={ClearIcon(() => setWordInputValue(''), Boolean(wordInputValue.length))}
         spellCheck={false}
         value={wordInputValue}
       />

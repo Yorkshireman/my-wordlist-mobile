@@ -57,7 +57,7 @@ export const CreateWordlistEntryForm = () => {
         label='new word'
         mode='outlined'
         onChangeText={text => setWordText(sanitiseText(text))}
-        right={ClearIcon(() => setWordText(''), wordText.length)}
+        right={ClearIcon(() => setWordText(''), Boolean(wordText.length))}
         testID='new-word-text-input-field'
         value={wordText}
       />
@@ -66,7 +66,10 @@ export const CreateWordlistEntryForm = () => {
         label='categories (optional)'
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
-        right={ClearIcon(() => setUnparsedCategoriesText(''), unparsedCategoriesText.length)}
+        right={ClearIcon(
+          () => setUnparsedCategoriesText(''),
+          Boolean(unparsedCategoriesText.length)
+        )}
         testID='categories-text-input-field'
         value={unparsedCategoriesText}
       />
