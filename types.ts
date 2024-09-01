@@ -17,17 +17,16 @@ export type CreateWordlistEntriesScreenProps = NativeStackScreenProps<
   'CreateWordlistEntries'
 >;
 
-export type EditWordlistEntryScreenProps = NativeStackScreenProps<
-  RootStackParamList,
-  'EditWordlistEntry'
->;
-
 export type CreateWordlistEntryFormRouteParams = RouteProp<
   RootStackParamList,
   'CreateWordlistEntries'
 >;
 
 export type EditWordFormRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
+export type EditWordlistEntryScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'EditWordlistEntry'
+>;
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;

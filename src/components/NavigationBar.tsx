@@ -1,14 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHeaderTitle } from '@react-navigation/elements';
-import { PropTypes } from 'prop-types';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 
-const signOut = async navigation => {
+const signOut = async (navigation: NativeStackHeaderProps['navigation']) => {
   try {
     await AsyncStorage.removeItem('myWordlistAuthToken');
     navigation.navigate('LogIn');
-  } catch(e) {
+  } catch (e) {
     console.error('error removing auth token from storage', e);
   }
 };
@@ -18,7 +18,7 @@ const signOut = async navigation => {
 // like the button just isn't working
 const screensWithNoBackArrow = ['LogIn', 'SignUp'];
 
-export const NavigationBar = ({ back, navigation, options, route }) => {
+export const NavigationBar = ({ back, navigation, options, route }: NativeStackHeaderProps) => {
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -31,17 +31,12 @@ export const NavigationBar = ({ back, navigation, options, route }) => {
       <Appbar.Content title={title} />
       {route.name === 'Home' ? (
         <Menu
-          anchor={
-            <Appbar.Action
-              icon='menu'
-              onPress={openMenu}
-            />
-          }
+          anchor={<Appbar.Action icon='menu' onPress={openMenu} />}
           onDismiss={closeMenu}
           visible={visible}
         >
           <Menu.Item
-            ariaLabel='sign out'
+            accessibilityLabel='sign out'
             leadingIcon='logout'
             onPress={() => {
               signOut(navigation);
@@ -53,11 +48,4 @@ export const NavigationBar = ({ back, navigation, options, route }) => {
       ) : null}
     </Appbar.Header>
   );
-};
-
-NavigationBar.propTypes = {
-  back: PropTypes.object,
-  navigation: PropTypes.object.isRequired,
-  options: PropTypes.object,
-  route: PropTypes.object.isRequired
 };
