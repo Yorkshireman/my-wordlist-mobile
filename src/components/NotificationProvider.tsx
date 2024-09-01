@@ -2,22 +2,29 @@ import PropTypes from 'prop-types';
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
 import { useSnackbar } from '../hooks';
-import { Keyboard, Platform, StyleSheet, View } from 'react-native';
+import { EmitterSubscription, Keyboard, Platform, StyleSheet, View } from 'react-native';
 import { Snackbar, useTheme } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 
-export const NotificationProvider = ({ children }) => {
+export const NotificationProvider = ({ children }: { children: React.ReactElement }) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { hideSnackbar } = useSnackbar();
-  const { colors: { primary } } = useTheme();
+  const {
+    colors: { primary }
+  } = useTheme();
+
   const { duration, key, message, visible } = useReactiveVar(snackbarStateVar);
 
   useEffect(() => {
-    let keyboardDidShowListener;
-    let keyboardDidHideListener;
+    let keyboardDidShowListener: EmitterSubscription;
+    let keyboardDidHideListener: EmitterSubscription;
     if (Platform.OS === 'ios') {
-      keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', ({ endCoordinates }) => setKeyboardHeight(endCoordinates.height - 30));
-      keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () => setKeyboardHeight(0));
+      keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', ({ endCoordinates }) =>
+        setKeyboardHeight(endCoordinates.height - 30)
+      );
+      keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () =>
+        setKeyboardHeight(0)
+      );
     }
 
     return () => {
