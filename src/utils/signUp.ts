@@ -1,3 +1,4 @@
+import { MutationFunction } from '@apollo/client';
 import { SIGN_UP_URL } from '@env';
 import { storeAuthToken } from './storeAuthToken';
 
@@ -7,6 +8,12 @@ export const signUp = ({
   password,
   setErrorMessage,
   setLoading
+}: {
+  email: string;
+  myWordlistCreate: MutationFunction;
+  password: string;
+  setErrorMessage: (arg0: string) => void;
+  setLoading: (arg0: boolean) => void;
 }) => {
   setLoading(true);
   return fetch(SIGN_UP_URL, {
@@ -32,11 +39,13 @@ export const signUp = ({
 
       return response.json();
     })
-    .then(({ data: { token }}) => storeAuthToken(token))
+    .then(({ data: { token } }) => storeAuthToken(token))
     .then(() => myWordlistCreate())
     .catch(e => {
       console.error(e);
-      setErrorMessage('Sorry, something went wrong. Please ensure you have entered a valid email address and try again.');
+      setErrorMessage(
+        'Sorry, something went wrong. Please ensure you have entered a valid email address and try again.'
+      );
     })
     .finally(() => setLoading(false));
 };
