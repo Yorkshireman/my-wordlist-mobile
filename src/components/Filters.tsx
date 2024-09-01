@@ -4,27 +4,33 @@ import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
 import { useMemo } from 'react';
 import { useUpdateCategoriesSelectedIdsVar } from '../hooks/useUpdateCategoriesSelectedIdsVar';
+import { WordlistEntry } from '../__generated__/graphql';
 import { Button, Text, useTheme } from 'react-native-paper';
+import { QueryResult, useQuery, useReactiveVar } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
-import { useQuery, useReactiveVar } from '@apollo/client';
 
 export const Filters = () => {
-  const { data: { myWordlist: { entries } = {} } = {} } = useQuery(MY_WORDLIST_CATEGORIES);
+  const { data }: QueryResult<{ myWordlist: { entries: WordlistEntry[] } }> =
+    useQuery(MY_WORDLIST_CATEGORIES);
+
   const {
-    colors: {
-      inversePrimary,
-      onSurfaceVariant,
-      primary,
-      secondaryContainer
-    }
+    colors: { inversePrimary, onSurfaceVariant, primary, secondaryContainer }
   } = useTheme();
+
   const selectedCategoriesIds = useReactiveVar(selectedCategoriesIdsVar);
-  const wordlistCategories = useMemo(() => parseUniqueCategories(entries), [entries]);
-  useUpdateCategoriesSelectedIdsVar(wordlistCategories);
+
+  const entries = data?.myWordlist?.entries;
+
+  const wordlistCategories = useMemo(
+    () => (entries && parseUniqueCategories(entries)) || [],
+    [entries]
+  );
+
+  useUpdateCategoriesSelectedIdsVar(wordlistCategories.map(({ id }) => id));
 
   if (!wordlistCategories) return null;
 
-  const handleCategoryPress = categoryId => {
+  const handleCategoryPress = (categoryId: string) => {
     const alreadySelected = selectedCategoriesIds.includes(categoryId);
     if (alreadySelected) {
       return selectedCategoriesIdsVar(selectedCategoriesIds.filter(id => id !== categoryId));
@@ -35,28 +41,25 @@ export const Filters = () => {
 
   return (
     <View style={{ height: '100%', padding: 10 }} testID='filters-container'>
-      <LinearGradient
-        colors={[secondaryContainer, 'white']}
-        style={styles.background}
-      />
-      <Text style={{ marginBottom: 10 }} variant='titleMedium'>Select categories to include:</Text>
+      <LinearGradient colors={[secondaryContainer, 'white']} style={styles.background} />
+      <Text style={{ marginBottom: 10 }} variant='titleMedium'>
+        Select categories to include:
+      </Text>
       <View style={styles.categories}>
-        {
-          wordlistCategories.map(({ id, name }) => {
-            return (
-              <Button
-                buttonColor={selectedCategoriesIds.includes(id) ? primary : inversePrimary}
-                compact
-                key={id}
-                mode='contained'
-                onPress={() => handleCategoryPress(id)}
-                textColor={selectedCategoriesIds.includes(id) ? 'white' : onSurfaceVariant}
-              >
-                {name}
-              </Button>
-            );
-          })
-        }
+        {wordlistCategories.map(({ id, name }) => {
+          return (
+            <Button
+              buttonColor={selectedCategoriesIds.includes(id) ? primary : inversePrimary}
+              compact
+              key={id}
+              mode='contained'
+              onPress={() => handleCategoryPress(id)}
+              textColor={selectedCategoriesIds.includes(id) ? 'white' : onSurfaceVariant}
+            >
+              {name}
+            </Button>
+          );
+        })}
       </View>
     </View>
   );
