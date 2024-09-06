@@ -8,9 +8,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { EditWordlistEntryScreen, HomeScreen } from '../../src/screens';
-import { fireEvent, render, screen, userEvent, waitFor, within } from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  within
+} from '@testing-library/react-native';
 import { myWordlistQueryMock, wordlistEntryUpdate } from '../../mockedProviderMocks';
-
 jest.useFakeTimers();
 
 describe('Edit Wordlist Entry journey', () => {
@@ -62,8 +68,16 @@ describe('Edit Wordlist Entry journey', () => {
             <NotificationProvider>
               <NavigationContainer>
                 <Stack.Navigator>
-                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                  <Stack.Screen component={EditWordlistEntryScreen} name="EditWordlistEntry" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    component={HomeScreen}
+                    name='Home'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                  <Stack.Screen
+                    component={EditWordlistEntryScreen}
+                    name='EditWordlistEntry'
+                    options={{ headerShown: false }}
+                  />
                 </Stack.Navigator>
               </NavigationContainer>
             </NotificationProvider>
@@ -72,10 +86,15 @@ describe('Edit Wordlist Entry journey', () => {
       );
     });
 
-    await waitFor(() => {
-      const user = userEvent.setup();
-      user.press(screen.getAllByTestId('edit-wordlist-entry-icon')[3]);
+    const user = userEvent.setup();
+    let pendulumWordlistEntryMenuButton;
+    await waitFor(async () => {
+      pendulumWordlistEntryMenuButton = screen.getByTestId(
+        'wordlist-entry-menu-45824606-8e65-4d94-93ab-851e751e10f1'
+      );
     });
+    await user.press(pendulumWordlistEntryMenuButton);
+    await user.press(screen.getByText('Edit'));
   });
 
   afterEach(async () => {
@@ -112,9 +131,8 @@ describe('Edit Wordlist Entry journey', () => {
     });
 
     beforeEach(async () => {
-      const editWordButton = await waitFor(() => screen.getByTestId('edit-word-button'));
       const user = userEvent.setup();
-      await user.press(editWordButton);
+      await user.press(screen.getByTestId('edit-word-button'));
       const wordInput = await waitFor(() => screen.getByLabelText('word'));
       await user.type(wordInput, 's');
       fireEvent(wordInput, 'onSubmitEditing');
@@ -152,7 +170,9 @@ describe('Edit Wordlist Entry journey', () => {
 
       test('an error message is displayed', async () => {
         await waitFor(() => {
-          expect(screen.getByText('Sorry, something went wrong updating your word. Please try again.')).toBeOnTheScreen();
+          expect(
+            screen.getByText('Sorry, something went wrong updating your word. Please try again.')
+          ).toBeOnTheScreen();
         });
       });
 
@@ -183,7 +203,9 @@ describe('Edit Wordlist Entry journey', () => {
 
     test('notification message is not displayed', async () => {
       await waitFor(() => {
-        expect(screen.queryByText('Sorry, something went wrong updating your word. Please try again.')).not.toBeOnTheScreen();
+        expect(
+          screen.queryByText('Sorry, something went wrong updating your word. Please try again.')
+        ).not.toBeOnTheScreen();
       });
     });
 
@@ -261,12 +283,15 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test.each(['verb', 'noun', 'industry'])('"%s" category is on the screen next to the "phone" wordlist entry', async category => {
-        await waitFor(() => {
-          const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
-          expect(within(wordlistEntry).getByText(category)).toBeOnTheScreen();
-        });
-      });
+      test.each(['verb', 'noun', 'industry'])(
+        '"%s" category is on the screen next to the "phone" wordlist entry',
+        async category => {
+          await waitFor(() => {
+            const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
+            expect(within(wordlistEntry).getByText(category)).toBeOnTheScreen();
+          });
+        }
+      );
 
       test('"Edit" is not on the screen', async () => {
         await waitFor(() => {
