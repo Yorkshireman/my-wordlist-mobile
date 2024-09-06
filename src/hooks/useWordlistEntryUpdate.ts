@@ -15,7 +15,7 @@ export const useWordlistEntryUpdate = () => {
   >(WORDLIST_ENTRY_UPDATE, {
     onCompleted: data => {
       const { authToken } = data;
-      storeAuthToken(authToken);
+      authToken && storeAuthToken(authToken);
     },
     onError: error => {
       console.error(error);
