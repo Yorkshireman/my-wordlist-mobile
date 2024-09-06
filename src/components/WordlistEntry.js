@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
-import { IconButton, Menu, Text, useTheme } from 'react-native-paper';
+import { Divider, IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
 
 export const WordlistEntry = ({
@@ -51,6 +51,14 @@ export const WordlistEntry = ({
           visible={wordlistEntryMenuVisible === id}
         >
           <Menu.Item
+            leadingIcon='lightning-bolt'
+            onPress={() => {
+              setWordlistEntryMenuVisible(null);
+              navigation.navigate('GenerateExampleSentences', { id });
+            }}
+            title='Generate Sentences'
+          />
+          <Menu.Item
             leadingIcon='note-edit-outline'
             onPress={() => {
               setWordlistEntryMenuVisible(null);
@@ -58,6 +66,7 @@ export const WordlistEntry = ({
             }}
             title='Edit'
           />
+          <Divider />
           <Menu.Item
             leadingIcon='trash-can-outline'
             onPress={() => {

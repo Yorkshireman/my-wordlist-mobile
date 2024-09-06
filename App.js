@@ -12,7 +12,14 @@ import { removeTypename } from './src/utils/removeTypename';
 import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
-import { CreateWordlistEntriesScreen, EditWordlistEntryScreen, HomeScreen, LogInScreen, SignUpScreen } from './src/screens';
+import {
+  CreateWordlistEntriesScreen,
+  EditWordlistEntryScreen,
+  GenerateExampleSentencesScreen,
+  HomeScreen,
+  LogInScreen,
+  SignUpScreen
+} from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
 
@@ -83,14 +90,39 @@ export default function App() {
                   }}
                 >
                   <Stack.Group>
-                    <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                    <Stack.Screen component={LogInScreen} name="LogIn" options={{ title: 'My Wordlist' }} />
-                    <Stack.Screen component={SignUpScreen} name="SignUp" options={{ title: 'My Wordlist' }} />
-                    <Stack.Screen component={CreateWordlistEntriesScreen} name="CreateWordlistEntries" options={{ headerShown: false }} />
-                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' options={{ headerShown: false }} />
+                    <Stack.Screen
+                      component={HomeScreen}
+                      name='Home'
+                      options={{ title: 'My Wordlist' }}
+                    />
+                    <Stack.Screen
+                      component={LogInScreen}
+                      name='LogIn'
+                      options={{ title: 'My Wordlist' }}
+                    />
+                    <Stack.Screen
+                      component={SignUpScreen}
+                      name='SignUp'
+                      options={{ title: 'My Wordlist' }}
+                    />
+                    <Stack.Screen
+                      component={CreateWordlistEntriesScreen}
+                      name='CreateWordlistEntries'
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      component={EditWordlistEntryScreen}
+                      name='EditWordlistEntry'
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      component={GenerateExampleSentencesScreen}
+                      name='GenerateExampleSentences'
+                      options={{ headerShown: false }}
+                    />
                   </Stack.Group>
                 </Stack.Navigator>
-                <StatusBar style="auto" />
+                <StatusBar style='auto' />
               </NavigationContainer>
             </NotificationProvider>
           </PaperProvider>
