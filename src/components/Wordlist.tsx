@@ -3,7 +3,7 @@ import { Categories } from './Categories';
 import { DeleteConfirm } from './DeleteConfirm';
 import { MyWordlist } from '../__generated__/graphql';
 import { RootStackParamList } from '../../types';
-import { IconButton, Text, useTheme } from 'react-native-paper';
+import { IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { QueryResult, Reference, StoreObject, useMutation, useQuery } from '@apollo/client';
@@ -22,6 +22,7 @@ export const Wordlist = () => {
   } = useTheme();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [wordlistEntryIdToDelete, setWordlistEntryIdToDelete] = useState<string | null>();
+  const [wordlistEntryMenuVisible, setWordlistEntryMenuVisible] = useState<string | null>(null);
   const [wordlistEntryDelete] = useMutation(WORDLIST_ENTRY_DELETE, {
     optimisticResponse: () => ({
       authToken: currentAuthToken,
@@ -82,24 +83,39 @@ export const Wordlist = () => {
                 <Categories categories={categories} />
               </View>
               <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
-                <IconButton
-                  icon='note-edit-outline'
-                  onPress={() => navigation.navigate('EditWordlistEntry', { id })}
-                  size={16}
-                  style={{ margin: 0 }}
-                  testID='edit-wordlist-entry-icon'
-                />
-              </View>
-              <View style={{ justifyContent: 'center', marginLeft: 'auto' }}>
-                <IconButton
-                  icon='trash-can-outline'
-                  onPress={() => {
-                    setWordlistEntryIdToDelete(id);
-                    setShowDeleteConfirm(true);
-                  }}
-                  size={16}
-                  style={{ margin: 0 }}
-                />
+                <Menu
+                  anchor={
+                    <IconButton
+                      icon='dots-vertical'
+                      onPress={() => {
+                        setWordlistEntryMenuVisible(id);
+                      }}
+                      size={24}
+                      style={{ margin: 0 }}
+                      testID={`wordlist-entry-menu-${id}`}
+                    />
+                  }
+                  onDismiss={() => setWordlistEntryMenuVisible(null)}
+                  visible={wordlistEntryMenuVisible === id}
+                >
+                  <Menu.Item
+                    leadingIcon='note-edit-outline'
+                    onPress={() => {
+                      setWordlistEntryMenuVisible(null);
+                      navigation.navigate('EditWordlistEntry', { id });
+                    }}
+                    title='Edit'
+                  />
+                  <Menu.Item
+                    leadingIcon='trash-can-outline'
+                    onPress={() => {
+                      setWordlistEntryIdToDelete(id);
+                      setWordlistEntryMenuVisible(null);
+                      setShowDeleteConfirm(true);
+                    }}
+                    title='Delete'
+                  />
+                </Menu>
               </View>
             </View>
           );
