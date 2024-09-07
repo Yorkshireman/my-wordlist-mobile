@@ -9,7 +9,12 @@ export const GenerateExampleSentencesScreen = () => {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
 
-  useFetchOrCreateExampleSentences(wordId);
+  const { exampleSentences, error, loading } = useFetchOrCreateExampleSentences(wordId);
 
+  if (loading) return <View>Loading...</View>;
+  if (error) return <View>Error</View>;
+  console.log('========== start ==========');
+  console.log(JSON.stringify(exampleSentences, null, 2));
+  console.log('========== end ===========');
   return <View>Hello</View>;
 };
