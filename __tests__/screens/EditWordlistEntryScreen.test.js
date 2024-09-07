@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EditWordlistEntryScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { myWordlistQueryMock } from '../../mockedProviderMocks';
+import { NavigationContainer } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { render, screen, waitFor } from '@testing-library/react-native';
 
@@ -35,9 +36,11 @@ describe('EditWordlistEntryScreen', () => {
     useQuery.mockImplementation(() => myWordlistQueryMock.result);
     await waitFor(() => {
       render(
-        <MockedProvider>
-          <EditWordlistEntryScreen navigation={{ navigate: jest.fn() }} />
-        </MockedProvider>
+        <NavigationContainer>
+          <MockedProvider>
+            <EditWordlistEntryScreen navigation={{ navigate: jest.fn() }} />
+          </MockedProvider>
+        </NavigationContainer>
       );
     });
   });
@@ -65,7 +68,9 @@ describe('EditWordlistEntryScreen', () => {
   });
 
   test('displays helper text', async () => {
-    await waitFor(() => expect(screen.getByText('separate multiple categories with a comma')).toBeOnTheScreen());
+    await waitFor(() =>
+      expect(screen.getByText('separate multiple categories with a comma')).toBeOnTheScreen()
+    );
   });
 
   test('displays categories', async () => {
