@@ -7,21 +7,25 @@ import { Divider, IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 
-export const WordlistEntry = ({
-  categories,
-  id,
-  setShowDeleteConfirm,
-  setWordlistEntryIdToDelete,
-  text,
-  wordFlexBasis
-}: {
+type Props = {
   categories: Category[];
   id: string;
   setShowDeleteConfirm: (value: boolean) => void;
   setWordlistEntryIdToDelete: (value: string) => void;
   text: string;
   wordFlexBasis: number;
-}) => {
+  wordId: string;
+};
+
+export const WordlistEntry = ({
+  categories,
+  id,
+  setShowDeleteConfirm,
+  setWordlistEntryIdToDelete,
+  text,
+  wordFlexBasis,
+  wordId
+}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [wordlistEntryMenuVisible, setWordlistEntryMenuVisible] = useState<string | null>(null);
   const {
@@ -60,8 +64,9 @@ export const WordlistEntry = ({
           <Menu.Item
             leadingIcon='lightning-bolt'
             onPress={() => {
+              console.log('========= ', wordId);
               setWordlistEntryMenuVisible(null);
-              navigation.navigate('GenerateExampleSentences', { id });
+              navigation.navigate('GenerateExampleSentences', { wordId });
             }}
             title='Generate Sentences'
           />
