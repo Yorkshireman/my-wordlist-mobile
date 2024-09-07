@@ -29,6 +29,10 @@ export type EditWordlistEntryScreenProps = NativeStackScreenProps<
   'EditWordlistEntry'
 >;
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
+export type GenerateExampleSentencesScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'GenerateExampleSentences'
+>;
 export type GenerateExampleSentencesScreenRouteParams = RouteProp<
   RootStackParamList,
   'GenerateExampleSentences'
