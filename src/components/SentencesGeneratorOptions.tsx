@@ -67,6 +67,7 @@ export const SentencesGeneratorOptions = () => {
         <View style={{ flexDirection: 'row', width: '100%' }}>
           <Text variant='labelLarge'>Generate Explanations</Text>
           <Switch
+            disabled={!explanationLanguage}
             onValueChange={onToggleSwitch}
             style={{ position: 'absolute', right: 5 }}
             value={generateExplanationsChecked}
