@@ -27,7 +27,7 @@ export const useFetchOrCreateExampleSentences = (
     }
   );
 
-  const [fetchOrCreateExampleSentencesWithExplanations, { error: error2, loading: loading2 }] =
+  const [fetchOrCreateExampleSentencesWithExplanations, { error: _error, loading: _loading }] =
     useMutation(FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS, {
       onCompleted: (data: FetchOrCreateExampleSentencesWithExplanationsMutation) => {
         const { fetchOrCreateExampleSentences } = data;
@@ -70,9 +70,9 @@ export const useFetchOrCreateExampleSentences = (
   }, [fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, wordId]);
 
   return {
-    error: error || error2,
+    error: error || _error,
     fetchOrCreateExampleSentences,
     fetchOrCreateExampleSentencesWithExplanations,
-    loading: loading || loading2
+    loading: loading || _loading
   };
 };
