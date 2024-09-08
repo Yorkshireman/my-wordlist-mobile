@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'react-native-paper';
+import { View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 type MyWordlistOptions = {
@@ -39,9 +40,13 @@ export const SentencesGeneratorOptions = () => {
   };
 
   return (
-    <Checkbox
-      onPress={handleCheckboxPress}
-      status={generateExplanationsChecked ? 'checked' : 'unchecked'}
-    />
+    <View>
+      <Checkbox.Item
+        label='Generate Explanations'
+        labelStyle={{ textAlign: 'right' }}
+        onPress={handleCheckboxPress}
+        status={generateExplanationsChecked ? 'checked' : 'unchecked'}
+      />
+    </View>
   );
 };
