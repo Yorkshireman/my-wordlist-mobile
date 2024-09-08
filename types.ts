@@ -4,6 +4,17 @@ import { RouteProp } from '@react-navigation/native';
 
 export type AuthToken = string | null;
 
+export enum ExplanationLanguage {
+  Chinese = 'Chinese Simplified',
+  French = 'French',
+  German = 'German',
+  Italian = 'Italian',
+  Japanese = 'Japanese',
+  Portuguese = 'Portuguese',
+  Russian = 'Russian',
+  Spanish = 'Spanish'
+}
+
 export type RootStackParamList = {
   CreateWordlistEntries: { wordlistId: string };
   EditWordlistEntry: { id: string };

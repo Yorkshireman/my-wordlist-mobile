@@ -1,6 +1,7 @@
 export { boldenSentenceForm } from './boldenSentenceForm';
 export { calculateLongestWordLength } from './calculateLongestWordLength';
 export { customColours } from './customColours';
+export { displayLanguage } from './displayLanguage';
 export { isInvalidEmail } from './isInvalidEmail';
 export { parseCategories } from './parseCategories';
 export { sanitiseText } from './sanitiseText';

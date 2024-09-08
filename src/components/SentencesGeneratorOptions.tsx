@@ -1,54 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { displayLanguage } from '../utils';
+import { ExplanationLanguage } from '../../types';
 import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 
-enum ExplanationLanguage {
-  Chinese = 'Chinese Simplified',
-  French = 'French',
-  German = 'German',
-  Italian = 'Italian',
-  Japanese = 'Japanese',
-  Portuguese = 'Portuguese',
-  Russian = 'Russian',
-  Spanish = 'Spanish'
-}
-
 type MyWordlistOptions = {
   explanationLanguage?: ExplanationLanguage;
   generateExplanations?: boolean;
-};
-
-const displayLanguage = (explanationLanguage: ExplanationLanguage) => {
-  let displayLanguage = '';
-  switch (explanationLanguage) {
-    case ExplanationLanguage.Chinese:
-      displayLanguage = '简体中文 (Chinese Simplified)';
-      break;
-    case ExplanationLanguage.French:
-      displayLanguage = 'Français (French)';
-      break;
-    case ExplanationLanguage.German:
-      displayLanguage = 'Deutsch (German)';
-      break;
-    case ExplanationLanguage.Italian:
-      displayLanguage = 'Italiano (Italian)';
-      break;
-    case ExplanationLanguage.Japanese:
-      displayLanguage = '日本語 (Japanese)';
-      break;
-    case ExplanationLanguage.Portuguese:
-      displayLanguage = 'Português (Portuguese)';
-      break;
-    case ExplanationLanguage.Russian:
-      displayLanguage = 'Русский (Russian)';
-      break;
-    case ExplanationLanguage.Spanish:
-      displayLanguage = 'Español (Spanish)';
-      break;
-  }
-
-  return displayLanguage;
 };
 
 const useGetSavedMyWordlistOptions = async (
@@ -126,38 +85,13 @@ export const SentencesGeneratorOptions = () => {
               onDismiss={() => setNativeLanguageMenuVisible(false)}
               visible={nativeLanguageMenuVisible}
             >
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Chinese)}
-                title={displayLanguage(ExplanationLanguage.Chinese)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.French)}
-                title={displayLanguage(ExplanationLanguage.French)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.German)}
-                title={displayLanguage(ExplanationLanguage.German)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Italian)}
-                title={displayLanguage(ExplanationLanguage.Italian)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Japanese)}
-                title={displayLanguage(ExplanationLanguage.Japanese)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Portuguese)}
-                title={displayLanguage(ExplanationLanguage.Portuguese)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Russian)}
-                title={displayLanguage(ExplanationLanguage.Russian)}
-              />
-              <Menu.Item
-                onPress={onExplanationLanguageSelect(ExplanationLanguage.Spanish)}
-                title={displayLanguage(ExplanationLanguage.Spanish)}
-              />
+              {Object.values(ExplanationLanguage).map(language => (
+                <Menu.Item
+                  key={language}
+                  onPress={onExplanationLanguageSelect(language)}
+                  title={displayLanguage(language)}
+                />
+              ))}
             </Menu>
           </View>
         </View>
