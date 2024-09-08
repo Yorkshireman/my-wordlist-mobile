@@ -1,15 +1,32 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'react-native-paper';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const SentencesGeneratorOptions = () => {
-  const [checked, setChecked] = React.useState(false);
+  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
+
+  useEffect(() => {
+    const getMyWordlistOptions = async () => {
+      const myWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
+      const { generateExplanations } = JSON.parse(myWordlistOptions);
+      setGenerateExplanationsChecked(generateExplanations);
+    };
+
+    getMyWordlistOptions();
+  }, []);
 
   return (
     <Checkbox
-      onPress={() => {
-        setChecked(!checked);
+      onPress={async () => {
+        setGenerateExplanationsChecked(!generateExplanationsChecked);
+
+        const myWordlistOptions = {
+          generateExplanations: !generateExplanationsChecked
+        };
+
+        await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify(myWordlistOptions));
       }}
-      status={checked ? 'checked' : 'unchecked'}
+      status={generateExplanationsChecked ? 'checked' : 'unchecked'}
     />
   );
 };
