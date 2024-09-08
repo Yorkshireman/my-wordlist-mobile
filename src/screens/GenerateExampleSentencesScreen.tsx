@@ -32,7 +32,9 @@ export const GenerateExampleSentencesScreen = () => {
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>
       <SentencesGeneratorOptions />
       {loading ? (
-        <Loading size='large' />
+        <View style={{ marginTop: 80 }}>
+          <Loading size='large' />
+        </View>
       ) : (
         <>
           <ExampleSentences exampleSentences={exampleSentences} />
