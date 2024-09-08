@@ -15,6 +15,7 @@ enum ExplanationLanguage {
 }
 
 type MyWordlistOptions = {
+  explanationLanguage?: ExplanationLanguage;
   generateExplanations?: boolean;
 };
 
@@ -72,16 +73,23 @@ export const SentencesGeneratorOptions = () => {
   useGetSavedMyWordlistOptions(setMyWordlistOptions);
 
   useEffect(() => {
+    setExplanationLanguage(myWordlistOptions.explanationLanguage);
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
 
   const onToggleSwitch = async () => {
-    setGenerateExplanationsChecked(!generateExplanationsChecked);
-    const myWordlistOptions = {
-      generateExplanations: !generateExplanationsChecked
-    };
+    await AsyncStorage.mergeItem(
+      'myWordlistOptions',
+      JSON.stringify({ generateExplanations: !generateExplanationsChecked })
+    );
 
-    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify(myWordlistOptions));
+    setGenerateExplanationsChecked(!generateExplanationsChecked);
+  };
+
+  const onExplanationLanguageSelect = (explanationLanguage: ExplanationLanguage) => async () => {
+    setNativeLanguageMenuVisible(false);
+    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
+    setExplanationLanguage(explanationLanguage);
   };
 
   return (
@@ -119,59 +127,35 @@ export const SentencesGeneratorOptions = () => {
               visible={nativeLanguageMenuVisible}
             >
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Chinese);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Chinese)}
                 title={displayLanguage(ExplanationLanguage.Chinese)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.French);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.French)}
                 title={displayLanguage(ExplanationLanguage.French)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.German);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.German)}
                 title={displayLanguage(ExplanationLanguage.German)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Italian);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Italian)}
                 title={displayLanguage(ExplanationLanguage.Italian)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Japanese);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Japanese)}
                 title={displayLanguage(ExplanationLanguage.Japanese)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Portuguese);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Portuguese)}
                 title={displayLanguage(ExplanationLanguage.Portuguese)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Russian);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Russian)}
                 title={displayLanguage(ExplanationLanguage.Russian)}
               />
               <Menu.Item
-                onPress={() => {
-                  setExplanationLanguage(ExplanationLanguage.Spanish);
-                  setNativeLanguageMenuVisible(false);
-                }}
+                onPress={onExplanationLanguageSelect(ExplanationLanguage.Spanish)}
                 title={displayLanguage(ExplanationLanguage.Spanish)}
               />
             </Menu>
