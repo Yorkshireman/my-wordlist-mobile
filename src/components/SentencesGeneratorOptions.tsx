@@ -15,7 +15,7 @@ const useGetSavedMyWordlistOptions = async (
 ) => {
   useEffect(() => {
     const getSavedMyWordlistOptions = async () => {
-      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '';
+      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
       const myWordlistOptions = JSON.parse(unparsedMyWordlistOptions);
       setMyWordlistOptions(myWordlistOptions);
     };
