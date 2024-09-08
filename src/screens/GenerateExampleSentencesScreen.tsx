@@ -29,7 +29,7 @@ export const GenerateExampleSentencesScreen = () => {
   };
 
   return (
-    <View style={{ ...sharedStyles.container }}>
+    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>
       {loading ? (
         <Loading size='large' />
       ) : (
