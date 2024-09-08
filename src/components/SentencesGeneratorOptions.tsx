@@ -36,11 +36,18 @@ export const SentencesGeneratorOptions = () => {
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
 
-  const onExplanationLanguageSelect = (explanationLanguage: ExplanationLanguage) => async () => {
-    setNativeLanguageMenuVisible(false);
-    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
-    setExplanationLanguage(explanationLanguage);
-  };
+  const onExplanationLanguageSelect =
+    (explanationLanguage: ExplanationLanguage | undefined) => async () => {
+      setNativeLanguageMenuVisible(false);
+      setExplanationLanguage(explanationLanguage);
+      if (!explanationLanguage) {
+        const options = { ...myWordlistOptions };
+        delete options.explanationLanguage;
+        await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(options));
+      } else {
+        await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
+      }
+    };
 
   const onToggleSwitch = async () => {
     await AsyncStorage.mergeItem(
@@ -85,13 +92,20 @@ export const SentencesGeneratorOptions = () => {
               onDismiss={() => setNativeLanguageMenuVisible(false)}
               visible={nativeLanguageMenuVisible}
             >
-              {Object.values(ExplanationLanguage).map(language => (
+              {[
                 <Menu.Item
-                  key={language}
-                  onPress={onExplanationLanguageSelect(language)}
-                  title={displayLanguage(language)}
-                />
-              ))}
+                  key={'none'}
+                  onPress={onExplanationLanguageSelect(undefined)}
+                  title={'(none)'}
+                />,
+                ...Object.values(ExplanationLanguage).map(language => (
+                  <Menu.Item
+                    key={language}
+                    onPress={onExplanationLanguageSelect(language)}
+                    title={displayLanguage(language)}
+                  />
+                ))
+              ]}
             </Menu>
           </View>
         </View>
