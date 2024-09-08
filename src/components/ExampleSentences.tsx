@@ -8,7 +8,7 @@ type Props = {
 
 export const ExampleSentences = ({ exampleSentences }: Props) => {
   return (
-    <>
+    <List.Section>
       {exampleSentences.map(({ content, form, id }) => (
         <List.Item
           key={id}
@@ -16,6 +16,6 @@ export const ExampleSentences = ({ exampleSentences }: Props) => {
           titleNumberOfLines={999}
         />
       ))}
-    </>
+    </List.Section>
   );
 };
