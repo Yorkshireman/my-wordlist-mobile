@@ -1,12 +1,13 @@
-import { boldenSentenceForm } from '../utils';
+import { ExampleSentences } from '../components';
 import { GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { Level } from '../__generated__/graphql';
 import { Loading } from '../components';
+import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
 import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
-import { IconButton, List, useTheme } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
 
 export const GenerateExampleSentencesScreen = () => {
@@ -33,13 +34,8 @@ export const GenerateExampleSentencesScreen = () => {
         <Loading size='large' />
       ) : (
         <>
-          {exampleSentences.map(({ content, form, id }) => (
-            <List.Item
-              key={id}
-              title={boldenSentenceForm({ content, form })}
-              titleNumberOfLines={999}
-            />
-          ))}
+          <SentencesGeneratorOptions />
+          <ExampleSentences exampleSentences={exampleSentences} />
           <View style={{ alignItems: 'center' }}>
             <IconButton
               icon='refresh'
