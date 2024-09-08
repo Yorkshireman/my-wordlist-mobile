@@ -110,7 +110,7 @@ export const SentencesGeneratorOptions = () => {
           }}
         >
           <View style={{ justifyContent: 'center' }}>
-            <Text variant='labelLarge'>Native Language</Text>
+            <Text variant='labelLarge'>Language</Text>
           </View>
           <View style={{ position: 'absolute', right: -12, top: -9 }}>
             <Menu
