@@ -1,6 +1,5 @@
 import { CreateWordlistEntriesScreenProps } from '../../types';
 import { CreateWordlistEntryForm } from '../components';
-import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
@@ -15,10 +14,6 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
       <CreateWordlistEntryForm />
     </View>
   );
-};
-
-CreateWordlistEntriesScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

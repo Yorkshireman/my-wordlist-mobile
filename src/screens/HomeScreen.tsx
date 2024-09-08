@@ -1,6 +1,5 @@
 import { Drawer } from 'react-native-drawer-layout';
 import type { HomeScreenProps } from '../../types';
-import PropTypes from 'prop-types';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
 import sharedStyles from '../styles';
 import { useFetchWordlistData } from '../hooks';
@@ -53,10 +52,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       </View>
     </Drawer>
   );
-};
-
-HomeScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

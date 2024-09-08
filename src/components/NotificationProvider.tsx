@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
 import { useSnackbar } from '../hooks';
@@ -49,10 +48,6 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
       </View>
     </>
   );
-};
-
-NotificationProvider.propTypes = {
-  children: PropTypes.node.isRequired
 };
 
 const styles = StyleSheet.create({
