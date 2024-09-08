@@ -1,6 +1,10 @@
-import { FETCH_OR_CREATE_EXAMPLE_SENTENCES } from '../graphql-queries';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import {
+  FETCH_OR_CREATE_EXAMPLE_SENTENCES,
+  FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS
+} from '../graphql-queries';
 import { FetchOrCreateExampleSentencesMutation, Level } from '../__generated__/graphql';
 
 export const useFetchOrCreateExampleSentences = (
@@ -19,14 +23,52 @@ export const useFetchOrCreateExampleSentences = (
     }
   );
 
-  useEffect(() => {
-    fetchOrCreateExampleSentences({
-      variables: {
-        level: Level.B1,
-        wordId
+  const [fetchOrCreateExampleSentencesWithExplanations, { error: error2, loading: loading2 }] =
+    useMutation(FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS, {
+      onCompleted: data => {
+        const { fetchOrCreateExampleSentences } = data;
+        const { exampleSentences } = fetchOrCreateExampleSentences || {};
+        const sentences = exampleSentences?.map(({ content, form, id }: any) => ({
+          content,
+          form,
+          id
+        }));
+        setExampleSentences(sentences || []);
       }
     });
-  }, [fetchOrCreateExampleSentences, wordId]);
 
-  return { error, fetchOrCreateExampleSentences, loading };
+  useEffect(() => {
+    const fetch = async () => {
+      const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
+      const { generateExplanations, explanationLanguage: nativeLanguage } = JSON.parse(
+        unparsedOptions || '{}'
+      );
+
+      if (generateExplanations) {
+        fetchOrCreateExampleSentencesWithExplanations({
+          variables: {
+            level: Level.B1,
+            nativeLanguage,
+            wordId
+          }
+        });
+      } else {
+        fetchOrCreateExampleSentences({
+          variables: {
+            level: Level.B1,
+            wordId
+          }
+        });
+      }
+    };
+
+    fetch();
+  }, [fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, wordId]);
+
+  return {
+    error: error || error2,
+    fetchOrCreateExampleSentences,
+    fetchOrCreateExampleSentencesWithExplanations,
+    loading: loading || loading2
+  };
 };

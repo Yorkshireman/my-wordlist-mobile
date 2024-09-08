@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
 import { GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { Level } from '../__generated__/graphql';
@@ -19,13 +20,31 @@ export const GenerateExampleSentencesScreen = () => {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
 
-  const { fetchOrCreateExampleSentences, loading } = useFetchOrCreateExampleSentences(
-    setExampleSentences,
-    wordId
-  );
+  const { fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, loading } =
+    useFetchOrCreateExampleSentences(setExampleSentences, wordId);
 
-  const refreshExampleSentences = () => {
-    fetchOrCreateExampleSentences({ variables: { level: Level.B1, wordId } });
+  const refreshExampleSentences = async () => {
+    const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
+    const { generateExplanations, explanationLanguage: nativeLanguage } = JSON.parse(
+      unparsedOptions || '{}'
+    );
+
+    if (generateExplanations) {
+      fetchOrCreateExampleSentencesWithExplanations({
+        variables: {
+          level: Level.B1,
+          nativeLanguage,
+          wordId
+        }
+      });
+    } else {
+      fetchOrCreateExampleSentences({
+        variables: {
+          level: Level.B1,
+          wordId
+        }
+      });
+    }
   };
 
   return (
