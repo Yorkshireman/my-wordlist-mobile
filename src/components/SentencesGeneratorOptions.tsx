@@ -44,6 +44,7 @@ export const SentencesGeneratorOptions = () => {
         const options = { ...myWordlistOptions };
         delete options.explanationLanguage;
         await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(options));
+        setGenerateExplanationsChecked(false);
       } else {
         await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
       }
