@@ -6,19 +6,24 @@ type MyWordlistOptions = {
   generateExplanations?: boolean;
 };
 
-export const SentencesGeneratorOptions = () => {
-  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
-  const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
-
+const useGetSavedMyWordlistOptions = async (
+  setMyWordlistOptions: (arg0: MyWordlistOptions) => void
+) => {
   useEffect(() => {
     const getSavedMyWordlistOptions = async () => {
-      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
+      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '';
       const myWordlistOptions = JSON.parse(unparsedMyWordlistOptions);
       setMyWordlistOptions(myWordlistOptions);
     };
 
     getSavedMyWordlistOptions();
-  }, []);
+  }, [setMyWordlistOptions]);
+};
+
+export const SentencesGeneratorOptions = () => {
+  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
+  const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
+  useGetSavedMyWordlistOptions(setMyWordlistOptions);
 
   useEffect(() => {
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
