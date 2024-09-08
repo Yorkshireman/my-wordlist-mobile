@@ -32,11 +32,14 @@ export const useFetchOrCreateExampleSentences = (
       onCompleted: (data: FetchOrCreateExampleSentencesWithExplanationsMutation) => {
         const { fetchOrCreateExampleSentences } = data;
         const { exampleSentences } = fetchOrCreateExampleSentences || {};
-        const sentences = exampleSentences?.map(({ content, form, id }) => ({
+
+        const sentences = exampleSentences?.map(({ content, explanation, form, id }) => ({
           content,
+          explanation,
           form,
           id
         }));
+
         setExampleSentences(sentences || []);
       }
     });
