@@ -1,3 +1,4 @@
+export { boldenSentenceForm } from './boldenSentenceForm';
 export { calculateLongestWordLength } from './calculateLongestWordLength';
 export { customColours } from './customColours';
 export { isInvalidEmail } from './isInvalidEmail';

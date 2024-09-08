@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`boldenSentenceForm when form is not present should return the sentence content wrapped in a <Text> component 1`] = `
+<ForwardRef(Text)>
+  That was technologically sound.
+</ForwardRef(Text)>
+`;
+
+exports[`boldenSentenceForm when form is present should return the sentence wrapped in a <Text> component with the form wrapped in a boldened <Text> component 1`] = `
+<ForwardRef(Text)>
+  That was 
+  <ForwardRef(Text)
+    style={
+      {
+        "fontWeight": "bold",
+      }
+    }
+  >
+    technologically
+  </ForwardRef(Text)>
+   sound.
+</ForwardRef(Text)>
+`;
+
+exports[`boldenSentenceForm when form is present when content contains words that partially match the form, it should not bolden any part of that word 1`] = `
+<ForwardRef(Text)>
+  After showing his styler the 
+  <ForwardRef(Text)
+    style={
+      {
+        "fontWeight": "bold",
+      }
+    }
+  >
+    style
+  </ForwardRef(Text)>
+   he wanted, he styled his hair stylishly until it was perfectly styled in the 
+  <ForwardRef(Text)
+    style={
+      {
+        "fontWeight": "bold",
+      }
+    }
+  >
+    style
+  </ForwardRef(Text)>
+   he wanted.
+</ForwardRef(Text)>
+`;

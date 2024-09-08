@@ -1,3 +1,4 @@
+import { boldenSentenceForm } from '../utils';
 import { Level } from '../__generated__/graphql';
 import { Loading } from '../components';
 import sharedStyles from '../styles';
@@ -40,8 +41,12 @@ export const GenerateExampleSentencesScreen = ({
           <Text onPress={() => navigation.navigate('Home')} style={styles.close}>
             Back
           </Text>
-          {exampleSentences.map(({ content, id }) => (
-            <List.Item key={id} title={content} titleNumberOfLines={999} />
+          {exampleSentences.map(({ content, form, id }) => (
+            <List.Item
+              key={id}
+              title={boldenSentenceForm({ content, form })}
+              titleNumberOfLines={999}
+            />
           ))}
           <View style={{ alignItems: 'center' }}>
             <IconButton
