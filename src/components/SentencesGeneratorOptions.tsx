@@ -29,17 +29,18 @@ export const SentencesGeneratorOptions = () => {
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
 
+  const handleCheckboxPress = async () => {
+    setGenerateExplanationsChecked(!generateExplanationsChecked);
+    const myWordlistOptions = {
+      generateExplanations: !generateExplanationsChecked
+    };
+
+    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify(myWordlistOptions));
+  };
+
   return (
     <Checkbox
-      onPress={async () => {
-        setGenerateExplanationsChecked(!generateExplanationsChecked);
-
-        const myWordlistOptions = {
-          generateExplanations: !generateExplanationsChecked
-        };
-
-        await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify(myWordlistOptions));
-      }}
+      onPress={handleCheckboxPress}
       status={generateExplanationsChecked ? 'checked' : 'unchecked'}
     />
   );
