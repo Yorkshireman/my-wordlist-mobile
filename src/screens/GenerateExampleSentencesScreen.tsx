@@ -1,20 +1,15 @@
 import { boldenSentenceForm } from '../utils';
+import { GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { Level } from '../__generated__/graphql';
 import { Loading } from '../components';
 import sharedStyles from '../styles';
 import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
-import {
-  GenerateExampleSentencesScreenProps,
-  GenerateExampleSentencesScreenRouteParams
-} from '../../types';
-import { IconButton, List, Text, useTheme } from 'react-native-paper';
+import { View } from 'react-native';
+import { IconButton, List, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 
-export const GenerateExampleSentencesScreen = ({
-  navigation
-}: GenerateExampleSentencesScreenProps) => {
+export const GenerateExampleSentencesScreen = () => {
   const { colors } = useTheme();
   const [exampleSentences, setExampleSentences] = useState<
     { content: string; form?: string | null; id: string }[]
@@ -38,9 +33,6 @@ export const GenerateExampleSentencesScreen = ({
         <Loading size='large' />
       ) : (
         <>
-          <Text onPress={() => navigation.navigate('Home')} style={styles.close}>
-            Back
-          </Text>
           {exampleSentences.map(({ content, form, id }) => (
             <List.Item
               key={id}
@@ -61,12 +53,3 @@ export const GenerateExampleSentencesScreen = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  close: {
-    fontSize: 16,
-    position: 'absolute',
-    right: 20,
-    top: 20
-  }
-});

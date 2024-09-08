@@ -126,7 +126,7 @@ export default function App() {
                     <Stack.Screen
                       component={GenerateExampleSentencesScreen}
                       name='GenerateExampleSentences'
-                      options={{ headerShown: false }}
+                      options={{ title: 'My Wordlist' }}
                     />
                   </Stack.Group>
                 </Stack.Navigator>
