@@ -64,7 +64,6 @@ export const WordlistEntry = ({
           <Menu.Item
             leadingIcon='lightning-bolt'
             onPress={() => {
-              console.log('========= ', wordId);
               setWordlistEntryMenuVisible(null);
               navigation.navigate('GenerateExampleSentences', { wordId });
             }}
