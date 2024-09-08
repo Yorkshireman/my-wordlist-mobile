@@ -1,3 +1,4 @@
+import { Level } from '../__generated__/graphql';
 import { Loading } from '../components';
 import React from 'react';
 import sharedStyles from '../styles';
@@ -7,7 +8,7 @@ import {
   GenerateExampleSentencesScreenProps,
   GenerateExampleSentencesScreenRouteParams
 } from '../../types';
-import { List, Text } from 'react-native-paper';
+import { IconButton, List, Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 export const GenerateExampleSentencesScreen = ({
@@ -17,7 +18,12 @@ export const GenerateExampleSentencesScreen = ({
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
 
-  const { exampleSentences, loading } = useFetchOrCreateExampleSentences(wordId);
+  const { exampleSentences, fetchOrCreateExampleSentences, loading } =
+    useFetchOrCreateExampleSentences(wordId);
+
+  const refreshExampleSentences = () => {
+    fetchOrCreateExampleSentences({ variables: { level: Level.B1, wordId } });
+  };
 
   return (
     <View style={{ ...sharedStyles.container }}>
@@ -28,6 +34,7 @@ export const GenerateExampleSentencesScreen = ({
       {exampleSentences.map(({ content, id }) => (
         <List.Item key={id} title={content} titleNumberOfLines={999} />
       ))}
+      <IconButton icon='refresh' onPress={refreshExampleSentences} />
     </View>
   );
 };

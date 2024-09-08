@@ -29,5 +29,5 @@ export const useFetchOrCreateExampleSentences = (wordId: string) => {
     });
   }, [fetchOrCreateExampleSentences, wordId]);
 
-  return { error, exampleSentences, loading };
+  return { error, exampleSentences, fetchOrCreateExampleSentences, loading };
 };
