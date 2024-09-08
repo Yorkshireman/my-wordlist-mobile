@@ -2,18 +2,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 
+type MyWordlistOptions = {
+  generateExplanations?: boolean;
+};
+
 export const SentencesGeneratorOptions = () => {
   const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
+  const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
 
   useEffect(() => {
-    const getMyWordlistOptions = async () => {
-      const myWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
-      const { generateExplanations } = JSON.parse(myWordlistOptions);
-      setGenerateExplanationsChecked(generateExplanations);
+    const getSavedMyWordlistOptions = async () => {
+      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
+      const myWordlistOptions = JSON.parse(unparsedMyWordlistOptions);
+      setMyWordlistOptions(myWordlistOptions);
     };
 
-    getMyWordlistOptions();
+    getSavedMyWordlistOptions();
   }, []);
+
+  useEffect(() => {
+    setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
+  }, [myWordlistOptions]);
 
   return (
     <Checkbox
