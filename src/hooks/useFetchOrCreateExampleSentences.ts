@@ -3,7 +3,10 @@ import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { FetchOrCreateExampleSentencesMutation, Level } from '../__generated__/graphql';
 
-export const useFetchOrCreateExampleSentences = (setExampleSentences, wordId: string) => {
+export const useFetchOrCreateExampleSentences = (
+  setExampleSentences: (sentences: { content: string; form?: string | null; id: string }[]) => void,
+  wordId: string
+) => {
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(
     FETCH_OR_CREATE_EXAMPLE_SENTENCES,
     {
