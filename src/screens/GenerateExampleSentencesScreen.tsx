@@ -30,11 +30,11 @@ export const GenerateExampleSentencesScreen = () => {
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>
+      <SentencesGeneratorOptions />
       {loading ? (
         <Loading size='large' />
       ) : (
         <>
-          <SentencesGeneratorOptions />
           <ExampleSentences exampleSentences={exampleSentences} />
           <View style={{ alignItems: 'center' }}>
             <IconButton
