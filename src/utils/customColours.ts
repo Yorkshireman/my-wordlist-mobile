@@ -1,3 +1,6 @@
+const herokuButtonColour = 'rgb(121,87,159)';
+const herokuLogoColour = 'rgb(67,0,152)';
+
 export const customColours = {
   backdrop: 'rgba(55, 46, 52, 0.4)',
   background: 'rgb(255, 251, 255)',
@@ -28,10 +31,12 @@ export const customColours = {
   onTertiaryContainer: 'rgb(50, 18, 8)',
   outline: 'rgb(128, 116, 124)',
   outlineVariant: 'rgb(209, 194, 203)',
-  primary: 'rgb(132, 45, 180)',
+  // original
+  // primary: 'rgb(132, 45, 180)',
+  primary: herokuLogoColour,
   primaryContainer: 'rgb(255, 215, 245)',
   scrim: 'rgb(0, 0, 0)',
-  secondary: 'rgb(109, 88, 105)',
+  secondary: herokuButtonColour,
   secondaryContainer: 'rgb(247, 218, 239)',
   shadow: 'rgb(0, 0, 0)',
   surface: 'rgb(255, 251, 255)',

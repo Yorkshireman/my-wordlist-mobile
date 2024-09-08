@@ -38,7 +38,7 @@ export const Categories = ({ categories }: { categories: Category[] }) => {
             <Chip
               compact
               key={id}
-              style={{ ...styles.category, backgroundColor: colors.primary }}
+              style={{ ...styles.category, backgroundColor: colors.secondary }}
               textStyle={{ color: 'white' }}
             >
               {name}
