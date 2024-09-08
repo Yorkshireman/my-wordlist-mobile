@@ -41,9 +41,11 @@ export const SentencesGeneratorOptions = () => {
       setNativeLanguageMenuVisible(false);
       setExplanationLanguage(explanationLanguage);
       if (!explanationLanguage) {
-        const options = { ...myWordlistOptions };
-        delete options.explanationLanguage;
-        await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(options));
+        await AsyncStorage.setItem(
+          'myWordlistOptions',
+          JSON.stringify({ generateExplanations: false })
+        );
+
         setGenerateExplanationsChecked(false);
       } else {
         await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
