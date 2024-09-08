@@ -36,6 +36,12 @@ export const SentencesGeneratorOptions = () => {
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
 
+  const onExplanationLanguageSelect = (explanationLanguage: ExplanationLanguage) => async () => {
+    setNativeLanguageMenuVisible(false);
+    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
+    setExplanationLanguage(explanationLanguage);
+  };
+
   const onToggleSwitch = async () => {
     await AsyncStorage.mergeItem(
       'myWordlistOptions',
@@ -43,12 +49,6 @@ export const SentencesGeneratorOptions = () => {
     );
 
     setGenerateExplanationsChecked(!generateExplanationsChecked);
-  };
-
-  const onExplanationLanguageSelect = (explanationLanguage: ExplanationLanguage) => async () => {
-    setNativeLanguageMenuVisible(false);
-    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
-    setExplanationLanguage(explanationLanguage);
   };
 
   return (
