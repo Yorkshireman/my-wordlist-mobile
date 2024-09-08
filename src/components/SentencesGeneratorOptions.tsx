@@ -3,8 +3,51 @@ import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 
+enum ExplanationLanguage {
+  Chinese = 'Chinese Simplified',
+  French = 'French',
+  German = 'German',
+  Italian = 'Italian',
+  Japanese = 'Japanese',
+  Portuguese = 'Portuguese',
+  Russian = 'Russian',
+  Spanish = 'Spanish'
+}
+
 type MyWordlistOptions = {
   generateExplanations?: boolean;
+};
+
+const displayLanguage = (explanationLanguage: ExplanationLanguage) => {
+  let displayLanguage = '';
+  switch (explanationLanguage) {
+    case ExplanationLanguage.Chinese:
+      displayLanguage = '简体中文 (Chinese Simplified)';
+      break;
+    case ExplanationLanguage.French:
+      displayLanguage = 'Français (French)';
+      break;
+    case ExplanationLanguage.German:
+      displayLanguage = 'Deutsch (German)';
+      break;
+    case ExplanationLanguage.Italian:
+      displayLanguage = 'Italiano (Italian)';
+      break;
+    case ExplanationLanguage.Japanese:
+      displayLanguage = '日本語 (Japanese)';
+      break;
+    case ExplanationLanguage.Portuguese:
+      displayLanguage = 'Português (Portuguese)';
+      break;
+    case ExplanationLanguage.Russian:
+      displayLanguage = 'Русский (Russian)';
+      break;
+    case ExplanationLanguage.Spanish:
+      displayLanguage = 'Español (Spanish)';
+      break;
+  }
+
+  return displayLanguage;
 };
 
 const useGetSavedMyWordlistOptions = async (
@@ -23,6 +66,7 @@ const useGetSavedMyWordlistOptions = async (
 
 export const SentencesGeneratorOptions = () => {
   const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
+  const [explanationLanguage, setExplanationLanguage] = useState<ExplanationLanguage | undefined>();
   const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
   useGetSavedMyWordlistOptions(setMyWordlistOptions);
@@ -68,15 +112,68 @@ export const SentencesGeneratorOptions = () => {
                   icon='chevron-right'
                   onPress={() => setNativeLanguageMenuVisible(true)}
                 >
-                  Select
+                  {(explanationLanguage && displayLanguage(explanationLanguage)) || 'Select'}
                 </Button>
               }
               onDismiss={() => setNativeLanguageMenuVisible(false)}
               visible={nativeLanguageMenuVisible}
             >
-              <Menu.Item onPress={() => null} title='Language 1' />
-              <Menu.Item onPress={() => null} title='Language 2' />
-              <Menu.Item onPress={() => null} title='Language 3' />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Chinese);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Chinese)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.French);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.French)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.German);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.German)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Italian);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Italian)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Japanese);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Japanese)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Portuguese);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Portuguese)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Russian);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Russian)}
+              />
+              <Menu.Item
+                onPress={() => {
+                  setExplanationLanguage(ExplanationLanguage.Spanish);
+                  setNativeLanguageMenuVisible(false);
+                }}
+                title={displayLanguage(ExplanationLanguage.Spanish)}
+              />
             </Menu>
           </View>
         </View>
