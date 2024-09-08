@@ -5,7 +5,11 @@ import {
   FETCH_OR_CREATE_EXAMPLE_SENTENCES,
   FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS
 } from '../graphql-queries';
-import { FetchOrCreateExampleSentencesMutation, Level } from '../__generated__/graphql';
+import {
+  FetchOrCreateExampleSentencesMutation,
+  FetchOrCreateExampleSentencesWithExplanationsMutation,
+  Level
+} from '../__generated__/graphql';
 
 export const useFetchOrCreateExampleSentences = (
   setExampleSentences: (sentences: { content: string; form?: string | null; id: string }[]) => void,
@@ -25,10 +29,10 @@ export const useFetchOrCreateExampleSentences = (
 
   const [fetchOrCreateExampleSentencesWithExplanations, { error: error2, loading: loading2 }] =
     useMutation(FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS, {
-      onCompleted: data => {
+      onCompleted: (data: FetchOrCreateExampleSentencesWithExplanationsMutation) => {
         const { fetchOrCreateExampleSentences } = data;
         const { exampleSentences } = fetchOrCreateExampleSentences || {};
-        const sentences = exampleSentences?.map(({ content, form, id }: any) => ({
+        const sentences = exampleSentences?.map(({ content, form, id }) => ({
           content,
           form,
           id
