@@ -1,13 +1,9 @@
 import { FETCH_OR_CREATE_EXAMPLE_SENTENCES } from '../graphql-queries';
+import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { FetchOrCreateExampleSentencesMutation, Level } from '../__generated__/graphql';
-import { useEffect, useState } from 'react';
 
-export const useFetchOrCreateExampleSentences = (wordId: string) => {
-  const [exampleSentences, setExampleSentences] = useState<
-    { content: string; form?: string | null; id: string }[]
-  >([]);
-
+export const useFetchOrCreateExampleSentences = (setExampleSentences, wordId: string) => {
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(
     FETCH_OR_CREATE_EXAMPLE_SENTENCES,
     {
@@ -29,5 +25,5 @@ export const useFetchOrCreateExampleSentences = (wordId: string) => {
     });
   }, [fetchOrCreateExampleSentences, wordId]);
 
-  return { error, exampleSentences, fetchOrCreateExampleSentences, loading };
+  return { error, fetchOrCreateExampleSentences, loading };
 };
