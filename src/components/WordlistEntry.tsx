@@ -1,10 +1,10 @@
 import { Categories } from './Categories';
 import { Category } from '../__generated__/graphql';
 import { RootStackParamList } from '../../types';
-import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 type Props = {
   categories: Category[];
