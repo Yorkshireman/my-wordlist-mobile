@@ -2,17 +2,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import {
-  FETCH_OR_CREATE_EXAMPLE_SENTENCES,
-  FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS
-} from '../graphql-queries';
-import {
+  Explanation,
   FetchOrCreateExampleSentencesMutation,
   FetchOrCreateExampleSentencesWithExplanationsMutation,
   Level
 } from '../__generated__/graphql';
+import {
+  FETCH_OR_CREATE_EXAMPLE_SENTENCES,
+  FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS
+} from '../graphql-queries';
 
 export const useFetchOrCreateExampleSentences = (
-  setExampleSentences: (sentences: { content: string; form?: string | null; id: string }[]) => void,
+  setExampleSentences: (
+    sentences: {
+      content: string;
+      explanation?: Explanation | null;
+      form?: string | null;
+      id: string;
+    }[]
+  ) => void,
   wordId: string
 ) => {
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(

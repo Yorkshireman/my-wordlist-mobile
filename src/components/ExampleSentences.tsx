@@ -6,7 +6,7 @@ import React from 'react';
 type Props = {
   exampleSentences: {
     content: string;
-    explanation: Explanation;
+    explanation?: Explanation | null;
     form?: string | null;
     id: string;
   }[];

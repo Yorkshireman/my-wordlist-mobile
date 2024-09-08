@@ -1,20 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
 import { GenerateExampleSentencesScreenRouteParams } from '../../types';
-import { Level } from '../__generated__/graphql';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
 import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
+import { Explanation, Level } from '../__generated__/graphql';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
 
 export const GenerateExampleSentencesScreen = () => {
   const { colors } = useTheme();
   const [exampleSentences, setExampleSentences] = useState<
-    { content: string; form?: string | null; id: string }[]
+    { content: string; explanation?: Explanation | null; form?: string | null; id: string }[]
   >([]);
   const {
     params: { wordId }

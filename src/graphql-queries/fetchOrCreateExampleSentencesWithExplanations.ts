@@ -16,6 +16,7 @@ export const FETCH_OR_CREATE_EXAMPLE_SENTENCES_WITH_EXPLANATIONS = gql(`
           exampleSentenceId
           id
           language
+          updatedAt
         }
         form
         id
