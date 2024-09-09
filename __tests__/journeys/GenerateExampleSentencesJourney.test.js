@@ -22,6 +22,10 @@ describe('Generate Example Sentences journey', () => {
         return Promise.resolve('auth-token');
       }
 
+      if (key === 'myWordlistOptions') {
+        return Promise.resolve(JSON.stringify({ exampleSentencesCEFRlevel: 'B1' }));
+      }
+
       return Promise.resolve(null);
     });
 
