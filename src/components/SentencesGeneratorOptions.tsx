@@ -97,22 +97,6 @@ export const SentencesGeneratorOptions = () => {
         >
           <View style={{ justifyContent: 'center' }}>
             <Text variant='labelLarge'>Sentences Language Level</Text>
-            <Icon size={16} source='information-outline' />
-            <HelperText
-              style={{ position: 'absolute', right: 3, top: 16 }}
-              type='info'
-              variant='bodySmall'
-            >
-              <Text>
-                Based on the
-                <TouchableOpacity onPress={handlePress}>
-                  <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>
-                    {' '}
-                    CEFR Levels
-                  </Text>
-                </TouchableOpacity>
-              </Text>
-            </HelperText>
           </View>
           <View style={{ position: 'absolute', right: -12, top: -9 }}>
             <Menu
@@ -138,7 +122,6 @@ export const SentencesGeneratorOptions = () => {
             </Menu>
           </View>
         </View>
-        <Divider />
         <View style={{ flexDirection: 'row', width: '100%' }}>
           <Text variant='labelLarge'>Generate Explanations</Text>
           <View style={{ left: -1, position: 'absolute', top: 21 }}>
