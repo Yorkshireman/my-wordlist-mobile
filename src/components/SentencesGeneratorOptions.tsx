@@ -3,8 +3,8 @@ import { displayLanguage } from '../utils';
 import { Level } from '../__generated__/graphql';
 import { MyWordlistOptions } from '../../types';
 import { NativeLanguage } from '../__generated__/graphql';
-import { View } from 'react-native';
-import { Button, Card, Divider, Menu, Switch, Text } from 'react-native-paper';
+import { Button, Card, Divider, HelperText, Icon, Menu, Switch, Text } from 'react-native-paper';
+import { Linking, Pressable, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 const useGetSavedMyWordlistOptions = async (
@@ -45,6 +45,12 @@ export const SentencesGeneratorOptions = () => {
     setExplanationLanguage(myWordlistOptions.explanationLanguage);
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
+
+  const handlePress = () => {
+    Linking.openURL(
+      'https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions'
+    );
+  };
 
   const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
     setExampleSentencesCEFRlevelMenuVisible(false);
@@ -91,6 +97,22 @@ export const SentencesGeneratorOptions = () => {
         >
           <View style={{ justifyContent: 'center' }}>
             <Text variant='labelLarge'>Sentences Language Level</Text>
+            <Icon size={16} source='information-outline' />
+            <HelperText
+              style={{ position: 'absolute', right: 3, top: 16 }}
+              type='info'
+              variant='bodySmall'
+            >
+              <Text>
+                Based on the
+                <TouchableOpacity onPress={handlePress}>
+                  <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>
+                    {' '}
+                    CEFR Levels
+                  </Text>
+                </TouchableOpacity>
+              </Text>
+            </HelperText>
           </View>
           <View style={{ position: 'absolute', right: -12, top: -9 }}>
             <Menu
@@ -119,21 +141,34 @@ export const SentencesGeneratorOptions = () => {
         <Divider />
         <View style={{ flexDirection: 'row', width: '100%' }}>
           <Text variant='labelLarge'>Generate Explanations</Text>
-          <Switch
-            disabled={!explanationLanguage}
-            onValueChange={onToggleSwitch}
-            style={{ position: 'absolute', right: 5 }}
-            value={generateExplanationsChecked}
-          />
+          <View style={{ left: -1, position: 'absolute', top: 21 }}>
+            <Icon size={16} source='information-outline' />
+          </View>
+          <HelperText
+            style={{ left: 6, position: 'absolute', top: 17 }}
+            type='info'
+            variant='bodySmall'
+          >
+            Must have a language selected
+          </HelperText>
+          <View style={{ position: 'absolute', right: 0 }}>
+            <Switch
+              disabled={!explanationLanguage}
+              onValueChange={onToggleSwitch}
+              pointerEvents={explanationLanguage ? 'auto' : 'none'}
+              value={generateExplanationsChecked}
+            />
+          </View>
         </View>
         <View
           style={{
             flexDirection: 'row',
+            marginTop: 8,
             width: '100%'
           }}
         >
           <View style={{ justifyContent: 'center' }}>
-            <Text variant='labelLarge'>Language</Text>
+            <Text variant='labelLarge'>Your Language</Text>
           </View>
           <View style={{ position: 'absolute', right: -12, top: -9 }}>
             <Menu
