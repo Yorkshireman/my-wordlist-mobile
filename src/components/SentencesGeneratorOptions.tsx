@@ -56,18 +56,28 @@ export const SentencesGeneratorOptions = () => {
   };
 
   const onExplanationLanguageSelect =
-    (explanationLanguage: NativeLanguage | undefined) => async () => {
+    (selectedExplanationLanguage: NativeLanguage | undefined) => async () => {
       setNativeLanguageMenuVisible(false);
-      setExplanationLanguage(explanationLanguage);
-      if (!explanationLanguage) {
+      setExplanationLanguage(selectedExplanationLanguage);
+      const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
+      const { exampleSentencesCEFRlevel: currentExampleSentencesCEFRLevel } = JSON.parse(
+        currentUnparsedOptions || '{}'
+      );
+
+      if (!selectedExplanationLanguage) {
         await AsyncStorage.setItem(
           'myWordlistOptions',
-          JSON.stringify({ generateExplanations: false })
+          JSON.stringify({
+            exampleSentencesCEFRlevel: currentExampleSentencesCEFRLevel,
+            generateExplanations: false
+          })
         );
-
         setGenerateExplanationsChecked(false);
       } else {
-        await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ explanationLanguage }));
+        await AsyncStorage.mergeItem(
+          'myWordlistOptions',
+          JSON.stringify({ explanationLanguage: selectedExplanationLanguage })
+        );
       }
     };
 
