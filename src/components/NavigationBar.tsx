@@ -27,7 +27,7 @@ export const NavigationBar = ({ back, navigation, options, route }: NativeStackH
   const title = getHeaderTitle(options, route.name);
 
   return (
-    <Appbar.Header>
+    <Appbar.Header style={{ borderBottomColor: colors.secondary, borderBottomWidth: 4 }}>
       {back && shouldHaveBackArrow ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
       <Appbar.Content color={colors.secondary} style={{ backgroundColor: 'white' }} title={title} />
       {route.name === 'Home' ? (
