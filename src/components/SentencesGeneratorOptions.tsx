@@ -72,6 +72,7 @@ export const SentencesGeneratorOptions = () => {
             generateExplanations: false
           })
         );
+
         setGenerateExplanationsChecked(false);
       } else {
         await AsyncStorage.mergeItem(
