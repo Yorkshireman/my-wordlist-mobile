@@ -1,16 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { displayLanguage } from '../utils';
-import { ExplanationLanguage } from '../../types';
 import { Level } from '../__generated__/graphql';
 import { View } from 'react-native';
 import { Button, Card, Divider, Menu, Switch, Text } from 'react-native-paper';
+import { ExplanationLanguage, MyWordlistOptions } from '../../types';
 import React, { useEffect, useState } from 'react';
-
-type MyWordlistOptions = {
-  exampleSentencesCEFRlevel?: Level;
-  explanationLanguage?: ExplanationLanguage;
-  generateExplanations?: boolean;
-};
 
 const useGetSavedMyWordlistOptions = async (
   setMyWordlistOptions: (arg0: MyWordlistOptions) => void

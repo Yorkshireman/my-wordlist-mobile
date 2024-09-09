@@ -1,6 +1,6 @@
-import { MyWordlist } from './src/__generated__/graphql';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
+import { Level, MyWordlist } from './src/__generated__/graphql';
 
 export type AuthToken = string | null;
 
@@ -62,4 +62,10 @@ export type UseWordlistEntriesCreateProps = {
   unparsedCategoriesText: string;
   wordlistId: string;
   wordText: string;
+};
+
+export type MyWordlistOptions = {
+  exampleSentencesCEFRlevel?: Level;
+  explanationLanguage?: ExplanationLanguage;
+  generateExplanations?: boolean;
 };

@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MyWordlistOptions } from '../../types';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import {
   Explanation,
   FetchOrCreateExampleSentencesMutation,
-  FetchOrCreateExampleSentencesWithExplanationsMutation,
-  Level
+  FetchOrCreateExampleSentencesWithExplanationsMutation
 } from '../__generated__/graphql';
 import {
   FETCH_OR_CREATE_EXAMPLE_SENTENCES,
@@ -59,7 +59,7 @@ export const useFetchOrCreateExampleSentences = (
         generateExplanations,
         exampleSentencesCEFRlevel,
         explanationLanguage: nativeLanguage
-      } = JSON.parse(unparsedOptions || '{}');
+      }: MyWordlistOptions = JSON.parse(unparsedOptions || '{}');
 
       if (generateExplanations) {
         fetchOrCreateExampleSentencesWithExplanations({

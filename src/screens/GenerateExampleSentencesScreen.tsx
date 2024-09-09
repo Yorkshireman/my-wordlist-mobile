@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
+import { Explanation } from '../__generated__/graphql';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
 import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
-import { Explanation, Level } from '../__generated__/graphql';
-import { ExplanationLanguage, GenerateExampleSentencesScreenRouteParams } from '../../types';
+import { GenerateExampleSentencesScreenRouteParams, MyWordlistOptions } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
 
@@ -29,11 +29,7 @@ export const GenerateExampleSentencesScreen = () => {
       generateExplanations,
       explanationLanguage: nativeLanguage,
       exampleSentencesCEFRlevel
-    }: {
-      generateExplanations: boolean;
-      explanationLanguage: ExplanationLanguage | undefined;
-      exampleSentencesCEFRlevel: Level;
-    } = JSON.parse(unparsedOptions || '{}');
+    }: MyWordlistOptions = JSON.parse(unparsedOptions || '{}');
 
     if (generateExplanations) {
       fetchOrCreateExampleSentencesWithExplanations({
