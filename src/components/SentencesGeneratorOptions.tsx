@@ -3,8 +3,8 @@ import { displayLanguage } from '../utils';
 import { Level } from '../__generated__/graphql';
 import { MyWordlistOptions } from '../../types';
 import { NativeLanguage } from '../__generated__/graphql';
-import { Button, Card, Divider, HelperText, Icon, Menu, Switch, Text } from 'react-native-paper';
-import { Linking, Pressable, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
+import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 
 const useGetSavedMyWordlistOptions = async (
@@ -45,12 +45,6 @@ export const SentencesGeneratorOptions = () => {
     setExplanationLanguage(myWordlistOptions.explanationLanguage);
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
-
-  const handlePress = () => {
-    Linking.openURL(
-      'https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions'
-    );
-  };
 
   const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
     setExampleSentencesCEFRlevelMenuVisible(false);
@@ -129,6 +123,7 @@ export const SentencesGeneratorOptions = () => {
             disabled={!explanationLanguage}
             onValueChange={onToggleSwitch}
             pointerEvents={explanationLanguage ? 'auto' : 'none'}
+            style={{ marginRight: 11 }}
             value={generateExplanationsChecked}
           />
         </View>
