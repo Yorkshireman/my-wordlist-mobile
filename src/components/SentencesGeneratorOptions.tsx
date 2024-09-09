@@ -88,17 +88,18 @@ export const SentencesGeneratorOptions = () => {
 
   return (
     <Card style={{ padding: 4 }}>
-      <Card.Actions style={{ flexDirection: 'column', gap: 16 }}>
+      <Card.Actions style={{ flexDirection: 'column' }}>
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: 'space-between',
             width: '100%'
           }}
         >
           <View style={{ justifyContent: 'center' }}>
             <Text variant='labelLarge'>Sentences Language Level</Text>
           </View>
-          <View style={{ position: 'absolute', right: -12, top: -9 }}>
+          <View>
             <Menu
               anchor={
                 <Button
@@ -122,38 +123,26 @@ export const SentencesGeneratorOptions = () => {
             </Menu>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', width: '100%' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
           <Text variant='labelLarge'>Generate Explanations</Text>
-          <View style={{ left: -1, position: 'absolute', top: 21 }}>
-            <Icon size={16} source='information-outline' />
-          </View>
-          <HelperText
-            style={{ left: 6, position: 'absolute', top: 17 }}
-            type='info'
-            variant='bodySmall'
-          >
-            Must have a language selected
-          </HelperText>
-          <View style={{ position: 'absolute', right: 0 }}>
-            <Switch
-              disabled={!explanationLanguage}
-              onValueChange={onToggleSwitch}
-              pointerEvents={explanationLanguage ? 'auto' : 'none'}
-              value={generateExplanationsChecked}
-            />
-          </View>
+          <Switch
+            disabled={!explanationLanguage}
+            onValueChange={onToggleSwitch}
+            pointerEvents={explanationLanguage ? 'auto' : 'none'}
+            value={generateExplanationsChecked}
+          />
         </View>
         <View
           style={{
             flexDirection: 'row',
-            marginTop: 8,
+            justifyContent: 'space-between',
             width: '100%'
           }}
         >
           <View style={{ justifyContent: 'center' }}>
             <Text variant='labelLarge'>Your Language</Text>
           </View>
-          <View style={{ position: 'absolute', right: -12, top: -9 }}>
+          <View>
             <Menu
               anchor={
                 <Button
