@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { displayLanguage } from '../utils';
 import { ExplanationLanguage } from '../../types';
+import { Level } from '../__generated__/graphql';
 import { View } from 'react-native';
-import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
+import { Button, Card, Divider, Menu, Switch, Text } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 
 type MyWordlistOptions = {
+  exampleSentencesCEFRlevel?: Level;
   explanationLanguage?: ExplanationLanguage;
   generateExplanations?: boolean;
 };
@@ -17,6 +19,15 @@ const useGetSavedMyWordlistOptions = async (
     const getSavedMyWordlistOptions = async () => {
       const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
       const myWordlistOptions = JSON.parse(unparsedMyWordlistOptions);
+      if (!myWordlistOptions.exampleSentencesCEFRlevel) {
+        await AsyncStorage.mergeItem(
+          'myWordlistOptions',
+          JSON.stringify({ exampleSentencesCEFRlevel: Level.B1 })
+        );
+
+        return setMyWordlistOptions({ ...myWordlistOptions, exampleSentencesCEFRlevel: Level.B1 });
+      }
+
       setMyWordlistOptions(myWordlistOptions);
     };
 
@@ -25,16 +36,29 @@ const useGetSavedMyWordlistOptions = async (
 };
 
 export const SentencesGeneratorOptions = () => {
-  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
+  const [exampleSentencesCEFRlevel, setExampleSentencesCEFRlevel] = useState<Level>();
+  const [exampleSentencesCEFRlevelMenuVisible, setExampleSentencesCEFRlevelMenuVisible] =
+    useState(false);
   const [explanationLanguage, setExplanationLanguage] = useState<ExplanationLanguage | undefined>();
-  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
+  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
+  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
   useGetSavedMyWordlistOptions(setMyWordlistOptions);
 
   useEffect(() => {
+    setExampleSentencesCEFRlevel(myWordlistOptions.exampleSentencesCEFRlevel);
     setExplanationLanguage(myWordlistOptions.explanationLanguage);
     setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
   }, [myWordlistOptions]);
+
+  const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
+    setExampleSentencesCEFRlevelMenuVisible(false);
+    setExampleSentencesCEFRlevel(level);
+    await AsyncStorage.mergeItem(
+      'myWordlistOptions',
+      JSON.stringify({ exampleSentencesCEFRlevel: level })
+    );
+  };
 
   const onExplanationLanguageSelect =
     (explanationLanguage: ExplanationLanguage | undefined) => async () => {
@@ -64,6 +88,40 @@ export const SentencesGeneratorOptions = () => {
   return (
     <Card style={{ padding: 4 }}>
       <Card.Actions style={{ flexDirection: 'column', gap: 16 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%'
+          }}
+        >
+          <View style={{ justifyContent: 'center' }}>
+            <Text variant='labelLarge'>Sentences Language Level</Text>
+          </View>
+          <View style={{ position: 'absolute', right: -12, top: -9 }}>
+            <Menu
+              anchor={
+                <Button
+                  contentStyle={{ flexDirection: 'row-reverse' }}
+                  icon='chevron-right'
+                  onPress={() => setExampleSentencesCEFRlevelMenuVisible(true)}
+                >
+                  {exampleSentencesCEFRlevel}
+                </Button>
+              }
+              onDismiss={() => setExampleSentencesCEFRlevelMenuVisible(false)}
+              visible={exampleSentencesCEFRlevelMenuVisible}
+            >
+              {Object.values(Level).map(level => (
+                <Menu.Item
+                  key={level}
+                  onPress={onExampleSentencesCEFRlevelSelect(level)}
+                  title={level}
+                />
+              ))}
+            </Menu>
+          </View>
+        </View>
+        <Divider />
         <View style={{ flexDirection: 'row', width: '100%' }}>
           <Text variant='labelLarge'>Generate Explanations</Text>
           <Switch

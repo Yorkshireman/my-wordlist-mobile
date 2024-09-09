@@ -55,14 +55,16 @@ export const useFetchOrCreateExampleSentences = (
   useEffect(() => {
     const fetch = async () => {
       const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
-      const { generateExplanations, explanationLanguage: nativeLanguage } = JSON.parse(
-        unparsedOptions || '{}'
-      );
+      const {
+        generateExplanations,
+        exampleSentencesCEFRlevel,
+        explanationLanguage: nativeLanguage
+      } = JSON.parse(unparsedOptions || '{}');
 
       if (generateExplanations) {
         fetchOrCreateExampleSentencesWithExplanations({
           variables: {
-            level: Level.B1,
+            level: exampleSentencesCEFRlevel,
             nativeLanguage,
             wordId
           }
@@ -70,7 +72,7 @@ export const useFetchOrCreateExampleSentences = (
       } else {
         fetchOrCreateExampleSentences({
           variables: {
-            level: Level.B1,
+            level: exampleSentencesCEFRlevel,
             wordId
           }
         });

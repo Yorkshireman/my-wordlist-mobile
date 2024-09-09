@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
-import { GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
@@ -8,6 +7,7 @@ import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
 import { Explanation, Level } from '../__generated__/graphql';
+import { ExplanationLanguage, GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
 
@@ -25,14 +25,20 @@ export const GenerateExampleSentencesScreen = () => {
 
   const refreshExampleSentences = async () => {
     const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
-    const { generateExplanations, explanationLanguage: nativeLanguage } = JSON.parse(
-      unparsedOptions || '{}'
-    );
+    const {
+      generateExplanations,
+      explanationLanguage: nativeLanguage,
+      exampleSentencesCEFRlevel
+    }: {
+      generateExplanations: boolean;
+      explanationLanguage: ExplanationLanguage | undefined;
+      exampleSentencesCEFRlevel: Level;
+    } = JSON.parse(unparsedOptions || '{}');
 
     if (generateExplanations) {
       fetchOrCreateExampleSentencesWithExplanations({
         variables: {
-          level: Level.B1,
+          level: exampleSentencesCEFRlevel,
           nativeLanguage,
           wordId
         }
@@ -40,7 +46,7 @@ export const GenerateExampleSentencesScreen = () => {
     } else {
       fetchOrCreateExampleSentences({
         variables: {
-          level: Level.B1,
+          level: exampleSentencesCEFRlevel,
           wordId
         }
       });
