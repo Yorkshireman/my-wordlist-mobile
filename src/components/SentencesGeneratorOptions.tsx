@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { displayLanguage } from '../utils';
 import { Level } from '../__generated__/graphql';
+import { MyWordlistOptions } from '../../types';
+import { NativeLanguage } from '../__generated__/graphql';
 import { View } from 'react-native';
 import { Button, Card, Divider, Menu, Switch, Text } from 'react-native-paper';
-import { ExplanationLanguage, MyWordlistOptions } from '../../types';
 import React, { useEffect, useState } from 'react';
 
 const useGetSavedMyWordlistOptions = async (
@@ -33,7 +34,7 @@ export const SentencesGeneratorOptions = () => {
   const [exampleSentencesCEFRlevel, setExampleSentencesCEFRlevel] = useState<Level>();
   const [exampleSentencesCEFRlevelMenuVisible, setExampleSentencesCEFRlevelMenuVisible] =
     useState(false);
-  const [explanationLanguage, setExplanationLanguage] = useState<ExplanationLanguage | undefined>();
+  const [explanationLanguage, setExplanationLanguage] = useState<NativeLanguage | undefined>();
   const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
   const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
@@ -55,7 +56,7 @@ export const SentencesGeneratorOptions = () => {
   };
 
   const onExplanationLanguageSelect =
-    (explanationLanguage: ExplanationLanguage | undefined) => async () => {
+    (explanationLanguage: NativeLanguage | undefined) => async () => {
       setNativeLanguageMenuVisible(false);
       setExplanationLanguage(explanationLanguage);
       if (!explanationLanguage) {
@@ -154,7 +155,7 @@ export const SentencesGeneratorOptions = () => {
                   onPress={onExplanationLanguageSelect(undefined)}
                   title={'(none)'}
                 />,
-                ...Object.values(ExplanationLanguage).map(language => (
+                ...Object.values(NativeLanguage).map(language => (
                   <Menu.Item
                     key={language}
                     onPress={onExplanationLanguageSelect(language)}

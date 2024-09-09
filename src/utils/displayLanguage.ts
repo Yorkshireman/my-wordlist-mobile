@@ -1,30 +1,30 @@
-import { ExplanationLanguage } from '../../types';
+import { NativeLanguage } from '../__generated__/graphql';
 
-export const displayLanguage = (explanationLanguage: ExplanationLanguage) => {
+export const displayLanguage = (explanationLanguage: NativeLanguage) => {
   let displayLanguage = '';
   switch (explanationLanguage) {
-    case ExplanationLanguage.Chinese:
+    case NativeLanguage.Chinese:
       displayLanguage = '简体中文 (Chinese Simplified)';
       break;
-    case ExplanationLanguage.French:
+    case NativeLanguage.French:
       displayLanguage = 'Français (French)';
       break;
-    case ExplanationLanguage.German:
+    case NativeLanguage.German:
       displayLanguage = 'Deutsch (German)';
       break;
-    case ExplanationLanguage.Italian:
+    case NativeLanguage.Italian:
       displayLanguage = 'Italiano (Italian)';
       break;
-    case ExplanationLanguage.Japanese:
+    case NativeLanguage.Japanese:
       displayLanguage = '日本語 (Japanese)';
       break;
-    case ExplanationLanguage.Portuguese:
+    case NativeLanguage.Portuguese:
       displayLanguage = 'Português (Portuguese)';
       break;
-    case ExplanationLanguage.Russian:
+    case NativeLanguage.Russian:
       displayLanguage = 'Русский (Russian)';
       break;
-    case ExplanationLanguage.Spanish:
+    case NativeLanguage.Spanish:
       displayLanguage = 'Español (Spanish)';
       break;
   }

@@ -6,10 +6,10 @@ import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
 import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
-import { View } from 'react-native';
 import { GenerateExampleSentencesScreenRouteParams, MyWordlistOptions } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useState } from 'react';
+import { ScrollView, View } from 'react-native';
 
 export const GenerateExampleSentencesScreen = () => {
   const { colors } = useTheme();
@@ -57,7 +57,7 @@ export const GenerateExampleSentencesScreen = () => {
           <Loading size='large' />
         </View>
       ) : (
-        <>
+        <ScrollView>
           <ExampleSentences exampleSentences={exampleSentences} />
           <View style={{ alignItems: 'center' }}>
             <IconButton
@@ -67,7 +67,7 @@ export const GenerateExampleSentencesScreen = () => {
               size={48}
             />
           </View>
-        </>
+        </ScrollView>
       )}
     </View>
   );

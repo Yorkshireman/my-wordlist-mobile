@@ -1,19 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
-import { Level, MyWordlist } from './src/__generated__/graphql';
+import { Level, MyWordlist, NativeLanguage } from './src/__generated__/graphql';
 
 export type AuthToken = string | null;
-
-export enum ExplanationLanguage {
-  Chinese = 'Chinese Simplified',
-  French = 'French',
-  German = 'German',
-  Italian = 'Italian',
-  Japanese = 'Japanese',
-  Portuguese = 'Portuguese',
-  Russian = 'Russian',
-  Spanish = 'Spanish'
-}
 
 export type RootStackParamList = {
   CreateWordlistEntries: { wordlistId: string };
@@ -66,6 +55,6 @@ export type UseWordlistEntriesCreateProps = {
 
 export type MyWordlistOptions = {
   exampleSentencesCEFRlevel?: Level;
-  explanationLanguage?: ExplanationLanguage;
+  explanationLanguage?: NativeLanguage;
   generateExplanations?: boolean;
 };
