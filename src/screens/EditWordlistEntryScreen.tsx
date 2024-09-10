@@ -1,12 +1,12 @@
 import { MY_WORDLIST } from '../graphql-queries';
-import PropTypes from 'prop-types';
+import { parseUniqueCategories } from '../utils/parseUniqueCategories';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
-import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
 import { QueryResult, useQuery } from '@apollo/client';
@@ -60,6 +60,37 @@ const Word = ({
         />
       </View>
     </View>
+  );
+};
+
+const OtherWordlistCategories = ({
+  entries,
+  entryCategories
+}: {
+  entries: WordlistEntry[];
+  entryCategories: Category[];
+}) => {
+  const uniqueWordlistCategories = parseUniqueCategories(entries);
+
+  const categories = uniqueWordlistCategories?.filter(
+    ({ id }) => !entryCategories.some(cat => cat.id === id)
+  );
+
+  if (!categories) return null;
+
+  return (
+    <>
+      <Divider style={{ marginBottom: 16 }} />
+      <View style={{ flexDirection: 'row', gap: 16 }}>
+        {categories.map(({ id, name }) => {
+          return (
+            <Button compact key={id} mode='outlined'>
+              {name}
+            </Button>
+          );
+        })}
+      </View>
+    </>
   );
 };
 
@@ -139,22 +170,9 @@ export const EditWordlistEntryScreen = ({
       )}
       <AddCategoriesForm />
       <Categories categories={categories} deleteCategory={deleteCategory} />
+      <OtherWordlistCategories entries={entries} entryCategories={categories} />
     </View>
   );
-};
-
-Categories.propTypes = {
-  categories: PropTypes.array.isRequired,
-  deleteCategory: PropTypes.func.isRequired
-};
-
-EditWordlistEntryScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
-};
-
-Word.propTypes = {
-  setEditWordFormVisible: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -166,7 +184,8 @@ const styles = StyleSheet.create({
   categoryChipsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 5
+    gap: 5,
+    marginBottom: 16
   },
   chip: {
     marginRight: 2.5
