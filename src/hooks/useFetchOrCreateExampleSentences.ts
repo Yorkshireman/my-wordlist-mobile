@@ -1,6 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Level } from '../__generated__/graphql';
-import { MyWordlistOptions } from '../../types';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useMyWordlistOptions } from './useMyWordlistOptions';
@@ -25,8 +22,9 @@ export const useFetchOrCreateExampleSentences = (
   ) => void,
   wordId: string
 ) => {
-  const { exampleSentencesCEFRlevel, generateExplanations, nativeLanguage } =
+  const { exampleSentencesCEFRlevel, generateExplanations, explanationLanguage } =
     useMyWordlistOptions();
+
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(
     FETCH_OR_CREATE_EXAMPLE_SENTENCES,
     {
@@ -67,7 +65,7 @@ export const useFetchOrCreateExampleSentences = (
       fetchOrCreateExampleSentencesWithExplanations({
         variables: {
           level: exampleSentencesCEFRlevel,
-          nativeLanguage,
+          nativeLanguage: explanationLanguage,
           wordId
         }
       });
@@ -81,10 +79,10 @@ export const useFetchOrCreateExampleSentences = (
     }
   }, [
     exampleSentencesCEFRlevel,
+    explanationLanguage,
     fetchOrCreateExampleSentences,
     fetchOrCreateExampleSentencesWithExplanations,
     generateExplanations,
-    nativeLanguage,
     wordId
   ]);
 
