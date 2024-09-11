@@ -9,6 +9,8 @@ const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
   return JSON.parse(currentUnparsedOptions);
 };
 
+const getExampleSentencesCEFRlevel = async () =>
+  (await getMyWordlistOptions())?.exampleSentencesCEFRlevel;
 const getExplanationLanguage = async () => (await getMyWordlistOptions())?.explanationLanguage;
 const getGenerateExplanations = async () => (await getMyWordlistOptions())?.generateExplanations;
 
@@ -18,11 +20,20 @@ export const useMyWordlistOptions = () => {
   const [generateExplanations, setGenerateExplanations] = useState<boolean>(false);
 
   useEffect(() => {
+    getExampleSentencesCEFRlevel().then(async level => {
+      if (!level) {
+        console.log('exampleSentencesCEFRlevel not set; setting to a default of B1');
+        return await saveThenSetExampleSentencesCEFRLevel(Level.B1);
+      }
+
+      setExampleSentencesCEFRlevel(level);
+    });
+
     getExplanationLanguage().then(language => setExplanationLanguage(language));
     getGenerateExplanations().then(generateExplanations =>
       setGenerateExplanations(!!generateExplanations)
     );
-  }, [setExplanationLanguage, setGenerateExplanations]);
+  }, []);
 
   const saveThenSetExampleSentencesCEFRLevel = async (level: Level) => {
     await AsyncStorage.mergeItem(

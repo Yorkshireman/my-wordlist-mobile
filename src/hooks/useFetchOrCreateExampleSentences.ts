@@ -3,6 +3,7 @@ import { Level } from '../__generated__/graphql';
 import { MyWordlistOptions } from '../../types';
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
+import { useMyWordlistOptions } from './useMyWordlistOptions';
 import {
   Explanation,
   FetchOrCreateExampleSentencesMutation,
@@ -24,6 +25,8 @@ export const useFetchOrCreateExampleSentences = (
   ) => void,
   wordId: string
 ) => {
+  const { exampleSentencesCEFRlevel, generateExplanations, nativeLanguage } =
+    useMyWordlistOptions();
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(
     FETCH_OR_CREATE_EXAMPLE_SENTENCES,
     {
@@ -54,38 +57,36 @@ export const useFetchOrCreateExampleSentences = (
     });
 
   useEffect(() => {
-    const fetch = async () => {
-      const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
-      const {
-        generateExplanations,
-        exampleSentencesCEFRlevel,
-        explanationLanguage: nativeLanguage
-      }: MyWordlistOptions = JSON.parse(unparsedOptions || '{}');
+    if (!exampleSentencesCEFRlevel) {
+      return console.error(
+        'useFetchOrCreateExampleSentences.ts: exampleSentencesCEFRlevel is falsey'
+      );
+    }
 
-      if (!exampleSentencesCEFRlevel) {
-        console.error('useFetchOrCreateExampleSentences.ts: exampleSentencesCEFRlevel is falsey');
-      }
-
-      if (generateExplanations) {
-        fetchOrCreateExampleSentencesWithExplanations({
-          variables: {
-            level: exampleSentencesCEFRlevel,
-            nativeLanguage,
-            wordId
-          }
-        });
-      } else {
-        fetchOrCreateExampleSentences({
-          variables: {
-            level: exampleSentencesCEFRlevel || Level.B1,
-            wordId
-          }
-        });
-      }
-    };
-
-    fetch();
-  }, [fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, wordId]);
+    if (generateExplanations) {
+      fetchOrCreateExampleSentencesWithExplanations({
+        variables: {
+          level: exampleSentencesCEFRlevel,
+          nativeLanguage,
+          wordId
+        }
+      });
+    } else {
+      fetchOrCreateExampleSentences({
+        variables: {
+          level: exampleSentencesCEFRlevel,
+          wordId
+        }
+      });
+    }
+  }, [
+    exampleSentencesCEFRlevel,
+    fetchOrCreateExampleSentences,
+    fetchOrCreateExampleSentencesWithExplanations,
+    generateExplanations,
+    nativeLanguage,
+    wordId
+  ]);
 
   return {
     error: error || _error,
