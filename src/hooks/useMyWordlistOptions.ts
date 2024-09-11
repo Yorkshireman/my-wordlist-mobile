@@ -12,18 +12,21 @@ const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
 };
 
 export const useMyWordlistOptions = () => {
-  const { getItem: getSavedOptions, mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
+  const { mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
   const myWordlistOptions = useReactiveVar(myWordlistOptionsVar);
 
   useEffect(() => {
     const applyOptionsFromStorage = async () => {
-      const unparsedSavedOptions = await getSavedOptions();
-      const savedOptions = JSON.parse(unparsedSavedOptions || '{}');
+      const savedOptions = (await getMyWordlistOptions()) || {};
       myWordlistOptionsVar(savedOptions);
     };
 
     applyOptionsFromStorage();
   }, []);
+
+  const getSavedOptions = async () => {
+    return await getMyWordlistOptions();
+  };
 
   const saveThenSetExampleSentencesCEFRLevel = async (level: Level) => {
     await saveOption(JSON.stringify({ exampleSentencesCEFRlevel: level }));
@@ -64,7 +67,7 @@ export const useMyWordlistOptions = () => {
 
   return {
     operations: {
-      getSavedOptions: async () => getMyWordlistOptions(),
+      getSavedOptions,
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,
       saveThenSetGenerateExplanations
