@@ -20,11 +20,7 @@ export const GenerateExampleSentencesScreen = () => {
     useFetchOrCreateExampleSentences(setExampleSentences);
 
   const {
-    operations: {
-      getSavedOptions,
-      getSavedExampleSentencesCEFRLevel,
-      saveThenSetExampleSentencesCEFRLevel
-    }
+    operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel }
   } = useMyWordlistOptions();
 
   const {
@@ -58,7 +54,7 @@ export const GenerateExampleSentencesScreen = () => {
 
   useEffect(() => {
     const fetchExampleSentences = async () => {
-      const savedExampleSentencesCEFRLevel = await getSavedExampleSentencesCEFRLevel();
+      const savedExampleSentencesCEFRLevel = (await getSavedOptions())?.exampleSentencesCEFRlevel;
 
       if (!savedExampleSentencesCEFRLevel) {
         console.info('No saved exampleSentencesCEFRlevel option.');

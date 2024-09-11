@@ -11,14 +11,6 @@ const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
   return JSON.parse(currentUnparsedOptions);
 };
 
-const getSavedExplanationLanguage = async () => (await getMyWordlistOptions())?.explanationLanguage;
-
-const getSavedGenerateExplanations = async () =>
-  (await getMyWordlistOptions())?.generateExplanations;
-
-const getSavedExampleSentencesCEFRLevel = async () =>
-  (await getMyWordlistOptions())?.exampleSentencesCEFRlevel;
-
 export const useMyWordlistOptions = () => {
   const { getItem: getSavedOptions, mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
   const myWordlistOptions = useReactiveVar(myWordlistOptionsVar);
@@ -52,8 +44,8 @@ export const useMyWordlistOptions = () => {
     }
 
     await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(newOptions));
-    const explanationLanguage = await getSavedExplanationLanguage();
-    const generateExplanations = await getSavedGenerateExplanations();
+    const explanationLanguage = (await getMyWordlistOptions())?.explanationLanguage;
+    const generateExplanations = (await getMyWordlistOptions())?.generateExplanations;
 
     myWordlistOptionsVar({
       ...myWordlistOptions,
@@ -72,7 +64,6 @@ export const useMyWordlistOptions = () => {
 
   return {
     operations: {
-      getSavedExampleSentencesCEFRLevel,
       getSavedOptions: async () => getMyWordlistOptions(),
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,
