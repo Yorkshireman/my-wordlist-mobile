@@ -39,3 +39,11 @@ jest.mock('react-native-drawer-layout', () => {
     }
   };
 });
+
+beforeAll(() => {
+  jest.spyOn(global.console, 'info').mockImplementation(() => {});
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});

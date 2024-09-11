@@ -20,15 +20,15 @@ export const useFetchWordlistData = (navigation: HomeScreenProps['navigation']) 
       };
 
       const checkAuthToken = async () => {
-        console.log('Getting auth token from async storage.');
+        console.info('Getting auth token from async storage.');
         const authToken = await getAuthToken();
 
         if (!authToken) {
-          console.log('No auth token found in async storage. Returning to log in screen.');
+          console.info('No auth token found in async storage. Returning to log in screen.');
           return navigation.navigate('LogIn');
         }
 
-        console.log('Got auth token from async storage. Fetching wordlist data.');
+        console.info('Got auth token from async storage. Fetching wordlist data.');
         getWordlist();
       };
 
@@ -42,7 +42,7 @@ export const useFetchWordlistData = (navigation: HomeScreenProps['navigation']) 
     const deleteAuthToken = async () => {
       try {
         await AsyncStorage.removeItem('myWordlistAuthToken');
-        console.log('Deleted auth token from async storage.');
+        console.info('Deleted auth token from async storage.');
       } catch (e) {
         console.error('Error deleting auth token from async storage.');
         console.error(e);
@@ -60,7 +60,7 @@ export const useFetchWordlistData = (navigation: HomeScreenProps['navigation']) 
     const statusCode = (error?.networkError as ServerError)?.statusCode;
 
     if (statusCode === 401) {
-      console.log('401 response from resources server. Returning to log in screen.');
+      console.info('401 response from resources server. Returning to log in screen.');
       return navigation.navigate('LogIn');
     } // else redirect to error?
   }, [error, navigation]);
