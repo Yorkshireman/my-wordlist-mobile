@@ -14,6 +14,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: { myWordlist } = {}, loading } = useFetchWordlistData(navigation);
   const [open, setOpen] = useState(false);
 
+  const justifyContent = loading ? 'center' : 'flex-start';
+
   return (
     <Drawer
       drawerPosition='right'
@@ -23,7 +25,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       open={open}
       renderDrawerContent={() => myWordlist && <Filters />}
     >
-      <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
+      <View style={{ ...sharedStyles.container, justifyContent, padding: 10 }}>
         {loading && <Loading size='large' />}
         {myWordlist && (
           <>
