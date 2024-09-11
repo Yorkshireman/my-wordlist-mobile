@@ -67,6 +67,9 @@ export const useMyWordlistOptions = () => {
     myWordlistOptionsVar({ ...myWordlistOptions, generateExplanations });
   };
 
+  const { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations } =
+    myWordlistOptions;
+
   return {
     operations: {
       getSavedExampleSentencesCEFRLevel,
@@ -74,6 +77,7 @@ export const useMyWordlistOptions = () => {
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,
       saveThenSetGenerateExplanations
-    }
+    },
+    state: { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations }
   };
 };
