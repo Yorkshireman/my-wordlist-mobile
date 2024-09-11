@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MyWordlistOptions } from '../../types';
+import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Level, NativeLanguage } from '../__generated__/graphql';
 import { useEffect, useState } from 'react';
 
@@ -11,6 +11,7 @@ const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
 
 const getExampleSentencesCEFRlevel = async () =>
   (await getMyWordlistOptions())?.exampleSentencesCEFRlevel;
+
 const getExplanationLanguage = async () => (await getMyWordlistOptions())?.explanationLanguage;
 const getGenerateExplanations = async () => (await getMyWordlistOptions())?.generateExplanations;
 
@@ -18,17 +19,10 @@ export const useMyWordlistOptions = () => {
   const [exampleSentencesCEFRlevel, setExampleSentencesCEFRlevel] = useState<Level>();
   const [explanationLanguage, setExplanationLanguage] = useState<NativeLanguage | undefined>();
   const [generateExplanations, setGenerateExplanations] = useState<boolean>(false);
+  const { mergeItem } = useAsyncStorage('myWordlistOptions');
 
   useEffect(() => {
-    getExampleSentencesCEFRlevel().then(async level => {
-      if (!level) {
-        console.log('exampleSentencesCEFRlevel not set; setting to a default of B1');
-        return await saveThenSetExampleSentencesCEFRLevel(Level.B1);
-      }
-
-      setExampleSentencesCEFRlevel(level);
-    });
-
+    getExampleSentencesCEFRlevel().then(level => setExampleSentencesCEFRlevel(level));
     getExplanationLanguage().then(language => setExplanationLanguage(language));
     getGenerateExplanations().then(generateExplanations =>
       setGenerateExplanations(!!generateExplanations)
@@ -36,10 +30,7 @@ export const useMyWordlistOptions = () => {
   }, []);
 
   const saveThenSetExampleSentencesCEFRLevel = async (level: Level) => {
-    await AsyncStorage.mergeItem(
-      'myWordlistOptions',
-      JSON.stringify({ exampleSentencesCEFRlevel: level })
-    );
+    await mergeItem(JSON.stringify({ exampleSentencesCEFRlevel: level }));
     setExampleSentencesCEFRlevel(level);
   };
 
@@ -64,7 +55,7 @@ export const useMyWordlistOptions = () => {
   };
 
   const saveThenSetGenerateExplanations = async (generateExplanations: boolean) => {
-    await AsyncStorage.mergeItem('myWordlistOptions', JSON.stringify({ generateExplanations }));
+    await mergeItem(JSON.stringify({ generateExplanations }));
     setGenerateExplanations(generateExplanations);
   };
 
