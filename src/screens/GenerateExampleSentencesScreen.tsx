@@ -1,15 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
-import { Explanation } from '../__generated__/graphql';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
-import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
+import { Explanation, Level } from '../__generated__/graphql';
 import { GenerateExampleSentencesScreenRouteParams, MyWordlistOptions } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { useFetchOrCreateExampleSentences, useMyWordlistOptions } from '../hooks';
 
 export const GenerateExampleSentencesScreen = () => {
   const { colors } = useTheme();
@@ -19,6 +19,10 @@ export const GenerateExampleSentencesScreen = () => {
 
   const { fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, loading } =
     useFetchOrCreateExampleSentences(setExampleSentences);
+
+  const {
+    operations: { saveThenSetExampleSentencesCEFRLevel }
+  } = useMyWordlistOptions();
 
   const {
     params: { wordId }
@@ -58,10 +62,7 @@ export const GenerateExampleSentencesScreen = () => {
       if (!myWordlistOptions.exampleSentencesCEFRlevel) {
         console.info('GenerateExampleSentencesScreen.tsx: exampleSentencesCEFRlevel is falsey');
         console.info('GenerateExampleSentencesScreen.tsx: setting level to B1');
-        await AsyncStorage.mergeItem(
-          'myWordlistOptions',
-          JSON.stringify({ exampleSentencesCEFRlevel: 'B1' })
-        );
+        await saveThenSetExampleSentencesCEFRLevel(Level.B1);
       }
 
       refreshExampleSentences();

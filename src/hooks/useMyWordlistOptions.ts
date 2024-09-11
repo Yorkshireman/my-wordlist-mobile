@@ -1,7 +1,9 @@
 import { MyWordlistOptions } from '../../types';
+import { myWordlistOptionsVar } from '../reactiveVars';
+import { useEffect } from 'react';
+import { useReactiveVar } from '@apollo/client';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Level, NativeLanguage } from '../__generated__/graphql';
-import { useEffect, useState } from 'react';
 
 const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
   const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
@@ -9,30 +11,26 @@ const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
   return JSON.parse(currentUnparsedOptions);
 };
 
-const getExampleSentencesCEFRlevel = async () =>
-  (await getMyWordlistOptions())?.exampleSentencesCEFRlevel;
-
 const getExplanationLanguage = async () => (await getMyWordlistOptions())?.explanationLanguage;
 const getGenerateExplanations = async () => (await getMyWordlistOptions())?.generateExplanations;
 
 export const useMyWordlistOptions = () => {
-  const [exampleSentencesCEFRlevel, setExampleSentencesCEFRlevel] = useState<Level>();
-  const [explanationLanguage, setExplanationLanguage] = useState<NativeLanguage | undefined>();
-  const [generateExplanations, setGenerateExplanations] = useState<boolean>(false);
-  const { mergeItem } = useAsyncStorage('myWordlistOptions');
+  const { getItem: getSavedOptions, mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
+  const myWordlistOptions = useReactiveVar(myWordlistOptionsVar);
 
-  // get options from AsyncStorage on component mount and set in state
   useEffect(() => {
-    getExampleSentencesCEFRlevel().then(level => setExampleSentencesCEFRlevel(level));
-    getExplanationLanguage().then(language => setExplanationLanguage(language));
-    getGenerateExplanations().then(generateExplanations =>
-      setGenerateExplanations(!!generateExplanations)
-    );
+    const applyOptionsFromStorage = async () => {
+      const unparsedSavedOptions = await getSavedOptions();
+      const savedOptions = JSON.parse(unparsedSavedOptions || '{}');
+      myWordlistOptionsVar(savedOptions);
+    };
+
+    applyOptionsFromStorage();
   }, []);
 
   const saveThenSetExampleSentencesCEFRLevel = async (level: Level) => {
-    await mergeItem(JSON.stringify({ exampleSentencesCEFRlevel: level }));
-    setExampleSentencesCEFRlevel(level);
+    await saveOption(JSON.stringify({ exampleSentencesCEFRlevel: level }));
+    myWordlistOptionsVar({ ...myWordlistOptions, exampleSentencesCEFRlevel: level });
   };
 
   const saveThenSetExplanationLanguage = async (language: NativeLanguage | undefined) => {
@@ -51,19 +49,20 @@ export const useMyWordlistOptions = () => {
     await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(newOptions));
     const explanationLanguage = await getExplanationLanguage();
     const generateExplanations = await getGenerateExplanations();
-    setExplanationLanguage(explanationLanguage);
-    setGenerateExplanations(!!generateExplanations);
+
+    myWordlistOptionsVar({
+      ...myWordlistOptions,
+      explanationLanguage,
+      generateExplanations: !!generateExplanations
+    });
   };
 
   const saveThenSetGenerateExplanations = async (generateExplanations: boolean) => {
-    await mergeItem(JSON.stringify({ generateExplanations }));
-    setGenerateExplanations(generateExplanations);
+    await saveOption(JSON.stringify({ generateExplanations }));
+    myWordlistOptionsVar({ ...myWordlistOptions, generateExplanations });
   };
 
   return {
-    exampleSentencesCEFRlevel,
-    explanationLanguage,
-    generateExplanations,
     operations: {
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,

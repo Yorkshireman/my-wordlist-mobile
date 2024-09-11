@@ -1,16 +1,17 @@
 import { displayLanguage } from '../utils';
-import { Level } from '../__generated__/graphql';
-import { NativeLanguage } from '../__generated__/graphql';
+import { myWordlistOptionsVar } from '../reactiveVars';
 import { useMyWordlistOptions } from '../hooks';
+import { useReactiveVar } from '@apollo/client';
 import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
+import { Level, NativeLanguage } from '../__generated__/graphql';
 import React, { useState } from 'react';
 
 export const SentencesGeneratorOptions = () => {
+  const { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations } =
+    useReactiveVar(myWordlistOptionsVar);
+
   const {
-    exampleSentencesCEFRlevel,
-    explanationLanguage,
-    generateExplanations,
     operations: {
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,
