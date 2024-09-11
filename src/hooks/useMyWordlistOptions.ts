@@ -21,6 +21,7 @@ export const useMyWordlistOptions = () => {
   const [generateExplanations, setGenerateExplanations] = useState<boolean>(false);
   const { mergeItem } = useAsyncStorage('myWordlistOptions');
 
+  // get options from AsyncStorage on component mount and set in state
   useEffect(() => {
     getExampleSentencesCEFRlevel().then(level => setExampleSentencesCEFRlevel(level));
     getExplanationLanguage().then(language => setExplanationLanguage(language));

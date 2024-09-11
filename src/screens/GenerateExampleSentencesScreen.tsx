@@ -8,7 +8,7 @@ import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { GenerateExampleSentencesScreenRouteParams, MyWordlistOptions } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 export const GenerateExampleSentencesScreen = () => {
@@ -16,12 +16,13 @@ export const GenerateExampleSentencesScreen = () => {
   const [exampleSentences, setExampleSentences] = useState<
     { content: string; explanation?: Explanation | null; form?: string | null; id: string }[]
   >([]);
+
+  const { fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, loading } =
+    useFetchOrCreateExampleSentences(setExampleSentences);
+
   const {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
-
-  const { fetchOrCreateExampleSentences, fetchOrCreateExampleSentencesWithExplanations, loading } =
-    useFetchOrCreateExampleSentences(setExampleSentences, wordId);
 
   const refreshExampleSentences = async () => {
     const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
@@ -48,6 +49,26 @@ export const GenerateExampleSentencesScreen = () => {
       });
     }
   };
+
+  useEffect(() => {
+    const fetchExampleSentences = async () => {
+      const currentUnparsedOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
+      const myWordlistOptions = JSON.parse(currentUnparsedOptions);
+
+      if (!myWordlistOptions.exampleSentencesCEFRlevel) {
+        console.info('GenerateExampleSentencesScreen.tsx: exampleSentencesCEFRlevel is falsey');
+        console.info('GenerateExampleSentencesScreen.tsx: setting level to B1');
+        await AsyncStorage.mergeItem(
+          'myWordlistOptions',
+          JSON.stringify({ exampleSentencesCEFRlevel: 'B1' })
+        );
+      }
+
+      refreshExampleSentences();
+    };
+
+    fetchExampleSentences();
+  }, []);
 
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>

@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { useMyWordlistOptions } from './useMyWordlistOptions';
 import {
   Explanation,
   FetchOrCreateExampleSentencesMutation,
@@ -19,12 +17,8 @@ export const useFetchOrCreateExampleSentences = (
       form?: string | null;
       id: string;
     }[]
-  ) => void,
-  wordId: string
+  ) => void
 ) => {
-  const { exampleSentencesCEFRlevel, generateExplanations, explanationLanguage } =
-    useMyWordlistOptions();
-
   const [fetchOrCreateExampleSentences, { error, loading }] = useMutation(
     FETCH_OR_CREATE_EXAMPLE_SENTENCES,
     {
@@ -53,38 +47,6 @@ export const useFetchOrCreateExampleSentences = (
         setExampleSentences(sentences || []);
       }
     });
-
-  useEffect(() => {
-    if (!exampleSentencesCEFRlevel) {
-      return console.error(
-        'useFetchOrCreateExampleSentences.ts: exampleSentencesCEFRlevel is falsey'
-      );
-    }
-
-    if (generateExplanations) {
-      fetchOrCreateExampleSentencesWithExplanations({
-        variables: {
-          level: exampleSentencesCEFRlevel,
-          nativeLanguage: explanationLanguage,
-          wordId
-        }
-      });
-    } else {
-      fetchOrCreateExampleSentences({
-        variables: {
-          level: exampleSentencesCEFRlevel,
-          wordId
-        }
-      });
-    }
-  }, [
-    exampleSentencesCEFRlevel,
-    explanationLanguage,
-    fetchOrCreateExampleSentences,
-    fetchOrCreateExampleSentencesWithExplanations,
-    generateExplanations,
-    wordId
-  ]);
 
   return {
     error: error || _error,

@@ -24,7 +24,7 @@ export const SentencesGeneratorOptions = () => {
   const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
 
   const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
-    saveThenSetExampleSentencesCEFRLevel(level);
+    await saveThenSetExampleSentencesCEFRLevel(level);
     setExampleSentencesCEFRlevelMenuVisible(false);
   };
 
