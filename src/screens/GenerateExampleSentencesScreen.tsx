@@ -1,11 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExampleSentences } from '../components';
+import { GenerateExampleSentencesScreenRouteParams } from '../../types';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
 import { useRoute } from '@react-navigation/native';
 import { Explanation, Level } from '../__generated__/graphql';
-import { GenerateExampleSentencesScreenRouteParams, MyWordlistOptions } from '../../types';
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -21,7 +20,11 @@ export const GenerateExampleSentencesScreen = () => {
     useFetchOrCreateExampleSentences(setExampleSentences);
 
   const {
-    operations: { saveThenSetExampleSentencesCEFRLevel }
+    operations: {
+      getSavedOptions,
+      getSavedExampleSentencesCEFRLevel,
+      saveThenSetExampleSentencesCEFRLevel
+    }
   } = useMyWordlistOptions();
 
   const {
@@ -29,12 +32,11 @@ export const GenerateExampleSentencesScreen = () => {
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
 
   const refreshExampleSentences = async () => {
-    const unparsedOptions: string | null = await AsyncStorage.getItem('myWordlistOptions');
     const {
       generateExplanations,
       explanationLanguage: nativeLanguage,
       exampleSentencesCEFRlevel
-    }: MyWordlistOptions = JSON.parse(unparsedOptions || '{}');
+    } = (await getSavedOptions()) || {};
 
     if (generateExplanations) {
       fetchOrCreateExampleSentencesWithExplanations({
@@ -56,12 +58,11 @@ export const GenerateExampleSentencesScreen = () => {
 
   useEffect(() => {
     const fetchExampleSentences = async () => {
-      const currentUnparsedOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
-      const myWordlistOptions = JSON.parse(currentUnparsedOptions);
+      const savedExampleSentencesCEFRLevel = await getSavedExampleSentencesCEFRLevel();
 
-      if (!myWordlistOptions.exampleSentencesCEFRlevel) {
-        console.info('GenerateExampleSentencesScreen.tsx: exampleSentencesCEFRlevel is falsey');
-        console.info('GenerateExampleSentencesScreen.tsx: setting level to B1');
+      if (!savedExampleSentencesCEFRLevel) {
+        console.info('No saved exampleSentencesCEFRlevel option.');
+        console.info('Setting level to B1.');
         await saveThenSetExampleSentencesCEFRLevel(Level.B1);
       }
 
