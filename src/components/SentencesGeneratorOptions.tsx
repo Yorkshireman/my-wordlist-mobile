@@ -1,94 +1,41 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { displayLanguage } from '../utils';
 import { Level } from '../__generated__/graphql';
-import { MyWordlistOptions } from '../../types';
 import { NativeLanguage } from '../__generated__/graphql';
+import { useMyWordlistOptions } from '../hooks';
 import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
-import React, { useEffect, useState } from 'react';
-
-const useGetSavedMyWordlistOptions = async (
-  setMyWordlistOptions: (arg0: MyWordlistOptions) => void
-) => {
-  useEffect(() => {
-    const getSavedMyWordlistOptions = async () => {
-      const unparsedMyWordlistOptions = (await AsyncStorage.getItem('myWordlistOptions')) || '{}';
-      const myWordlistOptions = JSON.parse(unparsedMyWordlistOptions);
-      if (!myWordlistOptions.exampleSentencesCEFRlevel) {
-        await AsyncStorage.mergeItem(
-          'myWordlistOptions',
-          JSON.stringify({ exampleSentencesCEFRlevel: Level.B1 })
-        );
-
-        return setMyWordlistOptions({ ...myWordlistOptions, exampleSentencesCEFRlevel: Level.B1 });
-      }
-
-      setMyWordlistOptions(myWordlistOptions);
-    };
-
-    getSavedMyWordlistOptions();
-  }, [setMyWordlistOptions]);
-};
+import React, { useState } from 'react';
 
 export const SentencesGeneratorOptions = () => {
-  const [exampleSentencesCEFRlevel, setExampleSentencesCEFRlevel] = useState<Level>();
+  const {
+    exampleSentencesCEFRlevel,
+    explanationLanguage,
+    generateExplanations,
+    operations: {
+      saveThenSetExampleSentencesCEFRLevel,
+      saveThenSetExplanationLanguage,
+      saveThenSetGenerateExplanations
+    }
+  } = useMyWordlistOptions();
+
   const [exampleSentencesCEFRlevelMenuVisible, setExampleSentencesCEFRlevelMenuVisible] =
     useState(false);
-  const [explanationLanguage, setExplanationLanguage] = useState<NativeLanguage | undefined>();
-  const [generateExplanationsChecked, setGenerateExplanationsChecked] = useState(false);
-  const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
-  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
-  useGetSavedMyWordlistOptions(setMyWordlistOptions);
 
-  useEffect(() => {
-    setExampleSentencesCEFRlevel(myWordlistOptions.exampleSentencesCEFRlevel);
-    setExplanationLanguage(myWordlistOptions.explanationLanguage);
-    setGenerateExplanationsChecked(!!myWordlistOptions.generateExplanations);
-  }, [myWordlistOptions]);
+  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
 
   const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
+    saveThenSetExampleSentencesCEFRLevel(level);
     setExampleSentencesCEFRlevelMenuVisible(false);
-    setExampleSentencesCEFRlevel(level);
-    await AsyncStorage.mergeItem(
-      'myWordlistOptions',
-      JSON.stringify({ exampleSentencesCEFRlevel: level })
-    );
   };
 
   const onExplanationLanguageSelect =
     (selectedExplanationLanguage: NativeLanguage | undefined) => async () => {
+      await saveThenSetExplanationLanguage(selectedExplanationLanguage);
       setNativeLanguageMenuVisible(false);
-      setExplanationLanguage(selectedExplanationLanguage);
-      const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
-      const { exampleSentencesCEFRlevel: currentExampleSentencesCEFRLevel } = JSON.parse(
-        currentUnparsedOptions || '{}'
-      );
-
-      if (!selectedExplanationLanguage) {
-        await AsyncStorage.setItem(
-          'myWordlistOptions',
-          JSON.stringify({
-            exampleSentencesCEFRlevel: currentExampleSentencesCEFRLevel,
-            generateExplanations: false
-          })
-        );
-
-        setGenerateExplanationsChecked(false);
-      } else {
-        await AsyncStorage.mergeItem(
-          'myWordlistOptions',
-          JSON.stringify({ explanationLanguage: selectedExplanationLanguage })
-        );
-      }
     };
 
   const onToggleSwitch = async () => {
-    await AsyncStorage.mergeItem(
-      'myWordlistOptions',
-      JSON.stringify({ generateExplanations: !generateExplanationsChecked })
-    );
-
-    setGenerateExplanationsChecked(!generateExplanationsChecked);
+    await saveThenSetGenerateExplanations(!generateExplanations);
   };
 
   return (
@@ -135,7 +82,7 @@ export const SentencesGeneratorOptions = () => {
             onValueChange={onToggleSwitch}
             pointerEvents={explanationLanguage ? 'auto' : 'none'}
             style={{ marginRight: 11 }}
-            value={generateExplanationsChecked}
+            value={generateExplanations}
           />
         </View>
         <View

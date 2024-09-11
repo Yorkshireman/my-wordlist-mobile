@@ -1,4 +1,5 @@
 export { useAsyncStorage } from './useAsyncStorage';
+export { useMyWordlistOptions } from './useMyWordlistOptions';
 export { useFetchOrCreateExampleSentences } from './useFetchOrCreateExampleSentences';
 export { useFetchWordlistData } from './useFetchWordlistData';
 export { useFilters } from './useFilters';
