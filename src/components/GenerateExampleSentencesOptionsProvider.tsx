@@ -7,12 +7,6 @@ export const GenerateExampleSentencesOptionsContext = createContext<
   GenerateExampleSentencesOptionsContextType | undefined
 >(undefined);
 
-const getMyWordlistOptions = async (): Promise<MyWordlistOptions | null> => {
-  const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
-  if (!currentUnparsedOptions) return null;
-  return JSON.parse(currentUnparsedOptions);
-};
-
 export const GenerateExampleSentencesOptionsProvider = ({
   children
 }: {
@@ -21,8 +15,10 @@ export const GenerateExampleSentencesOptionsProvider = ({
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
   const { mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
 
-  const getSavedOptions = async () => {
-    return await getMyWordlistOptions();
+  const getSavedOptions = async (): Promise<MyWordlistOptions | null> => {
+    const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
+    if (!currentUnparsedOptions) return null;
+    return JSON.parse(currentUnparsedOptions);
   };
 
   const saveThenSetExampleSentencesCEFRLevel = async (level: Level) => {
@@ -32,7 +28,7 @@ export const GenerateExampleSentencesOptionsProvider = ({
 
   const saveThenSetExplanationLanguage = async (language: NativeLanguage | undefined) => {
     let newOptions;
-    const currentOptions = await getMyWordlistOptions();
+    const currentOptions = await getSavedOptions();
     const currentOptionsClone = { ...currentOptions };
 
     if (!language) {
@@ -44,8 +40,8 @@ export const GenerateExampleSentencesOptionsProvider = ({
     }
 
     await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(newOptions));
-    const explanationLanguage = (await getMyWordlistOptions())?.explanationLanguage;
-    const generateExplanations = (await getMyWordlistOptions())?.generateExplanations;
+    const explanationLanguage = (await getSavedOptions())?.explanationLanguage;
+    const generateExplanations = (await getSavedOptions())?.generateExplanations;
 
     setMyWordlistOptions({
       ...myWordlistOptions,
