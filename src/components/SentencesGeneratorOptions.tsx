@@ -1,24 +1,27 @@
 import { displayLanguage } from '../utils';
-import { useMyWordlistOptions } from '../hooks';
+import { GenerateExampleSentencesOptionsContext } from './GenerateExampleSentencesOptionsProvider';
+import { GenerateExampleSentencesOptionsContextType } from '../../types';
 import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';
 import { Level, NativeLanguage } from '../__generated__/graphql';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 export const SentencesGeneratorOptions = () => {
+  const [exampleSentencesCEFRlevelMenuVisible, setExampleSentencesCEFRlevelMenuVisible] =
+    useState(false);
+
+  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
+
   const {
     operations: {
       saveThenSetExampleSentencesCEFRLevel,
       saveThenSetExplanationLanguage,
       saveThenSetGenerateExplanations
     },
-    state: { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations }
-  } = useMyWordlistOptions();
-
-  const [exampleSentencesCEFRlevelMenuVisible, setExampleSentencesCEFRlevelMenuVisible] =
-    useState(false);
-
-  const [nativeLanguageMenuVisible, setNativeLanguageMenuVisible] = useState(false);
+    myWordlistOptions: { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations }
+  } = useContext(
+    GenerateExampleSentencesOptionsContext
+  ) as GenerateExampleSentencesOptionsContextType;
 
   const onExampleSentencesCEFRlevelSelect = (level: Level) => async () => {
     await saveThenSetExampleSentencesCEFRLevel(level);

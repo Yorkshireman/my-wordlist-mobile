@@ -24,19 +24,34 @@ export type CreateWordlistEntryFormRouteParams = RouteProp<
 >;
 
 export type EditWordFormRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
+
 export type EditWordlistEntryScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'EditWordlistEntry'
 >;
+
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
+
+export type GenerateExampleSentencesOptionsContextType = {
+  myWordlistOptions: MyWordlistOptions;
+  operations: {
+    getSavedOptions: () => Promise<MyWordlistOptions | null>;
+    saveThenSetExampleSentencesCEFRLevel: (level: Level) => Promise<void>;
+    saveThenSetExplanationLanguage: (language: NativeLanguage | undefined) => Promise<void>;
+    saveThenSetGenerateExplanations: (generateExplanations: boolean) => Promise<void>;
+  };
+};
+
 export type GenerateExampleSentencesScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'GenerateExampleSentences'
 >;
+
 export type GenerateExampleSentencesScreenRouteParams = RouteProp<
   RootStackParamList,
   'GenerateExampleSentences'
 >;
+
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;

@@ -1,7 +1,4 @@
 import { makeVar } from '@apollo/client';
-import { MyWordlistOptions } from '../types';
-
-export const myWordlistOptionsVar = makeVar<MyWordlistOptions>({});
 
 export const selectedCategoriesIdsVar = makeVar<string[]>([]);
 
