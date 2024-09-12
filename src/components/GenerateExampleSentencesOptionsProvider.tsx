@@ -13,10 +13,10 @@ export const GenerateExampleSentencesOptionsProvider = ({
   children: React.JSX.Element;
 }) => {
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
-  const { mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
+  const { getItem, mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
 
   const getSavedOptions = async (): Promise<MyWordlistOptions | null> => {
-    const currentUnparsedOptions = await AsyncStorage.getItem('myWordlistOptions');
+    const currentUnparsedOptions = await getItem();
     if (!currentUnparsedOptions) return null;
     return JSON.parse(currentUnparsedOptions);
   };
