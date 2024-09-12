@@ -1,7 +1,5 @@
-import {
-  GenerateExampleSentencesOptionsProvider,
-  GenerateExampleSentencesScreenWrapper
-} from '../components';
+import { GenerateExampleSentencesOptionsProvider } from '../context-providers';
+import { GenerateExampleSentencesScreenWrapper } from '../components';
 
 export const GenerateExampleSentencesScreen = () => {
   return (

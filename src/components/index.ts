@@ -7,7 +7,6 @@ export { ExampleSentences } from './ExampleSentences';
 export { EyeIcon } from './EyeIcon';
 export { Filters } from './Filters';
 export { GenerateExampleSentencesScreenWrapper } from './GenerateExampleSentencesScreenWrapper';
-export { GenerateExampleSentencesOptionsProvider } from './GenerateExampleSentencesOptionsProvider';
 export { Loading } from './Loading';
 export { NavigationBar } from './NavigationBar';
 export { NotificationProvider } from './NotificationProvider';
