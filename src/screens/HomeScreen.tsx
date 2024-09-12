@@ -25,7 +25,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       open={open}
       renderDrawerContent={() => myWordlist && <Filters />}
     >
-      <View style={{ ...sharedStyles.container, justifyContent, padding: 10 }}>
+      <View style={{ ...sharedStyles.container, justifyContent, padding: 15 }}>
         {loading && <Loading size='large' />}
         {myWordlist && (
           <>
