@@ -1,7 +1,7 @@
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { GenerateExampleSentencesOptionsContextType, MyWordlistOptions } from '../../types';
 import { Level, NativeLanguage } from '../__generated__/graphql';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const GenerateExampleSentencesOptionsContext = createContext<
   GenerateExampleSentencesOptionsContextType | undefined
@@ -20,15 +20,6 @@ export const GenerateExampleSentencesOptionsProvider = ({
 }) => {
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
   const { mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
-
-  useEffect(() => {
-    const applyOptionsFromStorage = async () => {
-      const savedOptions = (await getMyWordlistOptions()) || {};
-      setMyWordlistOptions(savedOptions);
-    };
-
-    applyOptionsFromStorage();
-  }, []);
 
   const getSavedOptions = async () => {
     return await getMyWordlistOptions();
@@ -71,13 +62,13 @@ export const GenerateExampleSentencesOptionsProvider = ({
   return (
     <GenerateExampleSentencesOptionsContext.Provider
       value={{
-        myWordlistOptions,
         operations: {
           getSavedOptions,
           saveThenSetExampleSentencesCEFRLevel,
           saveThenSetExplanationLanguage,
           saveThenSetGenerateExplanations
-        }
+        },
+        state: { myWordlistOptions, setMyWordlistOptions }
       }}
     >
       {children}

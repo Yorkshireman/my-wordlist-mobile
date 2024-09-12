@@ -18,7 +18,9 @@ export const SentencesGeneratorOptions = () => {
       saveThenSetExplanationLanguage,
       saveThenSetGenerateExplanations
     },
-    myWordlistOptions: { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations }
+    state: {
+      myWordlistOptions: { exampleSentencesCEFRlevel, explanationLanguage, generateExplanations }
+    }
   } = useContext(
     GenerateExampleSentencesOptionsContext
   ) as GenerateExampleSentencesOptionsContextType;

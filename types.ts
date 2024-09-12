@@ -33,12 +33,15 @@ export type EditWordlistEntryScreenProps = NativeStackScreenProps<
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
 
 export type GenerateExampleSentencesOptionsContextType = {
-  myWordlistOptions: MyWordlistOptions;
   operations: {
     getSavedOptions: () => Promise<MyWordlistOptions | null>;
     saveThenSetExampleSentencesCEFRLevel: (level: Level) => Promise<void>;
     saveThenSetExplanationLanguage: (language: NativeLanguage | undefined) => Promise<void>;
     saveThenSetGenerateExplanations: (generateExplanations: boolean) => Promise<void>;
+  };
+  state: {
+    myWordlistOptions: MyWordlistOptions;
+    setMyWordlistOptions: React.Dispatch<React.SetStateAction<MyWordlistOptions>>;
   };
 };
 

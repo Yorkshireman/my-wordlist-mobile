@@ -25,7 +25,8 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     useFetchOrCreateExampleSentences(setExampleSentences);
 
   const {
-    operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel }
+    operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel },
+    state: { setMyWordlistOptions }
   } = useContext(
     GenerateExampleSentencesOptionsContext
   ) as GenerateExampleSentencesOptionsContextType;
@@ -33,6 +34,16 @@ export const GenerateExampleSentencesScreenWrapper = () => {
   const {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
+
+  useEffect(() => {
+    const setSavedOptionsInState = async () => {
+      const savedOptions = (await getSavedOptions()) || {};
+      setMyWordlistOptions(savedOptions);
+    };
+
+    setSavedOptionsInState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const refreshExampleSentences = async () => {
     const {
