@@ -1,5 +1,5 @@
 import { displayLanguage } from '../utils';
-import { GenerateExampleSentencesOptionsContext } from './GenerateExampleSentencesOptionsProvider';
+import { GenerateExampleSentencesOptionsContext } from '../contexts';
 import { GenerateExampleSentencesOptionsContextType } from '../../types';
 import { View } from 'react-native';
 import { Button, Card, Menu, Switch, Text } from 'react-native-paper';

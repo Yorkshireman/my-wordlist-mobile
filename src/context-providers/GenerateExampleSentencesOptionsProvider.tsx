@@ -1,11 +1,8 @@
+import { GenerateExampleSentencesOptionsContext } from '../contexts';
+import { MyWordlistOptions } from '../../types';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { GenerateExampleSentencesOptionsContextType, MyWordlistOptions } from '../../types';
 import { Level, NativeLanguage } from '../__generated__/graphql';
-import React, { createContext, useState } from 'react';
-
-export const GenerateExampleSentencesOptionsContext = createContext<
-  GenerateExampleSentencesOptionsContextType | undefined
->(undefined);
+import React, { useState } from 'react';
 
 export const GenerateExampleSentencesOptionsProvider = ({
   children

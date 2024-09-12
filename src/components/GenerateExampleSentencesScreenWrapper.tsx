@@ -1,5 +1,5 @@
 import { ExampleSentences } from '../components';
-import { GenerateExampleSentencesOptionsContext } from './GenerateExampleSentencesOptionsProvider';
+import { GenerateExampleSentencesOptionsContext } from '../contexts';
 import { Loading } from '../components';
 import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
