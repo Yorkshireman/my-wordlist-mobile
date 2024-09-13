@@ -81,7 +81,7 @@ export const SentencesGeneratorOptions = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: generateExplanations ? 0 : 10,
+            marginBottom: generateExplanations ? 0 : 8,
             width: '100%'
           }}
         >
