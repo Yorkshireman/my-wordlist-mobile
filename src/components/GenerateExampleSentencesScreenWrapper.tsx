@@ -1,10 +1,7 @@
-import { ExampleSentences } from '../components';
 import { GenerateExampleSentencesOptionsContext } from '../contexts';
-import { Loading } from '../components';
-import { SentencesGeneratorOptions } from '../components';
 import sharedStyles from '../styles';
-import { useFetchOrCreateExampleSentences } from '../hooks';
 import { useRoute } from '@react-navigation/native';
+import { ExampleSentences, Loading, SentencesGeneratorOptions } from '../components';
 import { Explanation, Level } from '../__generated__/graphql';
 import {
   GenerateExampleSentencesOptionsContextType,
@@ -13,9 +10,11 @@ import {
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { useFetchOrCreateExampleSentences, useSnackbar } from '../hooks';
 
 export const GenerateExampleSentencesScreenWrapper = () => {
   const { colors } = useTheme();
+  const { showSnackbar } = useSnackbar();
 
   const [exampleSentences, setExampleSentences] = useState<
     { content: string; explanation?: Explanation | null; form?: string | null; id: string }[]
@@ -87,6 +86,18 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleRefreshButtonPress = async () => {
+    const { explanationLanguage, generateExplanations } = (await getSavedOptions()) || {};
+    if (generateExplanations && !explanationLanguage) {
+      return showSnackbar({
+        error: true,
+        message: 'To generate explanations, a language must be selected.'
+      });
+    }
+
+    await refreshExampleSentences();
+  };
+
   return (
     <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>
       <SentencesGeneratorOptions />
@@ -101,7 +112,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
             <IconButton
               icon='refresh'
               iconColor={colors.primary}
-              onPress={refreshExampleSentences}
+              onPress={handleRefreshButtonPress}
               size={48}
             />
           </View>

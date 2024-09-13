@@ -9,10 +9,10 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { hideSnackbar } = useSnackbar();
   const {
-    colors: { primary }
+    colors: { error: errorColour, primary }
   } = useTheme();
 
-  const { duration, key, message, visible } = useReactiveVar(snackbarStateVar);
+  const { duration, error, key, message, visible } = useReactiveVar(snackbarStateVar);
 
   useEffect(() => {
     let keyboardDidShowListener: EmitterSubscription;
@@ -32,6 +32,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
     };
   }, []);
 
+  const backgroundColor = error ? errorColour : primary;
   return (
     <>
       {children}
@@ -40,7 +41,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
           duration={duration}
           key={key}
           onDismiss={() => hideSnackbar()}
-          style={{ backgroundColor: primary, marginBottom: keyboardHeight }}
+          style={{ backgroundColor, marginBottom: keyboardHeight }}
           visible={visible}
         >
           {message}

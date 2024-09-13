@@ -42,7 +42,7 @@ export const SentencesGeneratorOptions = () => {
 
   return (
     <Card style={{ padding: 4 }}>
-      <Card.Actions style={{ flexDirection: 'column' }}>
+      <Card.Actions style={{ flexDirection: 'column', gap: 8 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -77,57 +77,64 @@ export const SentencesGeneratorOptions = () => {
             </Menu>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-          <Text variant='labelLarge'>Generate Explanations</Text>
-          <Switch
-            disabled={!explanationLanguage}
-            onValueChange={onToggleSwitch}
-            pointerEvents={explanationLanguage ? 'auto' : 'none'}
-            style={{ marginRight: 11 }}
-            value={generateExplanations}
-          />
-        </View>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
+            marginBottom: generateExplanations ? 0 : 10,
             width: '100%'
           }}
         >
-          <View style={{ justifyContent: 'center' }}>
-            <Text variant='labelLarge'>Your Language</Text>
-          </View>
-          <View>
-            <Menu
-              anchor={
-                <Button
-                  contentStyle={{ flexDirection: 'row-reverse' }}
-                  icon='chevron-right'
-                  onPress={() => setNativeLanguageMenuVisible(true)}
-                >
-                  {(explanationLanguage && displayLanguage(explanationLanguage)) || 'Select'}
-                </Button>
-              }
-              onDismiss={() => setNativeLanguageMenuVisible(false)}
-              visible={nativeLanguageMenuVisible}
-            >
-              {[
-                <Menu.Item
-                  key={'none'}
-                  onPress={onExplanationLanguageSelect(undefined)}
-                  title={'(none)'}
-                />,
-                ...Object.values(NativeLanguage).map(language => (
-                  <Menu.Item
-                    key={language}
-                    onPress={onExplanationLanguageSelect(language)}
-                    title={displayLanguage(language)}
-                  />
-                ))
-              ]}
-            </Menu>
-          </View>
+          <Text variant='labelLarge'>Generate Explanations</Text>
+          <Switch
+            onValueChange={onToggleSwitch}
+            style={{ marginRight: 11 }}
+            value={generateExplanations}
+          />
         </View>
+        {generateExplanations && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%'
+            }}
+          >
+            <View style={{ justifyContent: 'center' }}>
+              <Text variant='labelLarge'>Your Language</Text>
+            </View>
+            <View>
+              <Menu
+                anchor={
+                  <Button
+                    contentStyle={{ flexDirection: 'row-reverse' }}
+                    icon='chevron-right'
+                    onPress={() => setNativeLanguageMenuVisible(true)}
+                  >
+                    {(explanationLanguage && displayLanguage(explanationLanguage)) || 'Select'}
+                  </Button>
+                }
+                onDismiss={() => setNativeLanguageMenuVisible(false)}
+                visible={nativeLanguageMenuVisible}
+              >
+                {[
+                  <Menu.Item
+                    key={'none'}
+                    onPress={onExplanationLanguageSelect(undefined)}
+                    title={'(none)'}
+                  />,
+                  ...Object.values(NativeLanguage).map(language => (
+                    <Menu.Item
+                      key={language}
+                      onPress={onExplanationLanguageSelect(language)}
+                      title={displayLanguage(language)}
+                    />
+                  ))
+                ]}
+              </Menu>
+            </View>
+          </View>
+        )}
       </Card.Actions>
     </Card>
   );

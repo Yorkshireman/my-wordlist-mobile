@@ -1,6 +1,6 @@
 import { GenerateExampleSentencesOptionsContext } from '../contexts';
 import { MyWordlistOptions } from '../../types';
-import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Level, NativeLanguage } from '../__generated__/graphql';
 import React, { useState } from 'react';
 
@@ -10,10 +10,14 @@ export const GenerateExampleSentencesOptionsProvider = ({
   children: React.JSX.Element;
 }) => {
   const [myWordlistOptions, setMyWordlistOptions] = useState<MyWordlistOptions>({});
-  const { getItem, mergeItem: saveOption } = useAsyncStorage('myWordlistOptions');
+  const {
+    getItem: _getSavedOptions,
+    mergeItem: saveOption,
+    setItem: saveOptions
+  } = useAsyncStorage('myWordlistOptions');
 
   const getSavedOptions = async (): Promise<MyWordlistOptions | null> => {
-    const currentUnparsedOptions = await getItem();
+    const currentUnparsedOptions = await _getSavedOptions();
     if (!currentUnparsedOptions) return null;
     return JSON.parse(currentUnparsedOptions);
   };
@@ -36,7 +40,7 @@ export const GenerateExampleSentencesOptionsProvider = ({
       newOptions = { ...currentOptionsClone, explanationLanguage: language };
     }
 
-    await AsyncStorage.setItem('myWordlistOptions', JSON.stringify(newOptions));
+    await saveOptions(JSON.stringify(newOptions));
     const explanationLanguage = (await getSavedOptions())?.explanationLanguage;
     const generateExplanations = (await getSavedOptions())?.generateExplanations;
 

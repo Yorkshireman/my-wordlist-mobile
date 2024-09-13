@@ -13,6 +13,7 @@ export const customColours = {
     level5: 'rgb(241, 222, 241)'
   },
   error: 'rgb(186, 26, 26)',
+  // error: 'rgb(239, 71, 111)',
   errorContainer: 'rgb(255, 218, 214)',
   inverseOnSurface: 'rgb(248, 238, 242)',
   inversePrimary: 'rgb(255, 170, 243)',
