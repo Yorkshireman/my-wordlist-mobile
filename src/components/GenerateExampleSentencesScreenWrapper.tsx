@@ -45,16 +45,24 @@ export const GenerateExampleSentencesScreenWrapper = () => {
   }, []);
 
   const refreshExampleSentences = async () => {
+    const options = await getSavedOptions();
+    if (!options) {
+      const message =
+        'GenerateExampleSentencesScreenWrapper, refreshExampleSentences: myWordlistOptions from AsyncStorage empty.';
+      console.error(message);
+      throw new Error(message);
+    }
+
     const {
       generateExplanations,
       explanationLanguage: nativeLanguage,
-      exampleSentencesCEFRlevel
-    } = (await getSavedOptions()) || {};
+      exampleSentencesCEFRlevel: level
+    } = options;
 
     if (generateExplanations) {
       fetchOrCreateExampleSentencesWithExplanations({
         variables: {
-          level: exampleSentencesCEFRlevel,
+          level,
           nativeLanguage,
           wordId
         }
@@ -62,7 +70,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     } else {
       fetchOrCreateExampleSentences({
         variables: {
-          level: exampleSentencesCEFRlevel,
+          level,
           wordId
         }
       });
