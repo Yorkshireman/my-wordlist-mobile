@@ -89,7 +89,6 @@ export const SentencesGeneratorOptions = () => {
           <Switch
             onValueChange={onToggleSwitch}
             style={{ marginRight: 11 }}
-            testID='generate-explanations-switch'
             value={generateExplanations}
           />
         </View>
@@ -111,7 +110,6 @@ export const SentencesGeneratorOptions = () => {
                     contentStyle={{ flexDirection: 'row-reverse' }}
                     icon='chevron-right'
                     onPress={() => setNativeLanguageMenuVisible(true)}
-                    testID='explanation-language-select-button'
                   >
                     {(explanationLanguage && displayLanguage(explanationLanguage)) || 'Select'}
                   </Button>

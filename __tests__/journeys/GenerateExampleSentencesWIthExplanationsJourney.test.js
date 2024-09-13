@@ -64,23 +64,18 @@ describe('Generate Example Sentences journey', () => {
         fireEvent.press(
           screen.getByTestId('wordlist-entry-menu-6a50d324-a9e1-4104-8efd-3d51f5338151')
         );
-
-        fireEvent.press(screen.getByText('Generate Sentences'));
       });
 
-      await waitFor(() => {
-        fireEvent(screen.getByTestId('generate-explanations-switch'), 'valueChange', true);
-      });
-
-      await waitFor(async () => {
-        fireEvent.press(screen.getByTestId('explanation-language-select-button'));
-        fireEvent.press(screen.getByRole('menuitem', { name: 'Italiano (Italian)' }));
-      });
+      const user = userEvent.setup();
+      await user.press(screen.getByText('Generate Sentences'));
 
       await waitFor(() => {
-        const user = userEvent.setup();
-        user.press(screen.getByTestId('refresh-sentences-button'));
+        fireEvent(screen.getByRole('switch'), 'valueChange', true);
       });
+
+      await user.press(screen.getByRole('button', { name: 'Select' }));
+      await user.press(screen.getByRole('menuitem', { name: 'Italiano (Italian)' }));
+      await user.press(screen.getByTestId('refresh-sentences-button'));
     });
 
     test('the first sentence explanation can be viewed', async () => {
