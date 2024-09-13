@@ -122,6 +122,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
               iconColor={colors.primary}
               onPress={handleRefreshButtonPress}
               size={48}
+              testID='refresh-sentences-button'
             />
           </View>
         </ScrollView>

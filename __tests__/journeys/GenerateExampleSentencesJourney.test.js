@@ -7,7 +7,7 @@ import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { when } from 'jest-when';
 import { fetchOrCreateExampleSentences, myWordlistQueryMock } from '../../mockedProviderMocks';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { GenerateExampleSentencesScreen, HomeScreen } from '../../src/screens';
 
 jest.useFakeTimers();
@@ -24,7 +24,11 @@ describe('Generate Example Sentences journey', () => {
         <PaperProvider>
           <MockedProvider
             addTypename={true}
-            mocks={[myWordlistQueryMock, fetchOrCreateExampleSentences]}
+            mocks={[
+              myWordlistQueryMock,
+              fetchOrCreateExampleSentences.B1,
+              fetchOrCreateExampleSentences.C1
+            ]}
           >
             <NotificationProvider>
               <NavigationContainer>
@@ -79,6 +83,47 @@ describe('Generate Example Sentences journey', () => {
             'She understated her achievements during the interview, even though they were quite impressive.'
           )
         ).toBeTruthy();
+        expect(
+          screen.getByText(
+            'The design of the house is beautifully understated, which makes it feel calm and inviting.'
+          )
+        ).toBeTruthy();
+      });
+    });
+
+    describe('after selecting C1 Level', () => {
+      beforeEach(async () => {
+        const user = userEvent.setup();
+        await user.press(screen.getByRole('button', { name: 'B1' }));
+        await user.press(screen.getByRole('menuitem', { name: 'C1' }));
+        await user.press(screen.getByTestId('refresh-sentences-button'));
+      });
+
+      test('C1 level example sentences are displayed', async () => {
+        await waitFor(() => {
+          expect(
+            screen.getByText(
+              /* eslint-disable quotes */
+              "The architect's design is beautifully understated, highlighting the elegance of simplicity."
+              /* eslint-enable quotes */
+            )
+          ).toBeTruthy();
+          expect(
+            screen.getByText(
+              'She spoke about her achievements in an understated way, avoiding any hint of arrogance.'
+            )
+          ).toBeTruthy();
+          expect(
+            screen.getByText(
+              'Her understated elegance made her the centre of attention at the gala.'
+            )
+          ).toBeTruthy();
+          expect(
+            screen.getByText(
+              'She spoke about her achievements in an understated manner, avoiding any showiness.'
+            )
+          ).toBeTruthy();
+        });
       });
     });
   });
