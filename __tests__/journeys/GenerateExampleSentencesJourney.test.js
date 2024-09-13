@@ -6,7 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { when } from 'jest-when';
-import { fetchOrCreateExampleSentences, myWordlistQueryMock } from '../../mockedProviderMocks';
+import {
+  fetchOrCreateExampleSentences,
+  fetchOrCreateExampleSentencesWithExplanations,
+  myWordlistQueryMock
+} from '../../mockedProviderMocks';
 import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { GenerateExampleSentencesScreen, HomeScreen } from '../../src/screens';
 
@@ -27,7 +31,8 @@ describe('Generate Example Sentences journey', () => {
             mocks={[
               myWordlistQueryMock,
               fetchOrCreateExampleSentences.B1,
-              fetchOrCreateExampleSentences.C1
+              fetchOrCreateExampleSentences.C1,
+              fetchOrCreateExampleSentencesWithExplanations.B1Italian
             ]}
           >
             <NotificationProvider>
@@ -147,6 +152,52 @@ describe('Generate Example Sentences journey', () => {
             expect(
               screen.getByText('To generate explanations, a language must be selected.')
             ).toBeVisible();
+          });
+        });
+      });
+
+      describe('after selecting a language and clicking refresh sentences button', () => {
+        beforeEach(async () => {
+          await waitFor(async () => {
+            const user = userEvent.setup();
+            await user.press(screen.getByRole('button', { name: 'Select' }));
+            await user.press(screen.getByRole('menuitem', { name: 'Italiano (Italian)' }));
+            await user.press(screen.getByTestId('refresh-sentences-button'));
+          });
+        });
+
+        test('error notification is not rendered', async () => {
+          await waitFor(() => {
+            expect(
+              screen.queryByText('To generate explanations, a language must be selected.')
+            ).toBeNull();
+          });
+        });
+
+        test('the example sentences are displayed', async () => {
+          await waitFor(() => {
+            expect(
+              screen.getByText(
+                'He understated his achievements during the interview, which made him seem modest.'
+              )
+            ).toBeTruthy();
+            expect(
+              screen.getByText(
+                'She spoke about the project understatedly, highlighting its challenges instead of its successes.'
+              )
+            ).toBeTruthy();
+            expect(
+              screen.getByText(
+                'Her outfit was beautifully understated, focusing on simplicity rather than showiness.'
+              )
+            ).toBeTruthy();
+            expect(
+              screen.getByText(
+                /* eslint-disable quotes */
+                "It's important not to understate the impact of climate change on our environment."
+                /* eslint-enable quotes */
+              )
+            ).toBeTruthy();
           });
         });
       });
