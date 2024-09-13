@@ -29,7 +29,7 @@ export const NavigationBar = ({ back, navigation, options, route }: NativeStackH
   return (
     <Appbar.Header style={{ borderBottomColor: colors.secondary, borderBottomWidth: 4 }}>
       {back && shouldHaveBackArrow ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content color={colors.secondary} style={{ backgroundColor: 'white' }} title={title} />
+      <Appbar.Content color={colors.secondary} title={title} />
       {route.name === 'Home' ? (
         <Menu
           anchor={<Appbar.Action icon='menu' onPress={openMenu} />}
