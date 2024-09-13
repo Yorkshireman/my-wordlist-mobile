@@ -111,6 +111,7 @@ export const SentencesGeneratorOptions = () => {
                     contentStyle={{ flexDirection: 'row-reverse' }}
                     icon='chevron-right'
                     onPress={() => setNativeLanguageMenuVisible(true)}
+                    testID='explanation-language-select-button'
                   >
                     {(explanationLanguage && displayLanguage(explanationLanguage)) || 'Select'}
                   </Button>
