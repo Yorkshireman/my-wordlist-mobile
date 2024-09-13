@@ -5,29 +5,18 @@ import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
-import {
-  CreateWordlistEntriesScreen,
-  GenerateExampleSentencesScreen,
-  HomeScreen
-} from '../../src/screens';
+import { when } from 'jest-when';
 import { fetchOrCreateExampleSentences, myWordlistQueryMock } from '../../mockedProviderMocks';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { GenerateExampleSentencesScreen, HomeScreen } from '../../src/screens';
 
 jest.useFakeTimers();
 
 describe('Generate Example Sentences journey', () => {
   beforeEach(async () => {
-    AsyncStorage.getItem.mockImplementation(key => {
-      if (key === 'myWordlistAuthToken') {
-        return Promise.resolve('auth-token');
-      }
-
-      if (key === 'myWordlistOptions') {
-        return Promise.resolve(JSON.stringify({ exampleSentencesCEFRlevel: 'B1' }));
-      }
-
-      return Promise.resolve(null);
-    });
+    when(AsyncStorage.getItem)
+      .calledWith('myWordlistAuthToken')
+      .mockReturnValue(Promise.resolve('auth-token'));
 
     await waitFor(() => {
       const Stack = createNativeStackNavigator();
@@ -44,11 +33,6 @@ describe('Generate Example Sentences journey', () => {
                     component={HomeScreen}
                     name='Home'
                     options={{ title: 'My Wordlist' }}
-                  />
-                  <Stack.Screen
-                    component={CreateWordlistEntriesScreen}
-                    name='CreateWordlistEntries'
-                    options={{ headerShown: false }}
                   />
                   <Stack.Screen
                     component={GenerateExampleSentencesScreen}
