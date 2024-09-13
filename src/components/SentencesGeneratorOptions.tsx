@@ -89,6 +89,7 @@ export const SentencesGeneratorOptions = () => {
           <Switch
             onValueChange={onToggleSwitch}
             style={{ marginRight: 11 }}
+            testID='generate-explanations-switch'
             value={generateExplanations}
           />
         </View>

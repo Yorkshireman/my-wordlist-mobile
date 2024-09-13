@@ -126,5 +126,30 @@ describe('Generate Example Sentences journey', () => {
         });
       });
     });
+
+    describe('after selecting "Generate Explanations"', () => {
+      beforeEach(async () => {
+        await waitFor(() => {
+          fireEvent(screen.getByTestId('generate-explanations-switch'), 'valueChange', true);
+        });
+      });
+
+      describe('when trying to refresh the sentences', () => {
+        beforeEach(async () => {
+          await waitFor(async () => {
+            const user = userEvent.setup();
+            user.press(screen.getByTestId('refresh-sentences-button'));
+          });
+        });
+
+        test('error notification is rendered', async () => {
+          await waitFor(() => {
+            expect(
+              screen.getByText('To generate explanations, a language must be selected.')
+            ).toBeVisible();
+          });
+        });
+      });
+    });
   });
 });
