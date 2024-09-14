@@ -25,7 +25,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
 
   const {
     operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel },
-    state: { setMyWordlistOptions }
+    state: { setOptions }
   } = useContext(
     GenerateExampleSentencesOptionsContext
   ) as GenerateExampleSentencesOptionsContextType;
@@ -37,7 +37,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
   useEffect(() => {
     const setSavedOptionsInState = async () => {
       const savedOptions = (await getSavedOptions()) || {};
-      setMyWordlistOptions(savedOptions);
+      setOptions(savedOptions);
     };
 
     setSavedOptionsInState();
@@ -48,7 +48,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     const options = await getSavedOptions();
     if (!options) {
       const message =
-        'GenerateExampleSentencesScreenWrapper, refreshExampleSentences: myWordlistOptions from AsyncStorage empty.';
+        'GenerateExampleSentencesScreenWrapper, refreshExampleSentences: options from AsyncStorage empty.';
       console.error(message);
       throw new Error(message);
     }

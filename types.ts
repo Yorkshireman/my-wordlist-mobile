@@ -34,15 +34,21 @@ export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, '
 
 export type GenerateExampleSentencesOptionsContextType = {
   operations: {
-    getSavedOptions: () => Promise<MyWordlistOptions | null>;
+    getSavedOptions: () => Promise<GenerateExampleSentencesScreenOptions | null>;
     saveThenSetExampleSentencesCEFRLevel: (level: Level) => Promise<void>;
     saveThenSetExplanationLanguage: (language: NativeLanguage | undefined) => Promise<void>;
     saveThenSetGenerateExplanations: (generateExplanations: boolean) => Promise<void>;
   };
   state: {
-    myWordlistOptions: MyWordlistOptions;
-    setMyWordlistOptions: React.Dispatch<React.SetStateAction<MyWordlistOptions>>;
+    options: GenerateExampleSentencesScreenOptions;
+    setOptions: React.Dispatch<React.SetStateAction<GenerateExampleSentencesScreenOptions>>;
   };
+};
+
+export type GenerateExampleSentencesScreenOptions = {
+  exampleSentencesCEFRlevel?: Level;
+  explanationLanguage?: NativeLanguage;
+  generateExplanations?: boolean;
 };
 
 export type GenerateExampleSentencesScreenProps = NativeStackScreenProps<
@@ -57,6 +63,11 @@ export type GenerateExampleSentencesScreenRouteParams = RouteProp<
 
 export type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type LogInScreenProps = NativeStackScreenProps<RootStackParamList, 'LogIn'>;
+
+export type MyWordlistStorage = {
+  generateExampleSentencesScreenOptions?: GenerateExampleSentencesScreenOptions;
+};
+
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 export type UseFiltersReturnType = {
@@ -69,10 +80,4 @@ export type UseWordlistEntriesCreateProps = {
   unparsedCategoriesText: string;
   wordlistId: string;
   wordText: string;
-};
-
-export type MyWordlistOptions = {
-  exampleSentencesCEFRlevel?: Level;
-  explanationLanguage?: NativeLanguage;
-  generateExplanations?: boolean;
 };
