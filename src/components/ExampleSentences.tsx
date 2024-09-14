@@ -21,9 +21,9 @@ export const ExampleSentences = ({ exampleSentences }: Props) => {
             <List.Accordion
               key={id}
               title={boldenSentenceForm({ content, form })}
-              titleNumberOfLines={999}
+              titleNumberOfLines={50}
             >
-              <List.Item title={explanation.content} titleNumberOfLines={999} />
+              <List.Item title={explanation.content} titleNumberOfLines={50} />
             </List.Accordion>
           );
         }
@@ -32,7 +32,7 @@ export const ExampleSentences = ({ exampleSentences }: Props) => {
           <List.Item
             key={id}
             title={boldenSentenceForm({ content, form })}
-            titleNumberOfLines={999}
+            titleNumberOfLines={50}
           />
         );
       })}
