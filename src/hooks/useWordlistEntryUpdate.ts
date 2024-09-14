@@ -19,7 +19,9 @@ export const useWordlistEntryUpdate = () => {
     },
     onError: error => {
       console.error(error);
-      showSnackbar('Sorry, something went wrong updating your word. Please try again.');
+      showSnackbar({
+        message: 'Sorry, something went wrong updating your word. Please try again.'
+      });
     }
   });
 

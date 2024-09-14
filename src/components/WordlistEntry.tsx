@@ -1,11 +1,20 @@
 import { Categories } from './Categories';
 import { Category } from '../__generated__/graphql';
 import { RootStackParamList } from '../../types';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
-import { IconButton, Menu, Text, useTheme } from 'react-native-paper';
+import { Divider, IconButton, Menu, Text, useTheme } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+
+type Props = {
+  categories: Category[];
+  id: string;
+  setShowDeleteConfirm: (value: boolean) => void;
+  setWordlistEntryIdToDelete: (value: string) => void;
+  text: string;
+  wordFlexBasis: number;
+  wordId: string;
+};
 
 export const WordlistEntry = ({
   categories,
@@ -13,19 +22,13 @@ export const WordlistEntry = ({
   setShowDeleteConfirm,
   setWordlistEntryIdToDelete,
   text,
-  wordFlexBasis
-}: {
-  categories: Category[];
-  id: string;
-  setShowDeleteConfirm: (value: boolean) => void;
-  setWordlistEntryIdToDelete: (value: string) => void;
-  text: string;
-  wordFlexBasis: number;
-}) => {
+  wordFlexBasis,
+  wordId
+}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [wordlistEntryMenuVisible, setWordlistEntryMenuVisible] = useState<string | null>(null);
   const {
-    colors: { secondaryContainer }
+    colors: { primary, secondaryContainer }
   } = useTheme();
 
   return (
@@ -46,6 +49,7 @@ export const WordlistEntry = ({
           anchor={
             <IconButton
               icon='dots-vertical'
+              iconColor={primary}
               onPress={() => {
                 setWordlistEntryMenuVisible(id);
               }}
@@ -58,6 +62,14 @@ export const WordlistEntry = ({
           visible={wordlistEntryMenuVisible === id}
         >
           <Menu.Item
+            leadingIcon='lightning-bolt'
+            onPress={() => {
+              setWordlistEntryMenuVisible(null);
+              navigation.navigate('GenerateExampleSentences', { wordId });
+            }}
+            title='Generate Sentences'
+          />
+          <Menu.Item
             leadingIcon='note-edit-outline'
             onPress={() => {
               setWordlistEntryMenuVisible(null);
@@ -65,6 +77,7 @@ export const WordlistEntry = ({
             }}
             title='Edit'
           />
+          <Divider />
           <Menu.Item
             leadingIcon='trash-can-outline'
             onPress={() => {

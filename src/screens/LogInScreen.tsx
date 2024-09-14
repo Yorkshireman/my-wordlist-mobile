@@ -1,6 +1,5 @@
 import { EyeIcon } from '../components';
 import type { LogInScreenProps } from '../../types';
-import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { useState } from 'react';
@@ -117,10 +116,6 @@ export const LogInScreen = ({ navigation }: LogInScreenProps) => {
       </Button>
     </View>
   );
-};
-
-LogInScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

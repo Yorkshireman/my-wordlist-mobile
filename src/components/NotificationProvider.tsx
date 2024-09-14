@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
 import { useSnackbar } from '../hooks';
@@ -10,10 +9,10 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { hideSnackbar } = useSnackbar();
   const {
-    colors: { primary }
+    colors: { error: errorColour, primary }
   } = useTheme();
 
-  const { duration, key, message, visible } = useReactiveVar(snackbarStateVar);
+  const { duration, error, key, message, visible } = useReactiveVar(snackbarStateVar);
 
   useEffect(() => {
     let keyboardDidShowListener: EmitterSubscription;
@@ -33,6 +32,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
     };
   }, []);
 
+  const backgroundColor = error ? errorColour : primary;
   return (
     <>
       {children}
@@ -41,7 +41,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
           duration={duration}
           key={key}
           onDismiss={() => hideSnackbar()}
-          style={{ backgroundColor: primary, marginBottom: keyboardHeight }}
+          style={{ backgroundColor, marginBottom: keyboardHeight }}
           visible={visible}
         >
           {message}
@@ -49,10 +49,6 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
       </View>
     </>
   );
-};
-
-NotificationProvider.propTypes = {
-  children: PropTypes.node.isRequired
 };
 
 const styles = StyleSheet.create({

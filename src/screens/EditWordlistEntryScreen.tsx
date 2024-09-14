@@ -1,5 +1,5 @@
 import { MY_WORDLIST } from '../graphql-queries';
-import { parseUniqueCategories } from '../utils/parseUniqueCategories';
+import { parseUniqueCategories } from '../utils';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';

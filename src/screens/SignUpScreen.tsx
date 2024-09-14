@@ -1,6 +1,5 @@
 import { EyeIcon } from '../components';
 import { MY_WORDLIST_CREATE } from '../graphql-queries/myWordlistCreate';
-import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import type { SignUpScreenProps } from '../../types';
 import { Button, HelperText, TextInput } from 'react-native-paper';
@@ -127,14 +126,6 @@ export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
       </Button>
     </View>
   );
-};
-
-ErrorText.propTypes = {
-  text: PropTypes.string.isRequired
-};
-
-SignUpScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

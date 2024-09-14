@@ -11,7 +11,6 @@ const config: CodegenConfig = {
       }
     }
   },
-  ignoreNoDocuments: true,
   schema: [
     {
       'http://localhost:3000/graphql': {

@@ -45,7 +45,7 @@ export const CreateWordlistEntryForm = () => {
     });
 
     setUnparsedCategoriesText('');
-    showSnackbar(`"${text}" added!`);
+    showSnackbar({ message: `"${text}" added!` });
     setWordText('');
   };
 

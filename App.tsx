@@ -23,6 +23,7 @@ import {
 import {
   CreateWordlistEntriesScreen,
   EditWordlistEntryScreen,
+  GenerateExampleSentencesScreen,
   HomeScreen,
   LogInScreen,
   SignUpScreen
@@ -121,6 +122,11 @@ export default function App() {
                       component={EditWordlistEntryScreen}
                       name='EditWordlistEntry'
                       options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      component={GenerateExampleSentencesScreen}
+                      name='GenerateExampleSentences'
+                      options={{ title: 'My Wordlist' }}
                     />
                   </Stack.Group>
                 </Stack.Navigator>
