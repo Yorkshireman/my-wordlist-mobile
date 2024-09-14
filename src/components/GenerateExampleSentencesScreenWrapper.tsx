@@ -18,9 +18,6 @@ import {
 
 export const GenerateExampleSentencesScreenWrapper = () => {
   const { colors } = useTheme();
-  useSetSavedOptionsInState();
-  const { showSnackbar } = useSnackbar();
-
   const [exampleSentences, setExampleSentences] = useState<
     { content: string; explanation?: Explanation | null; form?: string | null; id: string }[]
   >([]);
@@ -34,6 +31,8 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     GenerateExampleSentencesOptionsContext
   ) as GenerateExampleSentencesOptionsContextType;
 
+  const { showSnackbar } = useSnackbar();
+  useSetSavedOptionsInState();
   const {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
