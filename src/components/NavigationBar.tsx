@@ -22,9 +22,9 @@ export const NavigationBar = ({ back, navigation, options, route }: NativeStackH
   const closeMenu = () => setVisible(false);
   const { colors } = useTheme();
   const openMenu = () => setVisible(true);
-  const [visible, setVisible] = useState(false);
   const shouldHaveBackArrow = !screensWithNoBackArrow.includes(route.name);
   const title = getHeaderTitle(options, route.name);
+  const [visible, setVisible] = useState(false);
 
   return (
     <Appbar.Header style={{ borderBottomColor: colors.secondary, borderBottomWidth: 4 }}>
