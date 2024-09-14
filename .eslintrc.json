@@ -47,7 +47,6 @@
     "quotes": ["error", "single"],
     "react-hooks/exhaustive-deps": "error",
     "react/jsx-sort-props": "error",
-    "react/prop-types": "warn",
     "react/react-in-jsx-scope": "off",
     "semi": ["error", "always"],
     "sort-imports": [

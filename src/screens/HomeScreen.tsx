@@ -1,6 +1,5 @@
 import { Drawer } from 'react-native-drawer-layout';
 import type { HomeScreenProps } from '../../types';
-import PropTypes from 'prop-types';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
 import sharedStyles from '../styles';
 import { useFetchWordlistData } from '../hooks';
@@ -15,6 +14,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { data: { myWordlist } = {}, loading } = useFetchWordlistData(navigation);
   const [open, setOpen] = useState(false);
 
+  const justifyContent = loading ? 'center' : 'flex-start';
+
   return (
     <Drawer
       drawerPosition='right'
@@ -24,7 +25,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       open={open}
       renderDrawerContent={() => myWordlist && <Filters />}
     >
-      <View style={{ ...sharedStyles.container, justifyContent: 'flex-start', padding: 10 }}>
+      <View style={{ ...sharedStyles.container, justifyContent, padding: 15 }}>
         {loading && <Loading size='large' />}
         {myWordlist && (
           <>
@@ -53,10 +54,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       </View>
     </Drawer>
   );
-};
-
-HomeScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

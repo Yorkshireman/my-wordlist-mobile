@@ -61,7 +61,7 @@ export const Wordlist = () => {
           You might want to adjust your filters :-)
         </Text>
       ) : (
-        entries.map(({ categories, id, word: { text } }) => (
+        entries.map(({ categories, id, word: { text }, wordId }) => (
           <WordlistEntry
             {...{
               categories,
@@ -69,7 +69,8 @@ export const Wordlist = () => {
               setShowDeleteConfirm,
               setWordlistEntryIdToDelete,
               text,
-              wordFlexBasis
+              wordFlexBasis,
+              wordId
             }}
             key={id}
           />

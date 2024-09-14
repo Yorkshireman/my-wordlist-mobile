@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import { Appbar, Menu } from 'react-native-paper';
+import { Appbar, Menu, useTheme } from 'react-native-paper';
 
 const signOut = async (navigation: NativeStackHeaderProps['navigation']) => {
   try {
@@ -19,16 +19,17 @@ const signOut = async (navigation: NativeStackHeaderProps['navigation']) => {
 const screensWithNoBackArrow = ['LogIn', 'SignUp'];
 
 export const NavigationBar = ({ back, navigation, options, route }: NativeStackHeaderProps) => {
-  const [visible, setVisible] = useState(false);
-  const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
+  const { colors } = useTheme();
+  const openMenu = () => setVisible(true);
   const shouldHaveBackArrow = !screensWithNoBackArrow.includes(route.name);
   const title = getHeaderTitle(options, route.name);
+  const [visible, setVisible] = useState(false);
 
   return (
-    <Appbar.Header>
+    <Appbar.Header style={{ borderBottomColor: colors.secondary, borderBottomWidth: 4 }}>
       {back && shouldHaveBackArrow ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content title={title} />
+      <Appbar.Content color={colors.secondary} title={title} />
       {route.name === 'Home' ? (
         <Menu
           anchor={<Appbar.Action icon='menu' onPress={openMenu} />}

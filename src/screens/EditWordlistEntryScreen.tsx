@@ -1,5 +1,4 @@
 import { MY_WORDLIST } from '../graphql-queries';
-import PropTypes from 'prop-types';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
@@ -141,20 +140,6 @@ export const EditWordlistEntryScreen = ({
       <Categories categories={categories} deleteCategory={deleteCategory} />
     </View>
   );
-};
-
-Categories.propTypes = {
-  categories: PropTypes.array.isRequired,
-  deleteCategory: PropTypes.func.isRequired
-};
-
-EditWordlistEntryScreen.propTypes = {
-  navigation: PropTypes.object.isRequired
-};
-
-Word.propTypes = {
-  setEditWordFormVisible: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
