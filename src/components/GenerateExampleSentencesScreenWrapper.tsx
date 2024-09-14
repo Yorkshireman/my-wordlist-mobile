@@ -10,10 +10,15 @@ import {
 import { IconButton, useTheme } from 'react-native-paper';
 import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { useFetchOrCreateExampleSentences, useSnackbar } from '../hooks';
+import {
+  useFetchOrCreateExampleSentences,
+  useSetSavedGenerateExampleSentencesScreenOptionsInState as useSetSavedOptionsInState,
+  useSnackbar
+} from '../hooks';
 
 export const GenerateExampleSentencesScreenWrapper = () => {
   const { colors } = useTheme();
+  useSetSavedOptionsInState();
   const { showSnackbar } = useSnackbar();
 
   const [exampleSentences, setExampleSentences] = useState<
@@ -24,8 +29,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
     useFetchOrCreateExampleSentences(setExampleSentences);
 
   const {
-    operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel },
-    state: { setOptions }
+    operations: { getSavedOptions, saveThenSetExampleSentencesCEFRLevel }
   } = useContext(
     GenerateExampleSentencesOptionsContext
   ) as GenerateExampleSentencesOptionsContextType;
@@ -33,16 +37,6 @@ export const GenerateExampleSentencesScreenWrapper = () => {
   const {
     params: { wordId }
   } = useRoute<GenerateExampleSentencesScreenRouteParams>();
-
-  useEffect(() => {
-    const setSavedOptionsInState = async () => {
-      const savedOptions = (await getSavedOptions()) || {};
-      setOptions(savedOptions);
-    };
-
-    setSavedOptionsInState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const refreshExampleSentences = async () => {
     const options = await getSavedOptions();
