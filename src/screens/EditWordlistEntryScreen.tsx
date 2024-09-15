@@ -81,7 +81,7 @@ const OtherWordlistCategories = ({
   return (
     <>
       <Divider style={{ marginBottom: 16 }} />
-      <View style={{ flexDirection: 'row', gap: 16 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
         {categories.map(({ id, name }) => {
           return (
             <Button compact key={id} mode='outlined'>
