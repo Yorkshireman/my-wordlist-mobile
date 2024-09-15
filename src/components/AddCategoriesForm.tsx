@@ -1,13 +1,27 @@
 import { ClearIcon } from './ClearIcon';
+import { EditWordlistEntryScreenRouteParams } from '../../types';
+import { MY_WORDLIST } from '../graphql-queries';
+import { MyWordlist } from '../__generated__/graphql';
 import { TextInput } from 'react-native-paper';
 import { useAddCategories } from '../hooks';
+import { useRoute } from '@react-navigation/native';
 import { HelperText, IconButton, Text } from 'react-native-paper';
+import { QueryResult, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export const AddCategoriesForm = () => {
+  const {
+    params: { id }
+  } = useRoute<EditWordlistEntryScreenRouteParams>();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  const addCategories = useAddCategories({ unparsedCategoriesText });
+  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  const entries = data?.myWordlist?.entries || [];
+  const wordlistEntry = entries.find(entry => entry.id === id);
+  const addCategories = useAddCategories({
+    unparsedCategoriesText,
+    wordlistEntryToUpdate: wordlistEntry
+  });
 
   return (
     <>

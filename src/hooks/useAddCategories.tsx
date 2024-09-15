@@ -1,33 +1,26 @@
-import { MY_WORDLIST } from '../graphql-queries';
 import { parseCategories } from '../utils';
-import { EditWordlistEntryScreenRouteParams, RootStackParamList } from '../../types';
-import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
-import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
-import { QueryResult, useQuery } from '@apollo/client';
+import { RootStackParamList } from '../../types';
+import { WordlistEntry } from '../__generated__/graphql';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useAsyncStorage, useWordlistEntryUpdate } from './index';
 
 export const useAddCategories = ({
+  wordlistEntryToUpdate,
   unparsedCategoriesText
 }: {
+  wordlistEntryToUpdate?: WordlistEntry;
   unparsedCategoriesText: string;
 }) => {
   const currentAuthToken = useAsyncStorage();
-  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
-  const {
-    params: { id }
-  } = useRoute<EditWordlistEntryScreenRouteParams>();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
   const addCategories = () => {
-    const entries = data?.myWordlist?.entries || [];
-    const wordlistEntry = entries.find(entry => entry.id === id);
-
-    if (!wordlistEntry) {
+    if (!wordlistEntryToUpdate) {
       return navigation.navigate('Home');
     }
 
-    const { categories: existingCategories } = wordlistEntry;
+    const { categories: existingCategories } = wordlistEntryToUpdate;
     const newCategories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
     const date = new Date();
     const dateNow = date.toISOString();
@@ -42,7 +35,7 @@ export const useAddCategories = ({
     ];
 
     const updatedWordlistEntry: WordlistEntry = {
-      ...wordlistEntry,
+      ...wordlistEntryToUpdate,
       categories: categories.map(cat => ({
         __typename: 'Category',
         createdAt: cat.createdAt,
@@ -61,7 +54,7 @@ export const useAddCategories = ({
         }
       },
       variables: {
-        id,
+        id: wordlistEntryToUpdate.id,
         wordlistEntryInput: {
           categories: [...existingCategories, ...newCategories]
         }
