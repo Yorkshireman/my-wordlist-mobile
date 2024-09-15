@@ -84,9 +84,17 @@ const OtherWordlistCategories = ({
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
         {categories.map(({ id, name }) => {
           return (
-            <Button compact key={id} mode='outlined'>
-              {name}
-            </Button>
+            <Chip
+              compact
+              key={id}
+              mode='outlined'
+              style={{
+                ...styles.chip,
+                backgroundColor: 'rgba(0, 0, 0, 0)'
+              }}
+            >
+              <Text variant='bodyLarge'>{name}</Text>
+            </Chip>
           );
         })}
       </View>
