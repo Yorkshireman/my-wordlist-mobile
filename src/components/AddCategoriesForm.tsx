@@ -1,79 +1,13 @@
 import { ClearIcon } from './ClearIcon';
-import { MY_WORDLIST } from '../graphql-queries';
-import { parseCategories } from '../utils';
 import { TextInput } from 'react-native-paper';
-import { EditWordlistEntryScreenRouteParams, RootStackParamList } from '../../types';
+import { useAddCategories } from '../hooks';
 import { HelperText, IconButton, Text } from 'react-native-paper';
-import { MyWordlist, WordlistEntry } from '../__generated__/graphql';
-import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
-import { QueryResult, useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useAsyncStorage, useWordlistEntryUpdate } from '../hooks';
 
 export const AddCategoriesForm = () => {
-  const currentAuthToken = useAsyncStorage();
-  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
-  const {
-    params: { id }
-  } = useRoute<EditWordlistEntryScreenRouteParams>();
-
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
-  const wordlistEntryUpdate = useWordlistEntryUpdate();
-
-  const entries = data?.myWordlist?.entries || [];
-
-  const addCategories = () => {
-    const wordlistEntry = entries.find(entry => entry.id === id);
-
-    if (!wordlistEntry) {
-      return navigation.navigate('Home');
-    }
-
-    const { categories: existingCategories } = wordlistEntry;
-    const newCategories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-    const date = new Date();
-    const dateNow = date.toISOString();
-    const categories = [
-      ...existingCategories,
-      ...newCategories.map(cat => ({
-        ...cat,
-        createdAt: dateNow,
-        id: `${cat.name}-id`,
-        updatedAt: dateNow
-      }))
-    ];
-
-    const updatedWordlistEntry: WordlistEntry = {
-      ...wordlistEntry,
-      categories: categories.map(cat => ({
-        __typename: 'Category',
-        createdAt: cat.createdAt,
-        id: cat.id,
-        name: cat.name,
-        updatedAt: cat.updatedAt
-      }))
-    };
-
-    wordlistEntryUpdate({
-      optimisticResponse: {
-        authToken: currentAuthToken,
-        wordlistEntryUpdate: {
-          __typename: 'WordlistEntryUpdatePayload',
-          wordlistEntry: updatedWordlistEntry
-        }
-      },
-      variables: {
-        id,
-        wordlistEntryInput: {
-          categories: [...existingCategories, ...newCategories]
-        }
-      }
-    });
-
-    setUnparsedCategoriesText('');
-  };
+  const addCategories = useAddCategories({ unparsedCategoriesText });
 
   return (
     <>
@@ -85,7 +19,10 @@ export const AddCategoriesForm = () => {
         maxLength={32}
         mode='outlined'
         onChangeText={text => setUnparsedCategoriesText(text)}
-        onSubmitEditing={() => addCategories()}
+        onSubmitEditing={() => {
+          addCategories();
+          setUnparsedCategoriesText('');
+        }}
         right={ClearIcon(
           () => setUnparsedCategoriesText(''),
           Boolean(unparsedCategoriesText.length)

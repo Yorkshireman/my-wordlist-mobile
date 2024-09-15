@@ -88,6 +88,7 @@ const OtherWordlistCategories = ({
               compact
               key={id}
               mode='outlined'
+              onPress={() => console.log('pressed')}
               style={{
                 ...styles.chip,
                 backgroundColor: 'rgba(0, 0, 0, 0)'
