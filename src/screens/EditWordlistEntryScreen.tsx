@@ -4,13 +4,13 @@ import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
 import { QueryResult, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
+import { useAddCategories, useWordlistEntryUpdate } from '../hooks';
 
 const Categories = ({
   categories,
@@ -65,11 +65,14 @@ const Word = ({
 
 const OtherWordlistCategories = ({
   entries,
-  entryCategories
+  entryCategories,
+  wordlistEntryToUpdate
 }: {
   entries: WordlistEntry[];
   entryCategories: Category[];
+  wordlistEntryToUpdate: WordlistEntry;
 }) => {
+  const addCategories = useAddCategories({ wordlistEntryToUpdate });
   const uniqueWordlistCategories = parseUniqueCategories(entries);
 
   const categories = uniqueWordlistCategories?.filter(
@@ -88,7 +91,9 @@ const OtherWordlistCategories = ({
               compact
               key={id}
               mode='outlined'
-              onPress={() => console.log('pressed')}
+              onPress={() => {
+                addCategories({ id, name });
+              }}
               style={{
                 ...styles.chip,
                 backgroundColor: 'rgba(0, 0, 0, 0)'
@@ -179,7 +184,11 @@ export const EditWordlistEntryScreen = ({
       )}
       <AddCategoriesForm />
       <Categories categories={categories} deleteCategory={deleteCategory} />
-      <OtherWordlistCategories entries={entries} entryCategories={categories} />
+      <OtherWordlistCategories
+        entries={entries}
+        entryCategories={categories}
+        wordlistEntryToUpdate={wordlistEntry}
+      />
     </View>
   );
 };

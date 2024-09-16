@@ -16,6 +16,7 @@ export const AddCategoriesForm = () => {
   } = useRoute<EditWordlistEntryScreenRouteParams>();
   const [unparsedCategoriesText, setUnparsedCategoriesText] = useState('');
   const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+
   const entries = data?.myWordlist?.entries || [];
   const wordlistEntry = entries.find(entry => entry.id === id);
   const addCategories = useAddCategories({
