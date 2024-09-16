@@ -1,15 +1,16 @@
 import { MY_WORDLIST } from '../graphql-queries';
+import { parseUniqueCategories } from '../utils';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
-import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
 import { QueryResult, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
+import { useAddCategories, useWordlistEntryUpdate } from '../hooks';
 
 const Categories = ({
   categories,
@@ -59,6 +60,51 @@ const Word = ({
         />
       </View>
     </View>
+  );
+};
+
+const OtherWordlistCategories = ({
+  entries,
+  entryCategories,
+  wordlistEntryToUpdate
+}: {
+  entries: WordlistEntry[];
+  entryCategories: Category[];
+  wordlistEntryToUpdate: WordlistEntry;
+}) => {
+  const addCategories = useAddCategories({ wordlistEntryToUpdate });
+  const uniqueWordlistCategories = parseUniqueCategories(entries);
+
+  const categories = uniqueWordlistCategories?.filter(
+    ({ id }) => !entryCategories.some(cat => cat.id === id)
+  );
+
+  if (!categories) return null;
+
+  return (
+    <>
+      <Divider style={{ marginBottom: 16 }} />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
+        {categories.map(({ id, name }) => {
+          return (
+            <Chip
+              compact
+              key={id}
+              mode='outlined'
+              onPress={() => {
+                addCategories({ id, name });
+              }}
+              style={{
+                ...styles.chip,
+                backgroundColor: 'rgba(0, 0, 0, 0)'
+              }}
+            >
+              <Text variant='bodyLarge'>{name}</Text>
+            </Chip>
+          );
+        })}
+      </View>
+    </>
   );
 };
 
@@ -138,6 +184,11 @@ export const EditWordlistEntryScreen = ({
       )}
       <AddCategoriesForm />
       <Categories categories={categories} deleteCategory={deleteCategory} />
+      <OtherWordlistCategories
+        entries={entries}
+        entryCategories={categories}
+        wordlistEntryToUpdate={wordlistEntry}
+      />
     </View>
   );
 };
@@ -151,7 +202,8 @@ const styles = StyleSheet.create({
   categoryChipsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 5
+    gap: 5,
+    marginBottom: 16
   },
   chip: {
     marginRight: 2.5

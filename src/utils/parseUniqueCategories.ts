@@ -1,14 +1,12 @@
-import { WordlistEntry } from '../__generated__/graphql';
+import { Category, WordlistEntry } from '../__generated__/graphql';
 
-export const parseUniqueCategories = (entries: WordlistEntry[]) => {
+export const parseUniqueCategories = (entries: WordlistEntry[]): Category[] | null => {
   if (!entries) return null;
 
-  const categories = entries
-    .map(entry => entry.categories.map(({ id, name }) => ({ id, name })))
-    .flat();
+  const categories = entries.map(entry => entry.categories.map(cat => cat)).flat();
 
   return categories
-    .reduce((acc: { id: string; name: string }[], category) => {
+    .reduce((acc: Category[], category) => {
       if (!acc.some(({ id }) => id === category.id)) {
         acc.push(category);
       }

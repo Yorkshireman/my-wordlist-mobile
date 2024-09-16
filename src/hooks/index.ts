@@ -1,3 +1,4 @@
+export { useAddCategories } from './useAddCategories';
 export { useAsyncStorage } from './useAsyncStorage';
 export { useFetchOrCreateExampleSentences } from './useFetchOrCreateExampleSentences';
 export { useFetchWordlistData } from './useFetchWordlistData';
