@@ -1,5 +1,6 @@
 import { MY_WORDLIST } from '../graphql-queries';
 import { parseUniqueCategories } from '../utils';
+import React from 'react';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
@@ -20,7 +21,7 @@ const Categories = ({
   deleteCategory: (id: string) => void;
 }) => {
   return (
-    <View style={styles.categoryChipsWrapper}>
+    <View style={styles.categoryChipsWrapper} testID='assigned-categories'>
       {categories.map(({ id, name }) => {
         return (
           <Chip
@@ -84,7 +85,10 @@ const OtherWordlistCategories = ({
   return (
     <>
       <Divider style={{ marginBottom: 16 }} />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}>
+      <View
+        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}
+        testID='other-wordlist-categories'
+      >
         {categories.map(({ id, name }) => {
           return (
             <Chip

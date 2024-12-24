@@ -32,11 +32,13 @@ export const wordlistEntriesCreateWithCategories = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-04T14:46:00Z',
                 id: 'f6c0fc6f-3b01-4059-9588-ccb2bda39d23',
                 name: 'household'
               },
               {
                 __typename: 'Category',
+                createdAt: '2023-11-23T00:16:30Z',
                 id: '34392873-31e2-4a57-8967-822a86eaca28',
                 name: 'phrasal verb'
               }

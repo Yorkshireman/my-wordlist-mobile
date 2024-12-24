@@ -27,6 +27,7 @@ const buildOptimisticResponse = ({
         return {
           __typename: 'WordlistEntry',
           categories: categories.map(cat => ({
+            createdAt: cat.createdAt,
             id: `${cat.name}-category-temp-id`,
             name: cat.name
           })),

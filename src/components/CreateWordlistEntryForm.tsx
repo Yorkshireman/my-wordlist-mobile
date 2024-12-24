@@ -1,5 +1,6 @@
 import { ClearIcon } from './ClearIcon';
 import { CreateWordlistEntryFormRouteParams } from '../../types';
+import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
 import { useState } from 'react';

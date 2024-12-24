@@ -6,7 +6,8 @@ export const myWordlistQueryMock = {
   },
   result: {
     data: {
-      authToken: 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MzEyNjgzODgsInVzZXJfaWQiOiI2YjhmM2E0ZS03YWMzLTQ5YTAtODVhZS1mYWUxNzhiODYwNzkifQ.BP3srNQ_tgFe_65KoFapvCzpouccKv8cp837xHUEZAY',
+      authToken:
+        'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MzEyNjgzODgsInVzZXJfaWQiOiI2YjhmM2E0ZS03YWMzLTQ5YTAtODVhZS1mYWUxNzhiODYwNzkifQ.BP3srNQ_tgFe_65KoFapvCzpouccKv8cp837xHUEZAY',
       myWordlist: {
         __typename: 'MyWordlist',
         id: 'c722b3ef-c762-4245-a0fa-fb452c4539cf',
@@ -16,6 +17,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -36,6 +38,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-08T14:46:00Z',
                 id: '5d0c09ad-0f79-47b7-b2f3-6567ef5e6ad8',
                 name: 'food'
               }
@@ -56,6 +59,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-08T14:46:00Z',
                 id: '5d0c09ad-0f79-47b7-b2f3-6567ef5e6ad8',
                 name: 'food'
               }
@@ -76,6 +80,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-07T14:46:00Z',
                 id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
                 name: 'noun'
               }
@@ -96,11 +101,13 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-08T14:46:00Z',
                 id: '5d0c09ad-0f79-47b7-b2f3-6567ef5e6ad8',
                 name: 'food'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-06T14:46:00Z',
                 id: '82d5375f-9a34-4c2d-b9c2-8b24b88b066e',
                 name: 'adverb'
               }
@@ -121,6 +128,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-08T14:46:00Z',
                 id: '5d0c09ad-0f79-47b7-b2f3-6567ef5e6ad8',
                 name: 'food'
               }
@@ -141,6 +149,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-05T14:46:00Z',
                 id: '44458ace-7679-49e0-b99a-a8738b1c248d',
                 name: 'transport'
               }
@@ -161,6 +170,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-05T14:46:00Z',
                 id: '44458ace-7679-49e0-b99a-a8738b1c248d',
                 name: 'transport'
               }
@@ -181,6 +191,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-04T14:46:00Z',
                 id: 'f6c0fc6f-3b01-4059-9588-ccb2bda39d23',
                 name: 'household'
               }
@@ -201,6 +212,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-06T14:46:00Z',
                 id: '82d5375f-9a34-4c2d-b9c2-8b24b88b066e',
                 name: 'adverb'
               }
@@ -221,11 +233,13 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-03T14:46:00Z',
                 id: 'b368ab77-04cf-438b-b6b2-add9afbf2d3d',
                 name: 'anatomy'
               }
@@ -260,6 +274,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-02T14:46:00Z',
                 id: '0fd9e383-ca71-44bd-a73e-394c73c15a2e',
                 name: 'verb'
               }
@@ -280,6 +295,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-02T14:46:00Z',
                 id: '0fd9e383-ca71-44bd-a73e-394c73c15a2e',
                 name: 'verb'
               }
@@ -300,6 +316,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -320,6 +337,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -340,6 +358,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -360,6 +379,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-07T14:46:00Z',
                 id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
                 name: 'noun'
               }
@@ -380,6 +400,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -400,6 +421,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-01T14:46:00Z',
                 id: 'b67f419c-2556-450c-9a24-752ec32cf9c3',
                 name: 'home'
               }
@@ -420,6 +442,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-03-15T14:46:00Z',
                 id: '3e3185f6-ba17-4dbe-a678-ffea6799a276',
                 name: 'industry'
               }
@@ -440,11 +463,13 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-07T14:46:00Z',
                 id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
                 name: 'noun'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-01T14:46:00Z',
                 id: 'b67f419c-2556-450c-9a24-752ec32cf9c3',
                 name: 'home'
               }
@@ -465,6 +490,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-09T14:46:00Z',
                 id: '76b204c3-1194-454e-a4c6-3d1e281a95fe',
                 name: 'adjective'
               }
@@ -485,6 +511,7 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-07T14:46:00Z',
                 id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
                 name: 'noun'
               }
@@ -505,11 +532,13 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-03-14T14:46:00Z',
                 id: '5097e71c-ba7f-4fcd-9122-91dadad10c88',
                 name: 'weather'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-03-13T14:46:00Z',
                 id: 'fdedf5fe-745c-4a9e-81d9-31d2817276d4',
                 name: 'nature'
               }
@@ -530,11 +559,13 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-04T14:46:00Z',
                 id: 'f6c0fc6f-3b01-4059-9588-ccb2bda39d23',
                 name: 'household'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-01T14:46:00Z',
                 id: 'b67f419c-2556-450c-9a24-752ec32cf9c3',
                 name: 'home'
               }
@@ -555,16 +586,19 @@ export const myWordlistQueryMock = {
             categories: [
               {
                 __typename: 'Category',
+                createdAt: '2024-04-04T14:46:00Z',
                 id: 'f6c0fc6f-3b01-4059-9588-ccb2bda39d23',
                 name: 'household'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-02T14:46:00Z',
                 id: '0fd9e383-ca71-44bd-a73e-394c73c15a2e',
                 name: 'verb'
               },
               {
                 __typename: 'Category',
+                createdAt: '2024-04-07T14:46:00Z',
                 id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
                 name: 'noun'
               }
@@ -593,9 +627,7 @@ export const myWordlistQueryMockWithOneEntry = {
       ...myWordlistQueryMock.result.data,
       myWordlist: {
         ...myWordlistQueryMock.result.data.myWordlist,
-        entries: [
-          myWordlistQueryMock.result.data.myWordlist.entries[0]
-        ]
+        entries: [myWordlistQueryMock.result.data.myWordlist.entries[0]]
       }
     }
   }
