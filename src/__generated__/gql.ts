@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n": types.WordlistEntryFieldsFragmentDoc,
+    "\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      createdAt\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n": types.WordlistEntryFieldsFragmentDoc,
     "\n  mutation FetchOrCreateExampleSentences(\n    $level: Level!\n    $nativeLanguage: NativeLanguage\n    $wordId: ID!\n  ) {\n    fetchOrCreateExampleSentences(level: $level, nativeLanguage: $nativeLanguage, wordId: $wordId) {\n      exampleSentences {\n        content\n        createdAt\n        form\n        id\n        level\n        updatedAt\n        word {\n          createdAt\n          id\n          text\n        }\n      }\n    }\n  }\n": types.FetchOrCreateExampleSentencesDocument,
     "\n  mutation FetchOrCreateExampleSentencesWithExplanations(\n    $level: Level!\n    $nativeLanguage: NativeLanguage\n    $wordId: ID!\n  ) {\n    fetchOrCreateExampleSentences(level: $level, nativeLanguage: $nativeLanguage, wordId: $wordId) {\n      exampleSentences {\n        content\n        createdAt\n        explanation {\n          content\n          createdAt\n          exampleSentenceId\n          id\n          language\n          updatedAt\n        }\n        form\n        id\n        level\n        updatedAt\n        word {\n          createdAt\n          id\n          text\n        }\n      }\n    }\n  }\n": types.FetchOrCreateExampleSentencesWithExplanationsDocument,
     "\n  query MyWordlist {\n    authToken\n    myWordlist {\n      id\n      entries {\n        ...WordlistEntryFields\n      }\n    }\n  }\n  \n": types.MyWordlistDocument,
@@ -42,7 +42,7 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n"): (typeof documents)["\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n"];
+export function gql(source: "\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      createdAt\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n"): (typeof documents)["\n  fragment WordlistEntryFields on WordlistEntry {\n    categories {\n      createdAt\n      id\n      name\n    }\n    createdAt\n    id\n    wordId\n    wordlistId\n    word {\n      createdAt\n      id\n      text\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
