@@ -151,6 +151,10 @@ describe('Edit Wordlist Entry journey', () => {
       await waitFor(() => expect(screen.queryByLabelText('word')).toBeNull());
     });
 
+    test('there is one instance of "noun" on the screen', async () => {
+      await waitFor(() => expect(screen.getAllByText('noun')).toHaveLength(1));
+    });
+
     test('"noun" category is in the assigned categories container', async () => {
       await waitFor(() => {
         expect(
