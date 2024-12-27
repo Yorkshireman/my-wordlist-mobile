@@ -30,6 +30,7 @@ export const wordlistEntryUpdate = (
               categories: responseCategories,
               createdAt: '2024-05-04T16:39:56Z',
               id: '45824606-8e65-4d94-93ab-851e751e10f1',
+              updatedAt: new Date().toISOString(),
               word: responseWord || {
                 __typename: 'Word',
                 createdAt: '2023-10-29T19:11:14Z',

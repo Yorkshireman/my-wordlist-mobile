@@ -19,6 +19,7 @@ const buildOptimisticResponse = ({
   currentAuthToken,
   wordlistEntries
 }: BuildOptimisticResponseType) => {
+  const dateNow = new Date().toISOString();
   return {
     authToken: currentAuthToken,
     wordlistEntriesCreate: {
@@ -31,8 +32,9 @@ const buildOptimisticResponse = ({
             id: `${cat.name}-category-temp-id`,
             name: cat.name
           })),
-          createdAt: 'temp-createdAt',
+          createdAt: dateNow,
           id: `${wordText}-temp-id`,
+          updatedAt: dateNow,
           word: {
             __typename: 'Word',
             createdAt: 'temp-createdAt',

@@ -9,6 +9,7 @@ export const WORDLIST_ENTRY = gql`
     }
     createdAt
     id
+    updatedAt
     wordId
     wordlistId
     word {
