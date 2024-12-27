@@ -302,15 +302,12 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test.each(['verb'])(
-        '"%s" category is on the screen next to the "phone" wordlist entry',
-        async category => {
-          await waitFor(() => {
-            const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
-            expect(within(wordlistEntry).getByText(category)).toBeOnTheScreen();
-          });
-        }
-      );
+      test('"verb" category is on the screen next to the "phone" wordlist entry', async () => {
+        await waitFor(() => {
+          const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
+          expect(within(wordlistEntry).getByText('verb')).toBeOnTheScreen();
+        });
+      });
 
       test('"Edit" is not on the screen', async () => {
         await waitFor(() => {
