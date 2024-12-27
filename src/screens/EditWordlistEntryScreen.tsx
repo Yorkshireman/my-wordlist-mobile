@@ -89,21 +89,21 @@ const OtherWordlistCategories = ({
         style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}
         testID='other-wordlist-categories'
       >
-        {categories.map(({ id, name }) => {
+        {categories.map(c => {
           return (
             <Chip
               compact
-              key={id}
+              key={c.id}
               mode='outlined'
               onPress={() => {
-                addCategories({ id, name });
+                addCategories(c);
               }}
               style={{
                 ...styles.chip,
                 backgroundColor: 'rgba(0, 0, 0, 0)'
               }}
             >
-              <Text variant='bodyLarge'>{name}</Text>
+              <Text variant='bodyLarge'>{c.name}</Text>
             </Chip>
           );
         })}

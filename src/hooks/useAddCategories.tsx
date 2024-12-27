@@ -1,13 +1,8 @@
 import { parseCategories } from '../utils';
 import { RootStackParamList } from '../../types';
-import { WordlistEntry } from '../__generated__/graphql';
+import { Category, WordlistEntry } from '../__generated__/graphql';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useAsyncStorage, useWordlistEntryUpdate } from './index';
-
-type Category = {
-  id: string;
-  name: string;
-};
 
 export const useAddCategories = ({
   wordlistEntryToUpdate,
