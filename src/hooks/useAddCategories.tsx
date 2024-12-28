@@ -38,14 +38,12 @@ export const useAddCategories = ({
         }))
       ];
     } else {
-      newCategories = [{ name: category.name }];
+      newCategories = [category];
       categories = [
         ...existingCategories,
         {
           ...category,
-          createdAt: dateNow,
-          id: category.id,
-          updatedAt: dateNow
+          updatedAt: dateNow // remove?
         }
       ];
     }
@@ -72,6 +70,7 @@ export const useAddCategories = ({
       variables: {
         id: wordlistEntryToUpdate.id,
         wordlistEntryInput: {
+          // can this just use updatedWordlistEntry?
           categories: [...existingCategories, ...newCategories]
         }
       }
