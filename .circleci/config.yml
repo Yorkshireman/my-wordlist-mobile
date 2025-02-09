@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  run_tests:
+  install_dependencies:
     docker:
       - image: cimg/node:19.8.1
     steps:
@@ -9,9 +9,15 @@ jobs:
       - run:
           name: Install dependencies
           command: npm install
+  run_lint:
+    steps:
+      - checkout
       - run:
           name: Run lint
           command: npm run lint
+  run_tests:
+    steps:
+      - checkout
       - run:
           name: Run tests
           command: npm run test
@@ -19,4 +25,6 @@ jobs:
 workflows:
   my_wordlist_mobile_workflow:
     jobs:
+      - install_dependencies
+      - run_lint
       - run_tests
