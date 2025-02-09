@@ -10,7 +10,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { NotificationProvider } from './src/components';
 import { removeTypename } from './src/utils/removeTypename';
 import type { RootStackParamList } from './types';
-import { SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
   ApolloClient,
@@ -30,6 +29,7 @@ import {
 } from './src/screens';
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Error, NavigationBar } from './src/components';
+import { Platform, SafeAreaView } from 'react-native';
 
 if (__DEV__) {
   console.log('Running in dev mode.');
@@ -76,6 +76,16 @@ const client = new ApolloClient({
   connectToDevTools: true,
   link: ApolloLink.from([cleanTypenameLink, authMiddleware, httpLink])
 });
+
+// prevents a console warning in web
+// due to Platform.constants not being defined
+if (Platform.OS === 'web' && !Platform.constants) {
+  Platform.constants = {
+    isTesting: false,
+    // keep aligned with react-native version
+    reactNativeVersion: { major: 0, minor: 72, patch: 6 }
+  };
+}
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
