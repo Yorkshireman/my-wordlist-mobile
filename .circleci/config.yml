@@ -6,11 +6,11 @@ orbs:
 jobs:
   run_tests:
     executor: node/default
+    version: '19.8.1'
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-          node-version: '19.8.1'
       - run:
           command: npm run test
           name: Run tests
