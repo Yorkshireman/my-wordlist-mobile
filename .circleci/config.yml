@@ -4,21 +4,21 @@ orbs:
   node: circleci/node@7.1.0
 
 jobs:
-  test:
+  run_tests:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
       - run:
-          name: Run tests
           command: npm run test
+          name: Run tests
       - persist_to_workspace:
         root: ~/project
         paths:
           - .
 
 workflows:
-  my-wordlist-mobile-workflow:
+  my_wordlist_mobile_workflow:
     jobs:
-      - test
+      - run_tests
