@@ -19,17 +19,19 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: 'Say hello'
+          command: 'echo Hello, World!'
   install-deps:
     docker:
       - image: cimg/base:current
     steps:
       - checkout
       - run:
-          name: "Install dependencies"
-          command: "echo 'Installing dependencies...'"
-          command: "npm install"
+          name: 'Checkout to correct node version'
+          command: 'nvm use'
+      - run:
+          name: 'Install dependencies'
+          command: 'npm install'
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
