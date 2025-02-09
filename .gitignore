@@ -20,4 +20,5 @@ web-build/
 /ios
 eas.json
 .env.development
+ios
 .vscode
