@@ -96,7 +96,7 @@ const config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub
   // out resources with a single module
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js'
+    '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/filemock.js'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered
