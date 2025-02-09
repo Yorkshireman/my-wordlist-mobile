@@ -40,6 +40,11 @@ jest.mock('react-native-drawer-layout', () => {
   };
 });
 
+if (process.env.CIRCLECI) {
+  console.log('Running in CircleCI, setting timeout to 10s');
+  jest.setTimeout(10000);
+}
+
 beforeAll(() => {
   jest.spyOn(global.console, 'info').mockImplementation(() => {});
 });
