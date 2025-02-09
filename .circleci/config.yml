@@ -7,7 +7,7 @@ jobs:
   run_tests:
     executor:
       name: node/default
-      version: '19.8.1'
+      node-version: '19.8.1'
     steps:
       - checkout
       - node/install-packages:
