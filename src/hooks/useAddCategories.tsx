@@ -39,13 +39,7 @@ export const useAddCategories = ({
       ];
     } else {
       newCategories = [category];
-      categories = [
-        ...existingCategories,
-        {
-          ...category,
-          updatedAt: dateNow // remove?
-        }
-      ];
+      categories = [...existingCategories, ...newCategories];
     }
 
     const updatedWordlistEntry: WordlistEntry = {
