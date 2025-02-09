@@ -10,6 +10,9 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
+          name: Run lint
+          command: npm run lint
+      - run:
           name: Run tests
           command: npm run test
 
