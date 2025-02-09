@@ -20,7 +20,7 @@ export const useAddCategories = ({
       return navigation.navigate('Home');
     }
 
-    const { categories: existingCategories } = wordlistEntryToUpdate;
+    const { categories: existingCategories, id } = wordlistEntryToUpdate;
 
     let categories;
     const date = new Date();
@@ -44,13 +44,7 @@ export const useAddCategories = ({
 
     const updatedWordlistEntry: WordlistEntry = {
       ...wordlistEntryToUpdate,
-      categories: categories.map(cat => ({
-        __typename: 'Category',
-        createdAt: cat.createdAt,
-        id: cat.id,
-        name: cat.name,
-        updatedAt: cat.updatedAt
-      }))
+      categories
     };
 
     wordlistEntryUpdate({
@@ -62,7 +56,7 @@ export const useAddCategories = ({
         }
       },
       variables: {
-        id: wordlistEntryToUpdate.id,
+        id,
         wordlistEntryInput: {
           // can this just use updatedWordlistEntry?
           categories: [...existingCategories, ...newCategories]
