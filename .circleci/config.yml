@@ -5,8 +5,9 @@ orbs:
 
 jobs:
   run_tests:
-    executor: node/default
-    version: '19.8.1'
+    executor:
+      name: node/default
+      version: '19.8.1'
     steps:
       - checkout
       - node/install-packages:
