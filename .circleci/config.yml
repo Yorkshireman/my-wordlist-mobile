@@ -12,7 +12,6 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
-          node-version: '19.8.1'
       - run:
         name: Run tests
         command: npm run test
