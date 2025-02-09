@@ -13,10 +13,6 @@ jobs:
       - run:
           command: npm run test
           name: Run tests
-      - persist_to_workspace:
-        root: ~/project
-        paths:
-          - .
 
 workflows:
   my_wordlist_mobile_workflow:
