@@ -1,0 +1,46 @@
+version: 2.1
+
+jobs:
+  install_dependencies:
+    docker:
+      - image: cimg/node:19.8.1
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+  run_lint:
+    docker:
+      - image: cimg/node:19.8.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run lint
+          command: npm run lint
+  run_tests:
+    docker:
+      - image: cimg/node:19.8.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: npm run test
+
+workflows:
+  my_wordlist_mobile_workflow:
+    jobs:
+      - install_dependencies
+      - run_lint:
+          requires:
+            - install_dependencies
+      - run_tests:
+          requires:
+            - install_dependencies
