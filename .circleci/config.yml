@@ -19,6 +19,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'Install npm'
+          command: 'apk add npm'
+      - run:
           name: 'Install dependencies'
           command: 'npm install'
 
