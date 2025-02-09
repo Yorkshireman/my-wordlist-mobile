@@ -4,29 +4,20 @@ orbs:
   node: circleci/node@7.1.0
 
 jobs:
-  install-node:
-    docker:
-      - image: cimg/base:stable
+  test:
+    executor: node/default
     steps:
       - checkout
-      - node/install:
+      - node/install-deps:
+          pkg-manager: npm
           node-version: '19.8.1'
-      - run: node --version
-
-  install-deps:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: 'Install npm'
-          command: 'apk add npm'
-      - run:
-          name: 'Install dependencies'
-          command: 'npm install'
+      - run: npm run test
+      - persist_to_workspace:
+        root: ~/project
+        paths:
+          - .
 
 workflows:
-  say-hello-workflow:
+  my-wordlist-mobile-workflow:
     jobs:
-      - install-node
-      - install-deps
+      - test
