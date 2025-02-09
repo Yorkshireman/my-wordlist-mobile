@@ -6,11 +6,12 @@ jobs:
       - image: circleci/node:19.8.1
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run:
-          command: npm run test
+          name: Install dependencies
+          command: npm install
+      - run:
           name: Run tests
+          command: npm run test
 
 workflows:
   my_wordlist_mobile_workflow:
