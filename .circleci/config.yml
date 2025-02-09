@@ -1,13 +1,9 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@7.1.0
-
 jobs:
   run_tests:
-    executor:
-      name: node/default
-      node-version: '19.8.1'
+    docker:
+      - image: circleci/node:19.8.1
     steps:
       - checkout
       - node/install-packages:
