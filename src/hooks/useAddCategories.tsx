@@ -58,7 +58,6 @@ export const useAddCategories = ({
       variables: {
         id,
         wordlistEntryInput: {
-          // can this just use updatedWordlistEntry?
           categories: [...existingCategories, ...newCategories]
         }
       }
