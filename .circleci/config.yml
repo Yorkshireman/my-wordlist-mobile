@@ -10,12 +10,16 @@ jobs:
           name: Install dependencies
           command: npm install
   run_lint:
+    docker:
+      - image: cimg/node:19.8.1
     steps:
       - checkout
       - run:
           name: Run lint
           command: npm run lint
   run_tests:
+    docker:
+      - image: cimg/node:19.8.1
     steps:
       - checkout
       - run:
