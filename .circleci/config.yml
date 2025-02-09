@@ -6,12 +6,16 @@ orbs:
 jobs:
   test:
     executor: node/default
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
-      - node/install-deps:
+      - node/install-packages:
           pkg-manager: npm
           node-version: '19.8.1'
-      - run: npm run test
+      - run:
+        name: Run tests
+        command: npm run test
       - persist_to_workspace:
         root: ~/project
         paths:
