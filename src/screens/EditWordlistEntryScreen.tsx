@@ -117,7 +117,7 @@ export const EditWordlistEntryScreen = ({
 }: EditWordlistEntryScreenProps) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
-  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  const { data, loading }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
 
   const {
     params: { id }
@@ -125,11 +125,12 @@ export const EditWordlistEntryScreen = ({
 
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
-  if (!data || !data.myWordlist) return null;
-  // remove the ! once I've updated server schema to make entries non-nullable
-  const entries = data.myWordlist.entries!;
-  // On the Edit screen, we can assume that the entry exists
-  const wordlistEntry = entries.find(entry => entry.id === id) as WordlistEntry;
+  if (loading) return null;
+
+  const entries = data?.myWordlist?.entries || [];
+  const wordlistEntry = entries.find(entry => entry.id === id);
+
+  if (!wordlistEntry) throw new Error(`Wordlist entry not found with id: ${id}`);
 
   const {
     categories,
