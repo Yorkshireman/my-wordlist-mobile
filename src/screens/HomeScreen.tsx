@@ -1,5 +1,6 @@
 import { Drawer } from 'react-native-drawer-layout';
 import type { HomeScreenProps } from '../../types';
+import React from 'react';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
 import sharedStyles from '../styles';
 import { useFetchWordlistData } from '../hooks';

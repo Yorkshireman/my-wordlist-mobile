@@ -19,6 +19,7 @@ const buildOptimisticResponse = ({
   currentAuthToken,
   wordlistEntries
 }: BuildOptimisticResponseType) => {
+  const dateNow = new Date().toISOString();
   return {
     authToken: currentAuthToken,
     wordlistEntriesCreate: {
@@ -27,11 +28,13 @@ const buildOptimisticResponse = ({
         return {
           __typename: 'WordlistEntry',
           categories: categories.map(cat => ({
+            createdAt: cat.createdAt,
             id: `${cat.name}-category-temp-id`,
             name: cat.name
           })),
-          createdAt: 'temp-createdAt',
+          createdAt: dateNow,
           id: `${wordText}-temp-id`,
+          updatedAt: dateNow,
           word: {
             __typename: 'Word',
             createdAt: 'temp-createdAt',
@@ -58,12 +61,11 @@ export const useWordlistEntriesCreate = ({
     },
     optimisticResponse: () => {
       const categories = unparsedCategoriesText ? parseCategories(unparsedCategoriesText) : [];
-      const dateNow = new Date().toISOString();
       const optimisticCategories = categories.map(cat => ({
-        createdAt: dateNow,
+        createdAt: 'temp-date',
         id: `${cat.name}-category-temp-id`,
         name: cat.name,
-        updatedAt: dateNow
+        updatedAt: 'temp-date'
       }));
 
       const wordlistEntries = [{ categories: optimisticCategories, wordText, wordlistId }];

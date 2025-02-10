@@ -118,6 +118,7 @@ describe('Edit Wordlist Entry journey', () => {
       responseCategories = [
         {
           __typename: 'Category',
+          createdAt: '2024-04-07T14:46:00Z',
           id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
           name: 'noun'
         }
@@ -150,9 +151,23 @@ describe('Edit Wordlist Entry journey', () => {
       await waitFor(() => expect(screen.queryByLabelText('word')).toBeNull());
     });
 
-    test('"noun" category is on the screen', async () => {
+    test('there is one instance of "noun" on the screen', async () => {
+      await waitFor(() => expect(screen.getAllByText('noun')).toHaveLength(1));
+    });
+
+    test('"noun" category is in the assigned categories container', async () => {
       await waitFor(() => {
-        expect(screen.getByText('noun')).toBeOnTheScreen();
+        expect(
+          within(screen.getByTestId('assigned-categories')).getByText('noun')
+        ).toBeOnTheScreen();
+      });
+    });
+
+    test('"noun" category is not in the available categories container', async () => {
+      await waitFor(() => {
+        expect(
+          within(screen.getByTestId('other-wordlist-categories')).queryByText('noun')
+        ).toBeNull();
       });
     });
 
@@ -229,6 +244,7 @@ describe('Edit Wordlist Entry journey', () => {
       requestCategories = [
         {
           __typename: 'Category',
+          createdAt: '2024-04-07T14:46:00Z',
           id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
           name: 'noun'
         },
@@ -243,16 +259,19 @@ describe('Edit Wordlist Entry journey', () => {
       responseCategories = [
         {
           __typename: 'Category',
+          createdAt: '2024-04-07T14:46:00Z',
           id: '905651d6-2d66-44c3-9e89-7ef076afb6b5',
           name: 'noun'
         },
         {
           __typename: 'Category',
+          createdAt: '2024-12-08T18:57:00Z',
           id: '0fd9e383-ca71-44bd-a73e-394c73c15a2e',
           name: 'verb'
         },
         {
           __typename: 'Category',
+          createdAt: '2024-12-08T18:57:00Z',
           id: '3e3185f6-ba17-4dbe-a678-ffea6799a276',
           name: 'industry'
         }
@@ -283,15 +302,12 @@ describe('Edit Wordlist Entry journey', () => {
         });
       });
 
-      test.each(['verb', 'noun', 'industry'])(
-        '"%s" category is on the screen next to the "phone" wordlist entry',
-        async category => {
-          await waitFor(() => {
-            const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
-            expect(within(wordlistEntry).getByText(category)).toBeOnTheScreen();
-          });
-        }
-      );
+      test('"verb" category is on the screen next to the "phone" wordlist entry', async () => {
+        await waitFor(() => {
+          const wordlistEntry = screen.getByTestId('45824606-8e65-4d94-93ab-851e751e10f1');
+          expect(within(wordlistEntry).getByText('verb')).toBeOnTheScreen();
+        });
+      });
 
       test('"Edit" is not on the screen', async () => {
         await waitFor(() => {
@@ -318,9 +334,17 @@ describe('Edit Wordlist Entry journey', () => {
       });
     });
 
-    test('"noun" category is not on the screen', async () => {
+    test('"noun" category is not in the assigned categories container', async () => {
       await waitFor(() => {
-        expect(screen.queryByText('noun')).toBeNull();
+        expect(within(screen.getByTestId('assigned-categories')).queryByText('noun')).toBeNull();
+      });
+    });
+
+    test('"noun" category is in the available categories container', async () => {
+      await waitFor(() => {
+        expect(
+          within(screen.getByTestId('other-wordlist-categories')).getByText('noun')
+        ).toBeOnTheScreen();
       });
     });
 

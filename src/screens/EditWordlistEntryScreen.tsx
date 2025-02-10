@@ -1,15 +1,17 @@
 import { MY_WORDLIST } from '../graphql-queries';
+import { parseUniqueCategories } from '../utils';
+import React from 'react';
 import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import { useWordlistEntryUpdate } from '../hooks';
 import { AddCategoriesForm, EditWordForm } from '../components';
-import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
 import { QueryResult, useQuery } from '@apollo/client';
 import { StyleSheet, View } from 'react-native';
+import { useAddCategories, useWordlistEntryUpdate } from '../hooks';
 
 const Categories = ({
   categories,
@@ -19,7 +21,7 @@ const Categories = ({
   deleteCategory: (id: string) => void;
 }) => {
   return (
-    <View style={styles.categoryChipsWrapper}>
+    <View style={styles.categoryChipsWrapper} testID='assigned-categories'>
       {categories.map(({ id, name }) => {
         return (
           <Chip
@@ -62,12 +64,60 @@ const Word = ({
   );
 };
 
+const OtherWordlistCategories = ({
+  entries,
+  entryCategories,
+  wordlistEntryToUpdate
+}: {
+  entries: WordlistEntry[];
+  entryCategories: Category[];
+  wordlistEntryToUpdate: WordlistEntry;
+}) => {
+  const addCategories = useAddCategories({ wordlistEntryToUpdate });
+  const uniqueWordlistCategories = parseUniqueCategories(entries);
+
+  const categories = uniqueWordlistCategories?.filter(
+    ({ id }) => !entryCategories.some(cat => cat.id === id)
+  );
+
+  if (!categories) return null;
+
+  return (
+    <>
+      <Divider style={{ marginBottom: 16 }} />
+      <View
+        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 16 }}
+        testID='other-wordlist-categories'
+      >
+        {categories.map(c => {
+          return (
+            <Chip
+              compact
+              key={c.id}
+              mode='outlined'
+              onPress={() => {
+                addCategories(c);
+              }}
+              style={{
+                ...styles.chip,
+                backgroundColor: 'rgba(0, 0, 0, 0)'
+              }}
+            >
+              <Text variant='bodyLarge'>{c.name}</Text>
+            </Chip>
+          );
+        })}
+      </View>
+    </>
+  );
+};
+
 export const EditWordlistEntryScreen = ({
   navigation: { navigate }
 }: EditWordlistEntryScreenProps) => {
   const currentAuthToken = useAsyncStorage();
   const [editWordFormVisible, setEditWordFormVisible] = useState(false);
-  const { data }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
+  const { data, loading }: QueryResult<{ myWordlist: MyWordlist }> = useQuery(MY_WORDLIST);
 
   const {
     params: { id }
@@ -75,11 +125,12 @@ export const EditWordlistEntryScreen = ({
 
   const wordlistEntryUpdate = useWordlistEntryUpdate();
 
-  if (!data || !data.myWordlist) return null;
-  // remove the ! once I've updated server schema to make entries non-nullable
-  const entries = data.myWordlist.entries!;
-  // On the Edit screen, we can assume that the entry exists
-  const wordlistEntry = entries.find(entry => entry.id === id) as WordlistEntry;
+  if (loading) return null;
+
+  const entries = data?.myWordlist?.entries || [];
+  const wordlistEntry = entries.find(entry => entry.id === id);
+
+  if (!wordlistEntry) throw new Error(`Wordlist entry not found with id: ${id}`);
 
   const {
     categories,
@@ -138,6 +189,11 @@ export const EditWordlistEntryScreen = ({
       )}
       <AddCategoriesForm />
       <Categories categories={categories} deleteCategory={deleteCategory} />
+      <OtherWordlistCategories
+        entries={entries}
+        entryCategories={categories}
+        wordlistEntryToUpdate={wordlistEntry}
+      />
     </View>
   );
 };
@@ -151,7 +207,8 @@ const styles = StyleSheet.create({
   categoryChipsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 5
+    gap: 5,
+    marginBottom: 16
   },
   chip: {
     marginRight: 2.5
