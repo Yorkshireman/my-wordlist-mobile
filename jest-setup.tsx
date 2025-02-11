@@ -2,10 +2,6 @@
 import '@testing-library/react-native/extend-expect';
 import { Component, ReactNode } from 'react';
 
-// Silence the warning: Animated: `useNativeDriver` is not supported because
-// the native animated module is missing
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 // If using more interactive expo components in future, mocking expo components might
 // become an unsustainable strategy. If this becomes a problem, consider trying to get
 // the tests working with the jest-expo preset: https://docs.expo.dev/develop/unit-testing
