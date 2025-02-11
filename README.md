@@ -125,7 +125,10 @@ MY_WORDLIST_GRAPHQL_URL=http://localhost:3000/graphql
 SIGN_IN_URL=http://localhost:3001/signin
 SIGN_UP_URL=http://localhost:3001/signup
 ```
-`npm run web`
+* `RCT_METRO_PORT=<port> npm run web`
+* Navigate to `http://localhost:<port>`
+
+NB setting this env var isn't strictly necessary, but the default port will be `8081` which is a common port number and so may clash.
 
 ### For iOS Simulator
 `.env.development`:
