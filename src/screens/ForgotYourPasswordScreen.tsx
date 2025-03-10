@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { ForgotYourPasswordScreenProps } from '../../types';
-import { TextInput, Button, Title, Paragraph } from 'react-native-paper';
-import { View, StyleSheet } from 'react-native';
+import { RESET_PASSWORD_URL } from '@env';
+import sharedStyles from '../styles';
+import { useSnackbar } from '../hooks';
+import { Button, Paragraph, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 
-export const ForgotYourPasswordScreen = ({ navigation }: ForgotYourPasswordScreenProps) => {
+export const ForgotYourPasswordScreen = () => {
   const [email, setEmail] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
+  const { showSnackbar } = useSnackbar();
 
   const handleSubmit = async () => {
     // Simple validation
@@ -14,47 +17,50 @@ export const ForgotYourPasswordScreen = ({ navigation }: ForgotYourPasswordScree
       setError('Please enter your email.');
       return;
     }
-    setLoading(true);
+
     setError('');
+    setLoading(true);
+
     try {
-      // Replace with your actual API call
-      const response = await fetch('https://your-auth-server.com/reset-password', {
-        method: 'POST',
+      const response = await fetch(RESET_PASSWORD_URL, {
+        body: JSON.stringify({ email }),
         headers: {
           'Content-Type': 'application/vnd.api+json'
         },
-        body: JSON.stringify({ email })
+        method: 'POST'
       });
+
       if (response.ok) {
-        // Navigate to a confirmation or success screen
-        navigation.navigate('ResetPasswordConfirmation');
+        return showSnackbar({ message: 'Reset link sent. Please check your email.' });
       } else {
-        // Handle error responses as needed
         const data = await response.json();
-        setError(data.errors ? data.errors.join('\n') : 'Something went wrong.');
+        console.error(data); // remove for production?
+        return showSnackbar({ message: 'Something went wrong.' });
       }
     } catch (err) {
-      setError('Network error, please try again later.');
+      console.error(err); // remove for production?
+      return showSnackbar({ message: 'Network error, please try again later.' });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Title>Reset Your Password</Title>
-      <Paragraph>Please enter your email address below and we'll send you a reset link.</Paragraph>
+    <View style={{ ...sharedStyles.container, padding: 40 }}>
+      <Paragraph>
+        Please enter your email address below and we&apos;ll send you a reset link.
+      </Paragraph>
       <TextInput
+        autoCapitalize='none'
+        keyboardType='email-address'
         label='Email'
         mode='outlined'
-        value={email}
         onChangeText={setEmail}
-        keyboardType='email-address'
-        autoCapitalize='none'
         style={styles.input}
+        value={email}
       />
       {error ? <Paragraph style={styles.errorText}>{error}</Paragraph> : null}
-      <Button mode='contained' onPress={handleSubmit} loading={loading} style={styles.button}>
+      <Button loading={loading} mode='contained' onPress={handleSubmit} style={styles.button}>
         Submit
       </Button>
     </View>
@@ -62,19 +68,19 @@ export const ForgotYourPasswordScreen = ({ navigation }: ForgotYourPasswordScree
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'center'
-  },
-  input: {
-    marginTop: 16
-  },
   button: {
     marginTop: 16
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16
   },
   errorText: {
     color: 'red',
     marginTop: 8
+  },
+  input: {
+    marginTop: 16
   }
 });
