@@ -111,8 +111,17 @@ export const LogInScreen = ({ navigation }: LogInScreenProps) => {
         icon='chevron-right'
         mode='outlined'
         onPress={() => navigation.navigate('SignUp')}
+        style={{ marginBottom: 16 }}
       >
         New user? Sign up
+      </Button>
+      <Button
+        contentStyle={{ flexDirection: 'row-reverse' }}
+        icon='chevron-right'
+        mode='outlined'
+        onPress={() => navigation.navigate('ForgotYourPassword')}
+      >
+        Forgot your password?
       </Button>
     </View>
   );

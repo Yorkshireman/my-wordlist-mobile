@@ -7,6 +7,7 @@ export type AuthToken = string | null;
 export type RootStackParamList = {
   CreateWordlistEntries: { wordlistId: string };
   EditWordlistEntry: { id: string };
+  ForgotYourPassword: undefined;
   GenerateExampleSentences: { wordId: string };
   Home: undefined;
   LogIn: undefined;
@@ -31,6 +32,11 @@ export type EditWordlistEntryScreenProps = NativeStackScreenProps<
 >;
 
 export type EditWordlistEntryScreenRouteParams = RouteProp<RootStackParamList, 'EditWordlistEntry'>;
+
+export type ForgotYourPasswordScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ForgotYourPassword'
+>;
 
 export type GenerateExampleSentencesOptionsContextType = {
   operations: {

@@ -22,6 +22,7 @@ import {
 import {
   CreateWordlistEntriesScreen,
   EditWordlistEntryScreen,
+  ForgotYourPasswordScreen,
   GenerateExampleSentencesScreen,
   HomeScreen,
   LogInScreen,
@@ -121,6 +122,11 @@ export default function App() {
                     <Stack.Screen
                       component={SignUpScreen}
                       name='SignUp'
+                      options={{ title: 'My Wordlist' }}
+                    />
+                    <Stack.Screen
+                      component={ForgotYourPasswordScreen}
+                      name='ForgotYourPassword'
                       options={{ title: 'My Wordlist' }}
                     />
                     <Stack.Screen
