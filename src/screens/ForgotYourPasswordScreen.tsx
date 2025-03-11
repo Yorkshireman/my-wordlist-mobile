@@ -47,7 +47,7 @@ export const ForgotYourPasswordScreen = () => {
 
   return (
     <View style={{ ...sharedStyles.container, padding: 40 }}>
-      <Paragraph>
+      <Paragraph style={{ marginBottom: 16 }}>
         Please enter your email address below and we&apos;ll send you a reset link.
       </Paragraph>
       <TextInput
@@ -56,11 +56,12 @@ export const ForgotYourPasswordScreen = () => {
         label='Email'
         mode='outlined'
         onChangeText={setEmail}
-        style={styles.input}
+        style={{ marginBottom: 16 }}
+        testID='email-input-field'
         value={email}
       />
       {error ? <Paragraph style={styles.errorText}>{error}</Paragraph> : null}
-      <Button loading={loading} mode='contained' onPress={handleSubmit} style={styles.button}>
+      <Button loading={loading} mode='contained' onPress={handleSubmit}>
         Submit
       </Button>
     </View>
@@ -68,9 +69,6 @@ export const ForgotYourPasswordScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 16
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -79,8 +77,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginTop: 8
-  },
-  input: {
-    marginTop: 16
   }
 });
