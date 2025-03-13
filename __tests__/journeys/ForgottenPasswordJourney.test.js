@@ -76,6 +76,14 @@ describe('Forgotten Password Journey', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
     });
 
+    test('fetch() is called with expected params', () => {
+      expect(fetch).toHaveBeenCalledWith('https://reset-password-url', {
+        body: JSON.stringify({ email: 'test@test.com' }),
+        headers: { 'Content-Type': 'application/vnd.api+json' },
+        method: 'POST'
+      });
+    });
+
     test('a suitable validation message appears', async () => {
       expect(fetch).toHaveBeenCalledTimes(1);
       await waitFor(() =>
