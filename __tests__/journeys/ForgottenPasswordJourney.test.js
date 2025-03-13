@@ -10,7 +10,16 @@ import { render, screen, userEvent, waitFor } from '@testing-library/react-nativ
 jest.useFakeTimers();
 
 describe('Forgotten Password Journey', () => {
+  const originalFetch = global.fetch;
   beforeEach(async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({}),
+        ok: true,
+        status: 204
+      })
+    );
+
     const Stack = createNativeStackNavigator();
     render(
       <PaperProvider>
@@ -40,6 +49,8 @@ describe('Forgotten Password Journey', () => {
     await user.press(forgotPasswordButton);
   });
 
+  afterEach(() => (global.fetch = originalFetch));
+
   describe('when tapping submit button without entering an email', () => {
     beforeEach(async () => {
       const user = userEvent.setup();
@@ -50,27 +61,20 @@ describe('Forgotten Password Journey', () => {
     test('a suitable validation message appears', async () => {
       await waitFor(() => expect(screen.getByText('Please enter your email.')).toBeOnTheScreen());
     });
+
+    test('does not call fetch()', () => {
+      expect(fetch).not.toHaveBeenCalled();
+    });
   });
 
   describe('when submit returns success', () => {
-    const originalFetch = global.fetch;
     beforeEach(async () => {
-      global.fetch = jest.fn(() =>
-        Promise.resolve({
-          json: () => Promise.resolve({}),
-          ok: true,
-          status: 204
-        })
-      );
-
       const user = userEvent.setup();
       const emailInput = await waitFor(() => screen.getByTestId('email-input-field'));
       await user.type(emailInput, 'test@test.com');
       const submitButton = screen.getByRole('button', { name: 'Submit' });
       await user.press(submitButton);
     });
-
-    afterEach(() => (global.fetch = originalFetch));
 
     test('fetch() is called once', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
@@ -91,125 +95,4 @@ describe('Forgotten Password Journey', () => {
       );
     });
   });
-
-  // describe('after typing one character in email field', () => {
-  //   beforeEach(async () => {
-  //     const user = userEvent.setup();
-  //     const emailInput = await waitFor(() => screen.getByLabelText('email'));
-  //     await user.type(emailInput, 't');
-  //   });
-
-  //   test('submit button is disabled', async () => {
-  //     await waitFor(() => expect(screen.getByRole('button', { name: 'Sign up' })).toBeDisabled());
-  //   });
-  // });
-
-  // describe('after typing one character in email field and one character in password and password confirmation field', () => {
-  //   beforeEach(async () => {
-  //     const user = userEvent.setup();
-  //     const emailInput = await waitFor(() => screen.getByLabelText('email'));
-  //     await user.type(emailInput, 't');
-  //     const passwordInput = await waitFor(() => screen.getByLabelText('password'));
-  //     await user.type(passwordInput, 'a');
-  //     const passwordConfirmationInput = await waitFor(() =>
-  //       screen.getByLabelText('confirm password')
-  //     );
-  //     await user.type(passwordConfirmationInput, 'a');
-  //   });
-
-  //   test('submit button is enabled', async () => {
-  //     await waitFor(() => expect(screen.getByRole('button', { name: 'Sign up' })).toBeEnabled());
-  //   });
-
-  //   test('validation message is not visible', async () => {
-  //     await waitFor(() =>
-  //       expect(screen.queryByText('Please enter a valid email address')).not.toBeVisible()
-  //     );
-  //   });
-
-  //   describe('after tapping submit button', () => {
-  //     beforeEach(async () => {
-  //       const user = userEvent.setup();
-  //       const submitButton = screen.getByRole('button', { name: 'Sign up' });
-  //       await user.press(submitButton);
-  //     });
-
-  //     test('a suitable validation message appears', async () => {
-  //       await waitFor(() =>
-  //         expect(screen.getByText('Please enter a valid email address')).toBeVisible()
-  //       );
-  //     });
-
-  //     test('does not call signUp()', () => {
-  //       expect(signUp).not.toHaveBeenCalled();
-  //     });
-  //   });
-  // });
-
-  // describe('after entering an invalid email and matching passwords', () => {
-  //   beforeEach(async () => {
-  //     const user = userEvent.setup();
-  //     const emailInput = await waitFor(() => screen.getByLabelText('email'));
-  //     await user.type(emailInput, 'test.com');
-  //     const passwordInput = await waitFor(() => screen.getByLabelText('password'));
-  //     await user.type(passwordInput, 'password');
-  //     const passwordConfirmationInput = await waitFor(() =>
-  //       screen.getByLabelText('confirm password')
-  //     );
-  //     await user.type(passwordConfirmationInput, 'password');
-  //   });
-
-  //   test('submit button is enabled', async () => {
-  //     await waitFor(() => expect(screen.getByRole('button', { name: 'Sign up' })).toBeEnabled());
-  //   });
-
-  //   describe('after tapping submit button', () => {
-  //     beforeEach(async () => {
-  //       const user = userEvent.setup();
-  //       const submitButton = screen.getByRole('button', { name: 'Sign up' });
-  //       await user.press(submitButton);
-  //     });
-
-  //     test('a suitable validation message appears', async () => {
-  //       await waitFor(() =>
-  //         expect(screen.getByText('Please enter a valid email address')).toBeVisible()
-  //       );
-  //     });
-
-  //     test('does not call signUp()', () => {
-  //       expect(signUp).not.toHaveBeenCalled();
-  //     });
-
-  //     describe('if user then modifies email to be valid', () => {
-  //       beforeEach(async () => {
-  //         const user = userEvent.setup();
-  //         const emailInput = await waitFor(() => screen.getByLabelText('email'));
-  //         await user.clear(emailInput);
-  //         await user.type(emailInput, 'email@test.com');
-  //         const submitButton = screen.getByRole('button', { name: 'Sign up' });
-  //         await user.press(submitButton);
-  //       });
-
-  //       test('validation message disappears', async () => {
-  //         await waitFor(() =>
-  //           expect(screen.queryByText('Please enter a valid email address')).not.toBeVisible()
-  //         );
-  //       });
-
-  //       test('calls signUp()', () => {
-  //         expect(signUp).toHaveBeenCalledTimes(1);
-  //       });
-
-  //       test('calls signUp() with expected params', () => {
-  //         expect(signUp).toHaveBeenCalledWith({
-  //           email: 'email@test.com',
-  //           myWordlistCreate: expect.anything(),
-  //           password: 'password',
-  //           setErrorMessage: expect.anything(),
-  //           setLoading: expect.anything()
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
 });
