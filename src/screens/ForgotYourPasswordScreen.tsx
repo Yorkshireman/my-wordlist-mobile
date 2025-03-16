@@ -3,7 +3,7 @@ import { RESET_PASSWORD_URL } from '@env';
 import sharedStyles from '../styles';
 import { useSnackbar } from '../hooks';
 import { Button, Paragraph, TextInput } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 
 export const ForgotYourPasswordScreen = () => {
   const [email, setEmail] = React.useState('');
@@ -12,12 +12,12 @@ export const ForgotYourPasswordScreen = () => {
   const { showSnackbar } = useSnackbar();
 
   const handleSubmit = async () => {
-    // Simple validation
     if (!email) {
       setError('Please enter your email.');
       return;
     }
 
+    Keyboard.dismiss();
     setError('');
     setLoading(true);
 
@@ -61,7 +61,12 @@ export const ForgotYourPasswordScreen = () => {
         value={email}
       />
       {error ? <Paragraph style={styles.errorText}>{error}</Paragraph> : null}
-      <Button loading={loading} mode='contained' onPress={handleSubmit}>
+      <Button
+        loading={loading}
+        mode='contained'
+        onPress={handleSubmit}
+        style={{ marginBottom: 16 }}
+      >
         Submit
       </Button>
     </View>
