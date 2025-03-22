@@ -127,6 +127,7 @@ sequenceDiagram
 
 ```
 MY_WORDLIST_GRAPHQL_URL=http://localhost:3000/graphql
+RESET_PASSWORD_URL=http://localhost:3001/api/reset-password
 SIGN_IN_URL=http://localhost:3001/api/signin
 SIGN_UP_URL=http://localhost:3001/api/signup
 ```
@@ -142,6 +143,7 @@ NB setting this env var isn't strictly necessary, but the default port will be `
 
 ```
 MY_WORDLIST_GRAPHQL_URL=http://localhost:3000/graphql
+RESET_PASSWORD_URL=http://localhost:3001/api/reset-password
 SIGN_IN_URL=http://localhost:3001/api/signin
 SIGN_UP_URL=http://localhost:3001/api/signup
 ```
@@ -152,6 +154,7 @@ SIGN_UP_URL=http://localhost:3001/api/signup
 
 Hardcode the following values into the code instead of relying on the values being pulled from `.env.development`:
 `MY_WORDLIST_GRAPHQL_URL`: `'http://10.0.2.2:3000/graphql'`
+`RESET_PASSWORD_URL`: `http://10.0.2.2:8081/api/reset-password`
 `SIGN_IN_URL`: `'http://10.0.2.2:8081/api/signin'`
 `SIGN_UP_URL`: `'http://10.0.2.2:8081/api/signup'`
 
@@ -182,6 +185,7 @@ Check you're logged in with `eas whoami`
         "buildType": "apk",
         "env": {
           "MY_WORDLIST_GRAPHQL_URL": <url>,
+          "RESET_PASSWORD_URL": <url>,
           "SIGN_IN_URL": <url>,
           "SIGN_UP_URL": <url>
         }
@@ -190,6 +194,7 @@ Check you're logged in with `eas whoami`
     "staging": {
       "env": {
         "MY_WORDLIST_GRAPHQL_URL": <url>,
+        "RESET_PASSWORD_URL": <url>,
         "SIGN_IN_URL": <url>,
         "SIGN_UP_URL": <url>
       }
