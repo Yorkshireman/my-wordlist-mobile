@@ -46,7 +46,7 @@ export const ForgotYourPasswordScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior='height' style={{ ...sharedStyles.container, padding: 40 }}>
+    <KeyboardAvoidingView behavior='padding' style={{ ...sharedStyles.container, padding: 40 }}>
       <Paragraph style={{ marginBottom: 16 }}>
         Please enter your email address below and we&apos;ll send you a reset link.
       </Paragraph>
@@ -76,11 +76,6 @@ export const ForgotYourPasswordScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16
-  },
   errorText: {
     color: 'red',
     marginBottom: 16,
