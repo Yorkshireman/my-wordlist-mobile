@@ -3,10 +3,11 @@ import { RESET_PASSWORD_URL } from '@env';
 import sharedStyles from '../styles';
 import { useSnackbar } from '../hooks';
 import { Button, Paragraph, TextInput } from 'react-native-paper';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, TextInput as RNTextInput, StyleSheet } from 'react-native';
 
 export const ForgotYourPasswordScreen = () => {
   const [email, setEmail] = React.useState('');
+  const emailInputRef = React.useRef<RNTextInput>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const { showSnackbar } = useSnackbar();
@@ -46,7 +47,7 @@ export const ForgotYourPasswordScreen = () => {
   };
 
   return (
-    <View style={{ ...sharedStyles.container, padding: 40 }}>
+    <KeyboardAvoidingView behavior='height' style={{ ...sharedStyles.container, padding: 40 }}>
       <Paragraph style={{ marginBottom: 16 }}>
         Please enter your email address below and we&apos;ll send you a reset link.
       </Paragraph>
@@ -56,7 +57,10 @@ export const ForgotYourPasswordScreen = () => {
         label='Email'
         mode='outlined'
         onChangeText={setEmail}
-        style={{ marginBottom: 16 }}
+        onSubmitEditing={handleSubmit}
+        ref={emailInputRef}
+        returnKeyType='send'
+        style={{ marginBottom: error ? 0 : 24 }}
         testID='email-input-field'
         value={email}
       />
@@ -69,7 +73,7 @@ export const ForgotYourPasswordScreen = () => {
       >
         Submit
       </Button>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    marginBottom: 16,
     marginTop: 8
   }
 });
