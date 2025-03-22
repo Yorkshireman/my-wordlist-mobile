@@ -44,8 +44,8 @@ describe('Forgotten Password Journey', () => {
       </PaperProvider>
     );
 
-    const user = userEvent.setup();
     const forgotPasswordButton = screen.getByRole('button', { name: 'Forgot your password?' });
+    const user = userEvent.setup();
     await user.press(forgotPasswordButton);
   });
 
@@ -58,7 +58,7 @@ describe('Forgotten Password Journey', () => {
       await user.press(submitButton);
     });
 
-    test('a suitable validation message appears', async () => {
+    test('message to enter an email appears', async () => {
       await waitFor(() => expect(screen.getByText('Please enter your email.')).toBeOnTheScreen());
     });
 
@@ -88,11 +88,15 @@ describe('Forgotten Password Journey', () => {
       });
     });
 
-    test('a suitable validation message appears', async () => {
+    test('a success message appears', async () => {
       expect(fetch).toHaveBeenCalledTimes(1);
       await waitFor(() =>
         expect(screen.getByText('Reset link sent. Please check your email.')).toBeOnTheScreen()
       );
+    });
+
+    test('the message to enter an email does not appear', async () => {
+      await waitFor(() => expect(screen.queryByText('Please enter your email.')).toBeNull());
     });
   });
 });
