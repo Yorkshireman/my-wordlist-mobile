@@ -130,20 +130,17 @@ export default function App() {
                       options={{ title: 'My Wordlist' }}
                     />
                     <Stack.Screen
-                      component={CreateWordlistEntriesScreen}
-                      name='CreateWordlistEntries'
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                      component={EditWordlistEntryScreen}
-                      name='EditWordlistEntry'
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
                       component={GenerateExampleSentencesScreen}
                       name='GenerateExampleSentences'
                       options={{ title: 'My Wordlist' }}
                     />
+                  </Stack.Group>
+                  <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
+                    <Stack.Screen
+                      component={CreateWordlistEntriesScreen}
+                      name='CreateWordlistEntries'
+                    />
+                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
                   </Stack.Group>
                 </Stack.Navigator>
                 <StatusBar style='auto' />
