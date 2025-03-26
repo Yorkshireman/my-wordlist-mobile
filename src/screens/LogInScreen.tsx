@@ -62,6 +62,7 @@ export const LogInScreen = ({ navigation }: LogInScreenProps) => {
         autoCapitalize='none'
         autoComplete='email'
         error={signInError}
+        inputMode='email'
         mode='outlined'
         onChangeText={setEmail}
         placeholder='email'

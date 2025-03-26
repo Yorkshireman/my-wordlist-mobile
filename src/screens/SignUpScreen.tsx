@@ -76,6 +76,7 @@ export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
       <TextInput
         aria-label='email'
         autoCapitalize='none'
+        inputMode='email'
         label='email'
         mode='outlined'
         onChangeText={setEmail}
