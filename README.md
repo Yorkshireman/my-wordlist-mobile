@@ -208,3 +208,7 @@ NB strictly speaking, only the `staging-internal` part is needed for this specif
 `eas build -p android --profile staging-internal`
 
 This will build remotely and, when completed, provide an apk download url in the terminal.
+
+## Troubleshooting
+
+If environment variable value changes do not appear to be respected after restarting the server, try `npx expo start -c` - this clears the Metro bundler cache and rebuilds the app.
