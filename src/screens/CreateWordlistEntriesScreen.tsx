@@ -17,8 +17,8 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
 const styles = StyleSheet.create({
   close: {
     position: 'absolute',
-    right: 3,
-    top: 3
+    right: 5,
+    top: 5
   },
   title: {
     fontSize: 16,
