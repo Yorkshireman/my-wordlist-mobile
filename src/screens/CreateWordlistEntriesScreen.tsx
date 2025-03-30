@@ -2,7 +2,7 @@ import { CreateWordlistEntriesScreenProps } from '../../types';
 import { CreateWordlistEntryForm } from '../components';
 import sharedStyles from '../styles';
 import { IconButton, Text } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntriesScreenProps) => {
   return (
@@ -17,8 +17,8 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
 const styles = StyleSheet.create({
   close: {
     position: 'absolute',
-    right: 5,
-    top: 5
+    right: Platform.OS === 'android' ? 5 : 3,
+    top: Platform.OS === 'android' ? 5 : 3
   },
   title: {
     fontSize: 16,

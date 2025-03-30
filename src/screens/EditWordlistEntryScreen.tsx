@@ -9,8 +9,8 @@ import { AddCategoriesForm, EditWordForm } from '../components';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
+import { Platform, StyleSheet, View } from 'react-native';
 import { QueryResult, useQuery } from '@apollo/client';
-import { StyleSheet, View } from 'react-native';
 import { useAddCategories, useWordlistEntryUpdate } from '../hooks';
 
 const Categories = ({
@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
   },
   close: {
     position: 'absolute',
-    right: 5,
-    top: 5
+    right: Platform.OS === 'android' ? 5 : 3,
+    top: Platform.OS === 'android' ? 5 : 3
   },
   title: {
     fontSize: 16,
