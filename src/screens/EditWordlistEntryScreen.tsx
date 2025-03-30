@@ -178,9 +178,12 @@ export const EditWordlistEntryScreen = ({
           Cancel
         </Button>
       ) : (
-        <Text onPress={() => navigate('Home')} style={styles.close}>
-          Close
-        </Text>
+        <IconButton
+          aria-label='close'
+          icon='close'
+          onPress={() => navigate('Home')}
+          style={styles.close}
+        />
       )}
       {editWordFormVisible ? (
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
@@ -214,10 +217,9 @@ const styles = StyleSheet.create({
     marginRight: 2.5
   },
   close: {
-    fontSize: 16,
     position: 'absolute',
-    right: 20,
-    top: 20
+    right: 3,
+    top: 3
   },
   title: {
     fontSize: 16,
