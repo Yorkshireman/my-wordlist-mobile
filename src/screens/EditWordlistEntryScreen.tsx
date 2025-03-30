@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   close: {
     position: 'absolute',
     right: Platform.OS === 'android' ? 5 : 3,
-    top: Platform.OS === 'android' ? 5 : 3
+    top: Platform.OS === 'android' ? 25 : 3
   },
   title: {
     fontSize: 16,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     justifyContent: 'flex-start',
-    marginTop: 10,
-    padding: 20
+    padding: 20,
+    paddingTop: Platform.OS === 'android' ? 40 : 20
   }
 });
