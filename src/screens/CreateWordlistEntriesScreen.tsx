@@ -9,6 +9,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Add Word</Text>
       <IconButton
+        aria-label='close'
         icon='close'
         onPress={() => navigation.navigate('Home')}
         style={styles.close}
