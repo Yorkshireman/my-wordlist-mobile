@@ -148,17 +148,19 @@ SIGN_IN_URL=http://localhost:3001/api/signin
 SIGN_UP_URL=http://localhost:3001/api/signup
 ```
 
-`npm run ios`
+- Run `authentication-server` with `r s -p 3001`
+- Run `my_wordlist_graphql` with `r s`
+- `npm run ios`
 
 ### For Android Simulator
 
 Hardcode the following values into the code instead of relying on the values being pulled from `.env.development`:
 `MY_WORDLIST_GRAPHQL_URL`: `'http://10.0.2.2:3000/graphql'`
-`RESET_PASSWORD_URL`: `http://10.0.2.2:8081/api/reset-password`
-`SIGN_IN_URL`: `'http://10.0.2.2:8081/api/signin'`
-`SIGN_UP_URL`: `'http://10.0.2.2:8081/api/signup'`
+`RESET_PASSWORD_URL`: `http://10.0.2.2:3001/api/reset-password`
+`SIGN_IN_URL`: `'http://10.0.2.2:3001/api/signin'`
+`SIGN_UP_URL`: `'http://10.0.2.2:3001/api/signup'`
 
-- Run `authentication-server` with `r s -p 8081`
+- Run `authentication-server` with `r s -p 3001`
 - Run `my_wordlist_graphql` with `r s`
 - `npm run android`
 
