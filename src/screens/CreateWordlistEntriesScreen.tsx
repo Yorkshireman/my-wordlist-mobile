@@ -8,7 +8,12 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Add Word</Text>
-      <IconButton icon='close' onPress={() => navigation.navigate('Home')} style={styles.close} />
+      <IconButton
+        icon='close'
+        onPress={() => navigation.navigate('Home')}
+        style={styles.close}
+        testID='close-create-wordlist-entries-screen-icon-button'
+      />
       <CreateWordlistEntryForm />
     </View>
   );

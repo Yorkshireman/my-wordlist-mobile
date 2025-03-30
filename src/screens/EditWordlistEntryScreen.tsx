@@ -183,6 +183,7 @@ export const EditWordlistEntryScreen = ({
           icon='close'
           onPress={() => navigate('Home')}
           style={styles.close}
+          testID='close-edit-wordlist-entry-icon-button'
         />
       )}
       {editWordFormVisible ? (
