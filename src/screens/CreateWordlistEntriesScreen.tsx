@@ -1,16 +1,20 @@
 import { CreateWordlistEntriesScreenProps } from '../../types';
 import { CreateWordlistEntryForm } from '../components';
 import sharedStyles from '../styles';
-import { Text } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { IconButton, Text } from 'react-native-paper';
+import { Platform, StyleSheet, View } from 'react-native';
 
 export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntriesScreenProps) => {
   return (
     <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
       <Text style={styles.title}>Add Word</Text>
-      <Text onPress={() => navigation.navigate('Home')} style={styles.close}>
-        Back
-      </Text>
+      <IconButton
+        aria-label='close'
+        icon='close'
+        onPress={() => navigation.navigate('Home')}
+        style={styles.close}
+        testID='close-create-wordlist-entries-screen-icon-button'
+      />
       <CreateWordlistEntryForm />
     </View>
   );
@@ -18,10 +22,9 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
 
 const styles = StyleSheet.create({
   close: {
-    fontSize: 16,
     position: 'absolute',
-    right: 20,
-    top: 20
+    right: Platform.OS === 'android' ? 5 : 3,
+    top: Platform.OS === 'android' ? 25 : 3
   },
   title: {
     fontSize: 16,
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     justifyContent: 'flex-start',
-    marginTop: 10,
-    padding: 20
+    padding: 20,
+    paddingTop: Platform.OS === 'android' ? 40 : 20
   }
 });

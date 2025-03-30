@@ -76,10 +76,10 @@ describe('Add Wordlist Entry journey', () => {
         await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
-      describe('after pressing Back', () => {
+      describe('after tapping close icon', () => {
         beforeEach(async () => {
           await waitFor(() => {
-            fireEvent.press(screen.getByText('Back'));
+            fireEvent.press(screen.getByTestId('close-create-wordlist-entries-screen-icon-button'));
           });
         });
 
@@ -109,10 +109,10 @@ describe('Add Wordlist Entry journey', () => {
         await waitFor(() => expect(screen.getByText('"chair" added!')).toBeOnTheScreen());
       });
 
-      describe('after pressing Back', () => {
+      describe('after tapping close icon', () => {
         beforeEach(async () => {
           await waitFor(() => {
-            fireEvent.press(screen.getByText('Back'));
+            fireEvent.press(screen.getByTestId('close-create-wordlist-entries-screen-icon-button'));
           });
         });
 

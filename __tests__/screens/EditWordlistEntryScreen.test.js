@@ -51,8 +51,10 @@ describe('EditWordlistEntryScreen', () => {
     await waitFor(() => expect(screen.getByText('Edit')).toBeOnTheScreen());
   });
 
-  test('displays Close', async () => {
-    await waitFor(() => expect(screen.getByText('Close')).toBeOnTheScreen());
+  test('displays close icon', async () => {
+    await waitFor(() =>
+      expect(screen.getByTestId('close-edit-wordlist-entry-icon-button')).toBeOnTheScreen()
+    );
   });
 
   test('displays word', async () => {

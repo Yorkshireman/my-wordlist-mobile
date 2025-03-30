@@ -295,10 +295,10 @@ describe('Edit Wordlist Entry journey', () => {
       });
     });
 
-    describe('after tapping "Close" text', () => {
+    describe('after tapping close icon', () => {
       beforeEach(async () => {
         await waitFor(() => {
-          fireEvent.press(screen.getByText('Close'));
+          fireEvent.press(screen.getByTestId('close-edit-wordlist-entry-icon-button'));
         });
       });
 
@@ -348,10 +348,10 @@ describe('Edit Wordlist Entry journey', () => {
       });
     });
 
-    describe('after tapping "Close" text', () => {
+    describe('after tapping close icon', () => {
       beforeEach(async () => {
         await waitFor(() => {
-          fireEvent.press(screen.getByText('Close'));
+          fireEvent.press(screen.getByTestId('close-edit-wordlist-entry-icon-button'));
         });
       });
 

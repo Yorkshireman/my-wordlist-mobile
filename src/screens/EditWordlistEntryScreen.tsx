@@ -9,8 +9,8 @@ import { AddCategoriesForm, EditWordForm } from '../components';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
+import { Platform, StyleSheet, View } from 'react-native';
 import { QueryResult, useQuery } from '@apollo/client';
-import { StyleSheet, View } from 'react-native';
 import { useAddCategories, useWordlistEntryUpdate } from '../hooks';
 
 const Categories = ({
@@ -178,9 +178,13 @@ export const EditWordlistEntryScreen = ({
           Cancel
         </Button>
       ) : (
-        <Text onPress={() => navigate('Home')} style={styles.close}>
-          Close
-        </Text>
+        <IconButton
+          aria-label='close'
+          icon='close'
+          onPress={() => navigate('Home')}
+          style={styles.close}
+          testID='close-edit-wordlist-entry-icon-button'
+        />
       )}
       {editWordFormVisible ? (
         <EditWordForm setEditWordFormVisible={setEditWordFormVisible} />
@@ -214,10 +218,9 @@ const styles = StyleSheet.create({
     marginRight: 2.5
   },
   close: {
-    fontSize: 16,
     position: 'absolute',
-    right: 20,
-    top: 20
+    right: Platform.OS === 'android' ? 5 : 3,
+    top: Platform.OS === 'android' ? 25 : 3
   },
   title: {
     fontSize: 16,
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     justifyContent: 'flex-start',
-    marginTop: 10,
-    padding: 20
+    padding: 20,
+    paddingTop: Platform.OS === 'android' ? 40 : 20
   }
 });
