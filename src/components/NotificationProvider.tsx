@@ -1,11 +1,18 @@
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
+import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
-import { EmitterSubscription, Keyboard, Platform, StyleSheet, View } from 'react-native';
+import { EmitterSubscription, Keyboard, Platform } from 'react-native';
+import { ReactNode, useEffect, useState } from 'react';
 import { Snackbar, useTheme } from 'react-native-paper';
-import { useEffect, useState } from 'react';
 
-export const NotificationProvider = ({ children }: { children: React.ReactElement }) => {
+const useIsModal = () => {
+  const route = useRoute();
+  const { presentation } = route.params || {};
+  return presentation === 'modal';
+};
+
+export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { hideSnackbar } = useSnackbar();
   const {
@@ -13,6 +20,7 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   } = useTheme();
 
   const { duration, error, key, message, visible } = useReactiveVar(snackbarStateVar);
+  const isModal = useIsModal();
 
   useEffect(() => {
     let keyboardDidShowListener: EmitterSubscription;
@@ -33,27 +41,19 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   }, []);
 
   const backgroundColor = error ? errorColour : primary;
+
   return (
     <>
       {children}
-      <View style={styles.snackbarWrapper}>
-        <Snackbar
-          duration={duration}
-          key={key}
-          onDismiss={() => hideSnackbar()}
-          style={{ backgroundColor, marginBottom: keyboardHeight }}
-          visible={visible}
-        >
-          {message}
-        </Snackbar>
-      </View>
+      <Snackbar
+        duration={duration}
+        key={key}
+        onDismiss={() => hideSnackbar()}
+        style={{ backgroundColor, marginBottom: keyboardHeight + 7 + (isModal ? 20 : 0) }}
+        visible={visible}
+      >
+        {message}
+      </Snackbar>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  snackbarWrapper: {
-    marginBottom: 7,
-    marginTop: 'auto'
-  }
-});
