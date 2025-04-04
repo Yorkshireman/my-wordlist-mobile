@@ -1,12 +1,11 @@
 import { CreateWordlistEntriesScreenProps } from '../../types';
-import { CreateWordlistEntryForm } from '../components';
-import sharedStyles from '../styles';
+import { CreateWordlistEntryForm, ScreenWrapper } from '../components';
 import { IconButton, Text } from 'react-native-paper';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntriesScreenProps) => {
   return (
-    <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
+    <ScreenWrapper additionalStyles={styles.wrapper}>
       <Text style={styles.title}>Add Word</Text>
       <IconButton
         aria-label='close'
@@ -16,7 +15,7 @@ export const CreateWordlistEntriesScreen = ({ navigation }: CreateWordlistEntrie
         testID='close-create-wordlist-entries-screen-icon-button'
       />
       <CreateWordlistEntryForm />
-    </View>
+    </ScreenWrapper>
   );
 };
 

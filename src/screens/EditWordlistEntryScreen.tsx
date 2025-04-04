@@ -1,11 +1,10 @@
 import { MY_WORDLIST } from '../graphql-queries';
 import { parseUniqueCategories } from '../utils';
 import React from 'react';
-import sharedStyles from '../styles';
 import { useAsyncStorage } from '../hooks';
 import { useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import { AddCategoriesForm, EditWordForm } from '../components';
+import { AddCategoriesForm, EditWordForm, ScreenWrapper } from '../components';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { Category, MyWordlist, WordlistEntry } from '../__generated__/graphql';
 import { EditWordlistEntryScreenProps, EditWordlistEntryScreenRouteParams } from '../../types';
@@ -165,7 +164,7 @@ export const EditWordlistEntryScreen = ({
   };
 
   return (
-    <View style={{ ...sharedStyles.container, ...styles.wrapper }}>
+    <ScreenWrapper additionalStyles={styles.wrapper}>
       <Text style={styles.title}>Edit</Text>
       {editWordFormVisible ? (
         <Button
@@ -198,7 +197,7 @@ export const EditWordlistEntryScreen = ({
         entryCategories={categories}
         wordlistEntryToUpdate={wordlistEntry}
       />
-    </View>
+    </ScreenWrapper>
   );
 };
 

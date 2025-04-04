@@ -10,5 +10,6 @@ export { GenerateExampleSentencesScreenWrapper } from './GenerateExampleSentence
 export { Loading } from './Loading';
 export { NavigationBar } from './NavigationBar';
 export { NotificationProvider } from './NotificationProvider';
+export { ScreenWrapper } from './ScreenWrapper';
 export { SentencesGeneratorOptions } from './SentencesGeneratorOptions';
 export { Wordlist } from './Wordlist';

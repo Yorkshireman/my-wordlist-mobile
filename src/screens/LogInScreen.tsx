@@ -1,13 +1,12 @@
 import { EyeIcon } from '../components';
 import type { LogInScreenProps } from '../../types';
-import sharedStyles from '../styles';
+import { ScreenWrapper } from '../components';
+import { StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useState } from 'react';
 import { ApolloClient, NormalizedCacheObject, useApolloClient } from '@apollo/client';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { isInvalidEmail, signIn } from '../utils';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 const useInputValues = (
   email: string,
@@ -56,7 +55,7 @@ export const LogInScreen = ({ navigation }: LogInScreenProps) => {
   };
 
   return (
-    <View style={{ ...sharedStyles.container, padding: 40 }}>
+    <ScreenWrapper additionalStyles={{ padding: 40 }}>
       <TextInput
         aria-label='email'
         autoCapitalize='none'
@@ -124,7 +123,7 @@ export const LogInScreen = ({ navigation }: LogInScreenProps) => {
       >
         Forgot your password?
       </Button>
-    </View>
+    </ScreenWrapper>
   );
 };
 

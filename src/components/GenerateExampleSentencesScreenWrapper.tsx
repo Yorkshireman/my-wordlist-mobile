@@ -1,7 +1,6 @@
 import { GenerateExampleSentencesOptionsContext } from '../contexts';
-import sharedStyles from '../styles';
 import { useRoute } from '@react-navigation/native';
-import { ExampleSentences, Loading, SentencesGeneratorOptions } from '../components';
+import { ExampleSentences, Loading, ScreenWrapper, SentencesGeneratorOptions } from '../components';
 import { Explanation, Level } from '../__generated__/graphql';
 import {
   GenerateExampleSentencesOptionsContextType,
@@ -100,7 +99,7 @@ export const GenerateExampleSentencesScreenWrapper = () => {
   };
 
   return (
-    <View style={{ ...sharedStyles.container, justifyContent: 'flex-start' }}>
+    <ScreenWrapper additionalStyles={{ justifyContent: 'flex-start' }}>
       <SentencesGeneratorOptions />
       {loading ? (
         <View style={{ marginTop: 80 }}>
@@ -120,6 +119,6 @@ export const GenerateExampleSentencesScreenWrapper = () => {
           </View>
         </ScrollView>
       )}
-    </View>
+    </ScreenWrapper>
   );
 };

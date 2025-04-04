@@ -1,8 +1,8 @@
 import { Drawer } from 'react-native-drawer-layout';
 import type { HomeScreenProps } from '../../types';
 import React from 'react';
+import { ScreenWrapper } from '../components';
 import { selectedCategoriesIdsVar } from '../reactiveVars';
-import sharedStyles from '../styles';
 import { useFetchWordlistData } from '../hooks';
 import { useReactiveVar } from '@apollo/client';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       open={open}
       renderDrawerContent={() => myWordlist && <Filters />}
     >
-      <View style={{ ...sharedStyles.container, justifyContent, padding: 15 }}>
+      <ScreenWrapper additionalStyles={{ justifyContent, padding: 15 }}>
         {loading && <Loading size='large' />}
         {myWordlist && (
           <>
@@ -52,7 +52,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             />
           </>
         )}
-      </View>
+      </ScreenWrapper>
     </Drawer>
   );
 };
