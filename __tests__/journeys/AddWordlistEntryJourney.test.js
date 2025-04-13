@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { CreateWordlistEntriesScreen, HomeScreen } from '../../src/screens';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
@@ -32,22 +31,20 @@ describe('Add Wordlist Entry journey', () => {
       render(
         <PaperProvider>
           <MockedProvider addTypename={true} mocks={[myWordlistQueryMock, mutationMock]}>
-            <NotificationProvider>
-              <NavigationContainer>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    component={HomeScreen}
-                    name='Home'
-                    options={{ title: 'My Wordlist' }}
-                  />
-                  <Stack.Screen
-                    component={CreateWordlistEntriesScreen}
-                    name='CreateWordlistEntries'
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  component={HomeScreen}
+                  name='Home'
+                  options={{ title: 'My Wordlist' }}
+                />
+                <Stack.Screen
+                  component={CreateWordlistEntriesScreen}
+                  name='CreateWordlistEntries'
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
           </MockedProvider>
         </PaperProvider>
       );
