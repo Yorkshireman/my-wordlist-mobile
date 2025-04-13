@@ -6,8 +6,14 @@ import { EmitterSubscription, Keyboard, Platform } from 'react-native';
 import { ReactNode, useEffect, useState } from 'react';
 import { Snackbar, useTheme } from 'react-native-paper';
 
+type Route = {
+  params?: {
+    presentation?: string;
+  };
+};
+
 const useIsModal = () => {
-  const route = useRoute();
+  const route: Route = useRoute();
   const { presentation } = route.params || {};
   return presentation === 'modal';
 };
@@ -27,7 +33,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     let keyboardDidHideListener: EmitterSubscription;
     if (Platform.OS === 'ios') {
       keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', ({ endCoordinates }) =>
-        setKeyboardHeight(endCoordinates.height - 30)
+        setKeyboardHeight(endCoordinates.height)
       );
       keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () =>
         setKeyboardHeight(0)
