@@ -5,7 +5,6 @@ import { HomeScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { myWordlistQueryMock } from '../../mockedProviderMocks';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { parseUniqueCategories } from '../../src/utils/parseUniqueCategories';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
@@ -28,13 +27,15 @@ describe('Filtering', () => {
       render(
         <PaperProvider>
           <MockedProvider addTypename={true} mocks={[myWordlistQueryMock]}>
-            <NotificationProvider>
-              <NavigationContainer>
-                <Stack.Navigator>
-                  <Stack.Screen component={HomeScreen} name="Home" options={{ title: 'My Wordlist' }} />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  component={HomeScreen}
+                  name='Home'
+                  options={{ title: 'My Wordlist' }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
           </MockedProvider>
         </PaperProvider>
       );
@@ -44,7 +45,9 @@ describe('Filtering', () => {
   afterEach(() => jest.clearAllMocks());
 
   test('filters is not initially visible', async () => {
-    await waitFor(() => expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen());
+    await waitFor(() =>
+      expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen()
+    );
   });
 
   describe('after tapping open filters button', () => {
@@ -56,30 +59,46 @@ describe('Filtering', () => {
     });
 
     test('filters drawer is visible', async () => {
-      await waitFor(() => expect(screen.getByText('Select categories to include:')).toBeOnTheScreen());
+      await waitFor(() =>
+        expect(screen.getByText('Select categories to include:')).toBeOnTheScreen()
+      );
     });
 
     test('open-filters button is unchecked', async () => {
-      await waitFor(() => expect(screen.getByTestId('open-filters-button-unchecked')).toBeOnTheScreen());
+      await waitFor(() =>
+        expect(screen.getByTestId('open-filters-button-unchecked')).toBeOnTheScreen()
+      );
       await waitFor(() => expect(screen.queryByTestId('open-filters-button-checked')).toBeNull());
     });
 
-    test.each(wordlistUniqueCategories)('category "%s" is visible within the filters container', async category => {
-      await waitFor(() => {
-        const filtersContainer = screen.getByTestId('filters-container');
-        expect(within(filtersContainer).getByText(category)).toBeVisible();
-      });
-    });
+    test.each(wordlistUniqueCategories)(
+      'category "%s" is visible within the filters container',
+      async category => {
+        await waitFor(() => {
+          const filtersContainer = screen.getByTestId('filters-container');
+          expect(within(filtersContainer).getByText(category)).toBeVisible();
+        });
+      }
+    );
 
     describe('after selecting "adjective" category', () => {
-      const expectedVisibleWords = ['constructive', 'arterial', 'honourable', 'admirable', 'disorderly', 'foolish', 'understated'];
+      const expectedVisibleWords = [
+        'constructive',
+        'arterial',
+        'honourable',
+        'admirable',
+        'disorderly',
+        'foolish',
+        'understated'
+      ];
       let isAdjectiveCategorySelected;
       beforeEach(async () => {
         if (isAdjectiveCategorySelected) return;
         await waitFor(() => {
           fireEvent.press(
-            within(screen.getByTestId('filters-container'))
-              .getByRole('button', { name: 'adjective' })
+            within(screen.getByTestId('filters-container')).getByRole('button', {
+              name: 'adjective'
+            })
           );
         });
         isAdjectiveCategorySelected = true;
@@ -91,7 +110,8 @@ describe('Filtering', () => {
         });
       });
 
-      const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+      const expectedWordsNotVisible = entries
+        .map(({ word }) => word.text)
         .filter(word => !expectedVisibleWords.includes(word));
       test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
         await waitFor(() => {
@@ -100,8 +120,12 @@ describe('Filtering', () => {
       });
 
       test('open-filters button is checked', async () => {
-        await waitFor(() => expect(screen.getByTestId('open-filters-button-checked')).toBeOnTheScreen());
-        await waitFor(() => expect(screen.queryByTestId('open-filters-button-unchecked')).toBeNull());
+        await waitFor(() =>
+          expect(screen.getByTestId('open-filters-button-checked')).toBeOnTheScreen()
+        );
+        await waitFor(() =>
+          expect(screen.queryByTestId('open-filters-button-unchecked')).toBeNull()
+        );
       });
     });
 
@@ -111,8 +135,7 @@ describe('Filtering', () => {
         if (isAnatomyCategorySelected) return;
         await waitFor(() => {
           fireEvent.press(
-            within(screen.getByTestId('filters-container'))
-              .getByRole('button', { name: 'anatomy' })
+            within(screen.getByTestId('filters-container')).getByRole('button', { name: 'anatomy' })
           );
         });
         isAnatomyCategorySelected = true;
@@ -124,7 +147,8 @@ describe('Filtering', () => {
         });
       });
 
-      const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+      const expectedWordsNotVisible = entries
+        .map(({ word }) => word.text)
         .filter(word => word !== 'arterial');
       test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
         await waitFor(() => {
@@ -134,13 +158,22 @@ describe('Filtering', () => {
 
       describe('after deselecting "anatomy" category', () => {
         let anatomyIsDeselected;
-        const expectedVisibleWords = ['constructive', 'arterial', 'honourable', 'admirable', 'disorderly', 'foolish', 'understated'];
+        const expectedVisibleWords = [
+          'constructive',
+          'arterial',
+          'honourable',
+          'admirable',
+          'disorderly',
+          'foolish',
+          'understated'
+        ];
         beforeEach(async () => {
           if (anatomyIsDeselected) return;
           await waitFor(() => {
             fireEvent.press(
-              within(screen.getByTestId('filters-container'))
-                .getByRole('button', { name: 'anatomy' })
+              within(screen.getByTestId('filters-container')).getByRole('button', {
+                name: 'anatomy'
+              })
             );
           });
           anatomyIsDeselected = true;
@@ -152,7 +185,8 @@ describe('Filtering', () => {
           });
         });
 
-        const expectedWordsNotVisible = entries.map(({ word }) => word.text)
+        const expectedWordsNotVisible = entries
+          .map(({ word }) => word.text)
           .filter(word => !expectedVisibleWords.includes(word));
         test.each(expectedWordsNotVisible)('word "%s" is not visible', async word => {
           await waitFor(() => {
@@ -168,13 +202,11 @@ describe('Filtering', () => {
         if (areCategoriesSelected) return;
         await waitFor(() => {
           fireEvent.press(
-            within(screen.getByTestId('filters-container'))
-              .getByRole('button', { name: 'anatomy' })
+            within(screen.getByTestId('filters-container')).getByRole('button', { name: 'anatomy' })
           );
 
           fireEvent.press(
-            within(screen.getByTestId('filters-container'))
-              .getByRole('button', { name: 'food' })
+            within(screen.getByTestId('filters-container')).getByRole('button', { name: 'food' })
           );
         });
         areCategoriesSelected = true;
@@ -198,8 +230,7 @@ describe('Filtering', () => {
           if (foodIsDeselected) return;
           await waitFor(() => {
             fireEvent.press(
-              within(screen.getByTestId('filters-container'))
-                .getByRole('button', { name: 'food' })
+              within(screen.getByTestId('filters-container')).getByRole('button', { name: 'food' })
             );
           });
           foodIsDeselected = true;
@@ -223,7 +254,9 @@ describe('Filtering', () => {
       test('filters drawer is closed', async () => {
         const filtersContainer = screen.getByTestId('filters-container');
         fireEvent(filtersContainer, 'onClose');
-        await waitFor(() => expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen());
+        await waitFor(() =>
+          expect(screen.queryByText('Select categories to include:')).not.toBeOnTheScreen()
+        );
       });
     });
   });
