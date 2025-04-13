@@ -4,6 +4,7 @@ import { EditWordlistEntryScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { myWordlistQueryMock } from '../../mockedProviderMocks';
 import { NavigationContainer } from '@react-navigation/native';
+import { PaperProvider } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { render, screen, waitFor } from '@testing-library/react-native';
 
@@ -36,11 +37,13 @@ describe('EditWordlistEntryScreen', () => {
     useQuery.mockImplementation(() => myWordlistQueryMock.result);
     await waitFor(() => {
       render(
-        <NavigationContainer>
-          <MockedProvider>
-            <EditWordlistEntryScreen navigation={{ navigate: jest.fn() }} />
-          </MockedProvider>
-        </NavigationContainer>
+        <PaperProvider>
+          <NavigationContainer>
+            <MockedProvider>
+              <EditWordlistEntryScreen navigation={{ navigate: jest.fn() }} />
+            </MockedProvider>
+          </NavigationContainer>
+        </PaperProvider>
       );
     });
   });
