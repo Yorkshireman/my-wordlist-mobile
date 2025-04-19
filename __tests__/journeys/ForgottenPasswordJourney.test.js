@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ForgotYourPasswordScreen, LogInScreen } from '../../src/screens';
 import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
@@ -24,22 +23,20 @@ describe('Forgotten Password Journey', () => {
     render(
       <PaperProvider>
         <MockedProvider>
-          <NotificationProvider>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen
-                  component={LogInScreen}
-                  name='LogIn'
-                  options={{ title: 'My Wordlist' }}
-                />
-                <Stack.Screen
-                  component={ForgotYourPasswordScreen}
-                  name='ForgotYourPassword'
-                  options={{ title: 'My Wordlist' }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </NotificationProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                component={LogInScreen}
+                name='LogIn'
+                options={{ title: 'My Wordlist' }}
+              />
+              <Stack.Screen
+                component={ForgotYourPasswordScreen}
+                name='ForgotYourPassword'
+                options={{ title: 'My Wordlist' }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
         </MockedProvider>
       </PaperProvider>
     );
