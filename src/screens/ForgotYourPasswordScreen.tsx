@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RESET_PASSWORD_URL } from '@env';
 import { ScreenWrapper } from '../components';
-import sharedStyles from '../styles';
 import { useSnackbar } from '../hooks';
 import { Button, Paragraph, TextInput } from 'react-native-paper';
 import { Keyboard, KeyboardAvoidingView, StyleSheet } from 'react-native';
