@@ -136,12 +136,12 @@ export default function App() {
                 <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
                   <Stack.Screen
                     component={CreateWordlistEntriesScreen}
-                    initialParams={{ presentation: 'modal' }}
+                    initialParams={{ isModal: true }}
                     name='CreateWordlistEntries'
                   />
                   <Stack.Screen
                     component={EditWordlistEntryScreen}
-                    initialParams={{ presentation: 'modal' }}
+                    initialParams={{ isModal: true }}
                     name='EditWordlistEntry'
                   />
                 </Stack.Group>

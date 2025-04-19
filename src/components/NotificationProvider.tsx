@@ -8,14 +8,14 @@ import { Snackbar, useTheme } from 'react-native-paper';
 
 type Route = {
   params?: {
-    presentation?: string;
+    isModal?: boolean;
   };
 };
 
 const useIsModal = () => {
   const route: Route = useRoute();
-  const { presentation } = route.params || {};
-  return presentation === 'modal';
+  const { isModal } = route.params || {};
+  return Boolean(isModal);
 };
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
