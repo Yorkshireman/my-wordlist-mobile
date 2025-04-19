@@ -14,8 +14,9 @@ import {
 jest.useFakeTimers();
 
 const HomeScreenWrapper = navigation => {
-  const WrappedHomeScreen = () => <HomeScreen navigation={navigation} />;
-  return WrappedHomeScreen;
+  return function HomeScreenWrapper() {
+    return <HomeScreen navigation={navigation} />;
+  };
 };
 
 const mockNavigation = { navigate: jest.fn() };
