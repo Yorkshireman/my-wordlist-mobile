@@ -1,11 +1,11 @@
 import { calculateLongestWordLength } from '../utils';
 import { DeleteConfirm } from './DeleteConfirm';
 import { MyWordlist } from '../__generated__/graphql';
-import { ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { WordlistEntry } from './WordlistEntry';
 import { MY_WORDLIST, WORDLIST_ENTRY_DELETE } from '../graphql-queries';
 import { QueryResult, Reference, StoreObject, useMutation, useQuery } from '@apollo/client';
+import { ScrollView, View } from 'react-native';
 import { useAsyncStorage, useFilters } from '../hooks';
 import { useMemo, useState } from 'react';
 
@@ -61,20 +61,22 @@ export const Wordlist = () => {
           You might want to adjust your filters :-)
         </Text>
       ) : (
-        entries.map(({ categories, id, word: { text }, wordId }) => (
-          <WordlistEntry
-            {...{
-              categories,
-              id,
-              setShowDeleteConfirm,
-              setWordlistEntryIdToDelete,
-              text,
-              wordFlexBasis,
-              wordId
-            }}
-            key={id}
-          />
-        ))
+        <View style={{ marginBottom: 73 }}>
+          {entries.map(({ categories, id, word: { text }, wordId }) => (
+            <WordlistEntry
+              {...{
+                categories,
+                id,
+                setShowDeleteConfirm,
+                setWordlistEntryIdToDelete,
+                text,
+                wordFlexBasis,
+                wordId
+              }}
+              key={id}
+            />
+          ))}
+        </View>
       )}
       <DeleteConfirm
         confirm={() => {
