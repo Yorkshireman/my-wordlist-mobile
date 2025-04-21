@@ -1,9 +1,19 @@
 # MyWordlist
 
-An app, for learners of English as a second language, to store and organise their english vocabulary through categorisation. They will also be able to save notes on each wordlist entry. Features may also include:
+An app, for learners of English as a second language, to store and organise their english vocabulary through categorisation. They will also be able to save notes on each wordlist entry. 
 
+Current features include:
+- User can Create/Edit/Delete words
+- User can create and add categories to their Wordlist entries
+- User can have example sentences, for any of their saved words, at a chosen English level, generated for them by AI
+- User can have explanations for their example sentences generated for them by AI
+- Example sentences often include different forms of their word, if appropriate
+- User can filter their Wordlist by category/categories
+
+Future possible features:
+
+- User can write notes for their wordlist entries
 - For a given category, the app will suggest additional words based on other users' wordlist data
-- Generate sentences appropriate to their English level
 - Share their Wordlist with other users
 - Generate pdfs of their Wordlist with desired words filtered out
 
