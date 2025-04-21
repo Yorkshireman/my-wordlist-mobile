@@ -156,7 +156,7 @@ SIGN_UP_URL=http://localhost:3001/api/signup
 
 Hardcode the following values into the code instead of relying on the values being pulled from `.env.development`:
 `MY_WORDLIST_GRAPHQL_URL`: `'http://10.0.2.2:3000/graphql'`
-`RESET_PASSWORD_URL`: `http://10.0.2.2:3001/api/reset-password`
+`RESET_PASSWORD_URL`: `'http://10.0.2.2:3001/api/reset-password'`
 `SIGN_IN_URL`: `'http://10.0.2.2:3001/api/signin'`
 `SIGN_UP_URL`: `'http://10.0.2.2:3001/api/signup'`
 
