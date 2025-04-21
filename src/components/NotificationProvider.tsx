@@ -47,6 +47,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const backgroundColor = error ? errorColour : primary;
+  const marginBottom = keyboardHeight + 7 + (isModal && Platform.OS === 'ios' ? 20 : 0);
 
   return (
     <>
@@ -55,7 +56,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         duration={duration}
         key={key}
         onDismiss={() => hideSnackbar()}
-        style={{ backgroundColor, marginBottom: keyboardHeight + 7 + (isModal ? 20 : 0) }}
+        style={{ backgroundColor, marginBottom }}
         visible={visible}
       >
         {message}
