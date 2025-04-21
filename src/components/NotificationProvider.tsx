@@ -1,11 +1,24 @@
 import { snackbarStateVar } from '../reactiveVars';
 import { useReactiveVar } from '@apollo/client';
+import { useRoute } from '@react-navigation/native';
 import { useSnackbar } from '../hooks';
-import { EmitterSubscription, Keyboard, Platform, StyleSheet, View } from 'react-native';
+import { EmitterSubscription, Keyboard, Platform } from 'react-native';
+import { ReactNode, useEffect, useState } from 'react';
 import { Snackbar, useTheme } from 'react-native-paper';
-import { useEffect, useState } from 'react';
 
-export const NotificationProvider = ({ children }: { children: React.ReactElement }) => {
+type Route = {
+  params?: {
+    isModal?: boolean;
+  };
+};
+
+const useIsModal = () => {
+  const route: Route = useRoute();
+  const { isModal } = route.params || {};
+  return Boolean(isModal);
+};
+
+export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { hideSnackbar } = useSnackbar();
   const {
@@ -13,13 +26,14 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   } = useTheme();
 
   const { duration, error, key, message, visible } = useReactiveVar(snackbarStateVar);
+  const isModal = useIsModal();
 
   useEffect(() => {
     let keyboardDidShowListener: EmitterSubscription;
     let keyboardDidHideListener: EmitterSubscription;
     if (Platform.OS === 'ios') {
       keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', ({ endCoordinates }) =>
-        setKeyboardHeight(endCoordinates.height - 30)
+        setKeyboardHeight(endCoordinates.height)
       );
       keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', () =>
         setKeyboardHeight(0)
@@ -33,27 +47,20 @@ export const NotificationProvider = ({ children }: { children: React.ReactElemen
   }, []);
 
   const backgroundColor = error ? errorColour : primary;
+  const marginBottom = keyboardHeight + 7 + (isModal && Platform.OS === 'ios' ? 20 : 0);
+
   return (
     <>
       {children}
-      <View style={styles.snackbarWrapper}>
-        <Snackbar
-          duration={duration}
-          key={key}
-          onDismiss={() => hideSnackbar()}
-          style={{ backgroundColor, marginBottom: keyboardHeight }}
-          visible={visible}
-        >
-          {message}
-        </Snackbar>
-      </View>
+      <Snackbar
+        duration={duration}
+        key={key}
+        onDismiss={() => hideSnackbar()}
+        style={{ backgroundColor, marginBottom }}
+        visible={visible}
+      >
+        {message}
+      </Snackbar>
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  snackbarWrapper: {
-    marginBottom: 7,
-    marginTop: 'auto'
-  }
-});

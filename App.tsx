@@ -7,7 +7,6 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { loadDevMessages } from '@apollo/client/dev';
 import { MY_WORDLIST_GRAPHQL_URL } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from './src/components';
 import { removeTypename } from './src/utils/removeTypename';
 import type { RootStackParamList } from './types';
 import { StatusBar } from 'expo-status-bar';
@@ -101,51 +100,54 @@ export default function App() {
       <ErrorBoundary FallbackComponent={Error}>
         <ApolloProvider client={client}>
           <PaperProvider theme={theme}>
-            <NotificationProvider>
-              <NavigationContainer>
-                <Stack.Navigator
-                  screenOptions={{
-                    header: props => <NavigationBar {...props} />
-                  }}
-                >
-                  <Stack.Group>
-                    <Stack.Screen
-                      component={HomeScreen}
-                      name='Home'
-                      options={{ title: 'My Wordlist' }}
-                    />
-                    <Stack.Screen
-                      component={LogInScreen}
-                      name='LogIn'
-                      options={{ title: 'My Wordlist' }}
-                    />
-                    <Stack.Screen
-                      component={SignUpScreen}
-                      name='SignUp'
-                      options={{ title: 'My Wordlist' }}
-                    />
-                    <Stack.Screen
-                      component={ForgotYourPasswordScreen}
-                      name='ForgotYourPassword'
-                      options={{ title: 'My Wordlist' }}
-                    />
-                    <Stack.Screen
-                      component={GenerateExampleSentencesScreen}
-                      name='GenerateExampleSentences'
-                      options={{ title: 'My Wordlist' }}
-                    />
-                  </Stack.Group>
-                  <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
-                    <Stack.Screen
-                      component={CreateWordlistEntriesScreen}
-                      name='CreateWordlistEntries'
-                    />
-                    <Stack.Screen component={EditWordlistEntryScreen} name='EditWordlistEntry' />
-                  </Stack.Group>
-                </Stack.Navigator>
-                <StatusBar style='auto' />
-              </NavigationContainer>
-            </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  header: props => <NavigationBar {...props} />
+                }}
+              >
+                <Stack.Group>
+                  <Stack.Screen
+                    component={HomeScreen}
+                    name='Home'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                  <Stack.Screen
+                    component={LogInScreen}
+                    name='LogIn'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                  <Stack.Screen
+                    component={SignUpScreen}
+                    name='SignUp'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                  <Stack.Screen
+                    component={ForgotYourPasswordScreen}
+                    name='ForgotYourPassword'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                  <Stack.Screen
+                    component={GenerateExampleSentencesScreen}
+                    name='GenerateExampleSentences'
+                    options={{ title: 'My Wordlist' }}
+                  />
+                </Stack.Group>
+                <Stack.Group screenOptions={{ headerShown: false, presentation: 'modal' }}>
+                  <Stack.Screen
+                    component={CreateWordlistEntriesScreen}
+                    initialParams={{ isModal: true }}
+                    name='CreateWordlistEntries'
+                  />
+                  <Stack.Screen
+                    component={EditWordlistEntryScreen}
+                    initialParams={{ isModal: true }}
+                    name='EditWordlistEntry'
+                  />
+                </Stack.Group>
+              </Stack.Navigator>
+              <StatusBar style='auto' />
+            </NavigationContainer>
           </PaperProvider>
         </ApolloProvider>
       </ErrorBoundary>

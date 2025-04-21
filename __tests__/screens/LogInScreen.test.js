@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LogInScreen } from '../../src/screens';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,14 +7,23 @@ import { render, screen, userEvent, waitFor } from '@testing-library/react-nativ
 
 jest.useFakeTimers();
 
+const LoginScreenWrapper = navigation => {
+  return function LoginScreenWrapper() {
+    return <LogInScreen navigation={navigation} />;
+  };
+};
+
 const mockNavigation = { navigate: jest.fn() };
 
 describe('LogInScreen', () => {
   beforeEach(() => {
+    const Stack = createNativeStackNavigator();
     render(
       <NavigationContainer>
         <MockedProvider>
-          <LogInScreen navigation={mockNavigation} />
+          <Stack.Navigator>
+            <Stack.Screen component={LoginScreenWrapper(mockNavigation)} name='LogIn' />
+          </Stack.Navigator>
         </MockedProvider>
       </NavigationContainer>
     );
@@ -48,12 +58,16 @@ describe('LogInScreen', () => {
   });
 
   test('displays navigate to sign up text', async () => {
-    await waitFor(() => expect(screen.getByRole('button', { name: 'New user? Sign up' })).toBeOnTheScreen());
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'New user? Sign up' })).toBeOnTheScreen()
+    );
   });
 
   describe('if user taps the sign-up button', () => {
     beforeEach(async () => {
-      const signUpButton = await waitFor(() => screen.getByRole('button', { name: 'New user? Sign up' }));
+      const signUpButton = await waitFor(() =>
+        screen.getByRole('button', { name: 'New user? Sign up' })
+      );
       const user = userEvent.setup();
       await user.press(signUpButton);
     });

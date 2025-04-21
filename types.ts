@@ -5,8 +5,8 @@ import { Level, MyWordlist, NativeLanguage } from './src/__generated__/graphql';
 export type AuthToken = string | null;
 
 export type RootStackParamList = {
-  CreateWordlistEntries: { wordlistId: string };
-  EditWordlistEntry: { id: string };
+  CreateWordlistEntries: { isModal?: boolean; wordlistId: string };
+  EditWordlistEntry: { id: string; isModal?: boolean };
   ForgotYourPassword: undefined;
   GenerateExampleSentences: { wordId: string };
   Home: undefined;

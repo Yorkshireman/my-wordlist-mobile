@@ -1,10 +1,9 @@
-import { EyeIcon } from '../components';
 import { MY_WORDLIST_CREATE } from '../graphql-queries/myWordlistCreate';
-import sharedStyles from '../styles';
 import type { SignUpScreenProps } from '../../types';
+import { StyleSheet } from 'react-native';
 import { Button, HelperText, TextInput } from 'react-native-paper';
+import { EyeIcon, ScreenWrapper } from '../components';
 import { isInvalidEmail, signUp } from '../utils';
-import { StyleSheet, View } from 'react-native';
 import { useApolloClient, useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
@@ -72,7 +71,7 @@ export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   };
 
   return (
-    <View style={{ ...sharedStyles.container, padding: 40 }}>
+    <ScreenWrapper additionalStyles={{ padding: 40 }}>
       <TextInput
         aria-label='email'
         autoCapitalize='none'
@@ -125,7 +124,7 @@ export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
       >
         Have an account? Log in
       </Button>
-    </View>
+    </ScreenWrapper>
   );
 };
 

@@ -5,7 +5,6 @@ import { GraphQLError } from 'graphql';
 import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { EditWordlistEntryScreen, HomeScreen } from '../../src/screens';
 import {
@@ -65,22 +64,20 @@ describe('Edit Wordlist Entry journey', () => {
               )
             ]}
           >
-            <NotificationProvider>
-              <NavigationContainer>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    component={HomeScreen}
-                    name='Home'
-                    options={{ title: 'My Wordlist' }}
-                  />
-                  <Stack.Screen
-                    component={EditWordlistEntryScreen}
-                    name='EditWordlistEntry'
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  component={HomeScreen}
+                  name='Home'
+                  options={{ title: 'My Wordlist' }}
+                />
+                <Stack.Screen
+                  component={EditWordlistEntryScreen}
+                  name='EditWordlistEntry'
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
           </MockedProvider>
         </PaperProvider>
       );

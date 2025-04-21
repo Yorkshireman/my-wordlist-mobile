@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
-import { NotificationProvider } from '../../src/components';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { when } from 'jest-when';
 import {
@@ -16,7 +15,7 @@ import { GenerateExampleSentencesScreen, HomeScreen } from '../../src/screens';
 
 jest.useFakeTimers();
 
-describe('Generate Example Sentences journey', () => {
+describe('Generate Example Sentences With Explanations journey', () => {
   beforeEach(async () => {
     when(AsyncStorage.getItem)
       .calledWith('myWordlistAuthToken')
@@ -34,22 +33,20 @@ describe('Generate Example Sentences journey', () => {
               fetchOrCreateExampleSentencesWithExplanations.B1Italian
             ]}
           >
-            <NotificationProvider>
-              <NavigationContainer>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    component={HomeScreen}
-                    name='Home'
-                    options={{ title: 'My Wordlist' }}
-                  />
-                  <Stack.Screen
-                    component={GenerateExampleSentencesScreen}
-                    name='GenerateExampleSentences'
-                    options={{ title: 'Generate Example Sentences' }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </NotificationProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  component={HomeScreen}
+                  name='Home'
+                  options={{ title: 'My Wordlist' }}
+                />
+                <Stack.Screen
+                  component={GenerateExampleSentencesScreen}
+                  name='GenerateExampleSentences'
+                  options={{ title: 'Generate Example Sentences' }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
           </MockedProvider>
         </PaperProvider>
       );
